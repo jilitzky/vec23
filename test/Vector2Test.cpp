@@ -6,7 +6,7 @@
 using namespace Vec23;
 
 // -----------------------------------------------------------------------------
-// 1. Constructor Tests
+// Constructor Tests
 // -----------------------------------------------------------------------------
 
 TEST(Vector2Test, DefaultConstructor) {
@@ -28,7 +28,7 @@ TEST(Vector2Test, ComponentConstructor) {
 }
 
 // -----------------------------------------------------------------------------
-// 2. Operator Tests
+// Operator Tests
 // -----------------------------------------------------------------------------
 
 TEST(Vector2Test, Addition) {
@@ -56,15 +56,6 @@ TEST(Vector2Test, MultiplicationScalar) {
     EXPECT_FLOAT_EQ(result.x, 4.0f);
     EXPECT_FLOAT_EQ(result.y, 8.0f);
 }
-
-//TEST(Vector2Test, MultiplicationGlobalScalar) {
-//    Vector2 v(2.0f, 4.0f);
-//    // Tests the "float * vector" global operator
-//    Vector2 result = 2.0f * v;
-//
-//    EXPECT_FLOAT_EQ(result.x, 4.0f);
-//    EXPECT_FLOAT_EQ(result.y, 8.0f);
-//}
 
 TEST(Vector2Test, ComponentMultiplication) {
     Vector2 v1(2.0f, 3.0f);
@@ -117,4 +108,86 @@ TEST(Vector2Test, SubscriptOperator) {
     // Test write via subscript
     v[0] = 7.0f;
     EXPECT_FLOAT_EQ(v.x, 7.0f);
+}
+
+// -----------------------------------------------------------------------------
+// Method Tests
+// -----------------------------------------------------------------------------
+
+TEST(Vector2Test, DotProduct) {
+    // Parallel vectors
+    Vector2 v1(1.0f, 0.0f);
+    Vector2 v2(2.0f, 0.0f);
+    EXPECT_FLOAT_EQ(v1.Dot(v2), 2.0f);
+
+    // Perpendicular vectors (Dot should be 0)
+    Vector2 v3(0.0f, 1.0f);
+    EXPECT_FLOAT_EQ(v1.Dot(v3), 0.0f);
+
+    // Opposite vectors
+    Vector2 v4(-1.0f, 0.0f);
+    EXPECT_FLOAT_EQ(v1.Dot(v4), -1.0f);
+}
+
+TEST(Vector2Test, CrossProduct) {
+    Vector2 right(1.0f, 0.0f);
+    Vector2 up(0.0f, 1.0f);
+
+    // Right x Up should be positive Z (Counter-Clockwise)
+    EXPECT_FLOAT_EQ(right.Cross(up), 1.0f);
+
+    // Up x Right should be negative Z (Clockwise)
+    EXPECT_FLOAT_EQ(up.Cross(right), -1.0f);
+}
+
+TEST(Vector2Test, Length) {
+    // 3-4-5 Triangle check
+    Vector2 v(3.0f, 4.0f);
+    EXPECT_FLOAT_EQ(v.Length(), 5.0f);
+    EXPECT_FLOAT_EQ(v.LengthSquared(), 25.0f);
+}
+
+TEST(Vector2Test, Normalization) {
+    Vector2 v(3.0f, 0.0f);
+    v.Normalize();
+
+    EXPECT_FLOAT_EQ(v.x, 1.0f);
+    EXPECT_FLOAT_EQ(v.y, 0.0f);
+    EXPECT_FLOAT_EQ(v.Length(), 1.0f);
+}
+
+TEST(Vector2Test, GetNormalized) {
+    Vector2 v(0.0f, 5.0f);
+    Vector2 norm = v.GetNormalized();
+
+    // Original should remain unchanged
+    EXPECT_FLOAT_EQ(v.y, 5.0f);
+
+    // New vector should be unit length
+    EXPECT_FLOAT_EQ(norm.y, 1.0f);
+    EXPECT_FLOAT_EQ(norm.Length(), 1.0f);
+}
+
+TEST(Vector2Test, IsNormalized) {
+    Vector2 v(3.0f, 0.0f);
+    EXPECT_FALSE(v.IsNormalized());
+
+    v.Normalize();
+    EXPECT_TRUE(v.IsNormalized());
+
+    Vector2 nearZero(0.0000001f, 0.0000001f);
+    EXPECT_FALSE(nearZero.IsNormalized());
+}
+
+// -----------------------------------------------------------------------------
+// Global Operator Tests
+// -----------------------------------------------------------------------------
+
+TEST(Vector2Test, MultiplicationGlobalScalar) {
+    Vector2 v(2.0f, 4.0f);
+    // Tests the "float * vector" global operator
+    Vector2 result = 2.0f * v;
+
+    EXPECT_FLOAT_EQ(result.x, 4.0f);
+    EXPECT_FLOAT_EQ(result.y, 8.0f);
 }
