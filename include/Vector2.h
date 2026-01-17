@@ -9,7 +9,6 @@ namespace Vec23
         float x;
         float y;
 
-        // TODO: Why was = default not working?
         Vector2() : x(0.f), y(0.f) {}
 
         Vector2(float scalar) : x(scalar), y(scalar) {}
@@ -26,7 +25,6 @@ namespace Vec23
             return { x - other.x, y - other.y };
         }
 
-        // TODO: Figure out why it's useful to do component-wise multiplication
         Vector2 operator*(const Vector2& other) const
         {
             return { x * other.x, y * other.y };
@@ -39,8 +37,8 @@ namespace Vec23
 
         Vector2 operator/(float scalar) const
         {
-            float multiplier = 1.f / scalar;
-            return (*this * multiplier);
+            float inv = 1.f / scalar;
+            return { x * inv, y * inv };
         }
 
         Vector2 operator-() const
@@ -55,7 +53,6 @@ namespace Vec23
             return *this;
         }
 
-        // TODO: Should subtraction be implemented based on addition?
         Vector2& operator-=(const Vector2& other)
         {
             x -= other.x;
@@ -63,7 +60,6 @@ namespace Vec23
             return *this;
         }
 
-        // TODO: Why are there no unit tests for this?
         Vector2& operator*=(float scalar)
         {
             x *= scalar;
@@ -73,13 +69,15 @@ namespace Vec23
 
         Vector2& operator/=(float scalar)
         {
-            *this *= 1.f / scalar;
+            float inv = 1.f / scalar;
+            x *= inv;
+            y *= inv;
             return *this;
         }
 
         bool operator==(const Vector2& other) const
         {
-            return (x == other.x) && (y == other.y);
+            return x == other.x && y == other.y;
         }
 
         bool operator!=(const Vector2& other) const
@@ -89,33 +87,14 @@ namespace Vec23
 
         float& operator[](int index)
         {
-            switch (index)
-            {
-            case 0:
-                return x;
-            case 1:
-                return y;
-            default:
-                // TODO: What do we do here?
-                static float zero = 0.f;
-                return zero;
-            }
+            assert(index >= 0 && index < 2);
+            return (&x)[index];
         }
 
-        // TODO: Can we reuse the non-const accessor?
         const float& operator[](int index) const
         {
-            switch (index)
-            {
-            case 0:
-                return x;
-            case 1:
-                return y;
-            default:
-                // TODO: What do we do here?
-                static float zero = 0.f;
-                return zero;
-            }
+            assert(index >= 0 && index < 2);
+            return (&x)[index];
         }
 
         // TODO: Why is this not working?

@@ -92,6 +92,23 @@ TEST(Vector2Test, CompoundAddition) {
     EXPECT_FLOAT_EQ(v1.y, 6.0f);
 }
 
+TEST(Vector2Test, CompoundSubtraction) {
+    Vector2 v1(5.0f, 6.0f);
+    Vector2 v2(2.0f, 3.0f);
+    v1 -= v2;
+
+    EXPECT_FLOAT_EQ(v1.x, 3.0f);
+    EXPECT_FLOAT_EQ(v1.y, 3.0f);
+}
+
+TEST(Vector2Test, CompoundScalarMultiplication) {
+    Vector2 v(2.0f, 4.0f);
+    v *= 0.5f; // Scale down by half
+
+    EXPECT_FLOAT_EQ(v.x, 1.0f);
+    EXPECT_FLOAT_EQ(v.y, 2.0f);
+}
+
 TEST(Vector2Test, SubscriptOperator) {
     Vector2 v(5.0f, 10.0f);
     EXPECT_FLOAT_EQ(v[0], 5.0f);
