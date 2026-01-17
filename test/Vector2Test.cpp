@@ -5,9 +5,9 @@
 
 using namespace Vec23;
 
-// -----------------------------------------------------------------------------
+// -------------------------
 // Constructor Tests
-// -----------------------------------------------------------------------------
+// -------------------------
 
 TEST(Vector2Test, DefaultConstructor) {
     Vector2 v;
@@ -27,9 +27,9 @@ TEST(Vector2Test, ComponentConstructor) {
     EXPECT_FLOAT_EQ(v.y, 3.0f);
 }
 
-// -----------------------------------------------------------------------------
+// -------------------------
 // Operator Tests
-// -----------------------------------------------------------------------------
+// -------------------------
 
 TEST(Vector2Test, Addition) {
     Vector2 v1(1.0f, 2.0f);
@@ -110,9 +110,9 @@ TEST(Vector2Test, SubscriptOperator) {
     EXPECT_FLOAT_EQ(v.x, 7.0f);
 }
 
-// -----------------------------------------------------------------------------
+// -------------------------
 // Method Tests
-// -----------------------------------------------------------------------------
+// -------------------------
 
 TEST(Vector2Test, DotProduct) {
     // Parallel vectors
@@ -179,9 +179,45 @@ TEST(Vector2Test, IsNormalized) {
     EXPECT_FALSE(nearZero.IsNormalized());
 }
 
-// -----------------------------------------------------------------------------
+// -------------------------
+// Utility Tests
+// -------------------------
+
+TEST(Vector2Test, Distance) {
+    Vector2 v1(0.0f, 0.0f);
+    Vector2 v2(0.0f, 10.0f);
+
+    EXPECT_FLOAT_EQ(Vector2::Distance(v1, v2), 10.0f);
+    EXPECT_FLOAT_EQ(Vector2::DistanceSquared(v1, v2), 100.0f);
+}
+
+TEST(Vector2Test, Reflect) {
+    Vector2 incoming(1.0f, -1.0f); // Moving down-right
+    Vector2 normal(0.0f, 1.0f);    // Surface pointing up (floor)
+
+    Vector2 result = Vector2::Reflect(incoming, normal);
+
+    // Should be moving up-right (1, 1)
+    EXPECT_NEAR(result.x, 1.0f, 0.0001f);
+    EXPECT_NEAR(result.y, 1.0f, 0.0001f);
+}
+
+TEST(Vector2Test, Lerp) {
+    Vector2 start(0.0f, 0.0f);
+    Vector2 end(10.0f, 10.0f);
+
+    Vector2 mid = Vector2::Lerp(start, end, 0.5f);
+    EXPECT_FLOAT_EQ(mid.x, 5.0f);
+    EXPECT_FLOAT_EQ(mid.y, 5.0f);
+
+    Vector2 quarter = Vector2::Lerp(start, end, 0.25f);
+    EXPECT_FLOAT_EQ(quarter.x, 2.5f);
+    EXPECT_FLOAT_EQ(quarter.y, 2.5f);
+}
+
+// -------------------------
 // Global Operator Tests
-// -----------------------------------------------------------------------------
+// -------------------------
 
 TEST(Vector2Test, MultiplicationGlobalScalar) {
     Vector2 v(2.0f, 4.0f);

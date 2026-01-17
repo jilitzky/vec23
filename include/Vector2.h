@@ -163,6 +163,40 @@ namespace Vec23
         {
             return (std::abs(LengthSquared() - 1.f) < 1e-4f);
         }
+
+        // -------------------------
+        // Utilities
+        // -------------------------
+
+        static float Distance(const Vector2& a, const Vector2& b)
+        {
+            return std::sqrt(DistanceSquared(a, b));
+        }
+
+        static float DistanceSquared(const Vector2& a, const Vector2& b)
+        {
+            float dx = b.x - a.x;
+            float dy = b.y - a.y;
+            return (dx * dx) + (dy * dy);
+        }
+
+        //// Reflects vector 'v' off surface with normal 'n'
+        static Vector2 Reflect(const Vector2& v, const Vector2& n)
+        {
+            return { 0, 0 };
+        }
+
+        static Vector2 Lerp(const Vector2& a, const Vector2& b, float t)
+        {
+            return (a * (1.f - t)) + (b * t);
+        }
+
+        std::string ToString() const
+        {
+            std::stringstream stream;
+            stream << "{" << x << ", " << y << "}";
+            return stream.str();
+        }
     };
 
     // -------------------------
