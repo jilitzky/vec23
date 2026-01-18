@@ -180,15 +180,14 @@ namespace Vec23
             return (dx * dx) + (dy * dy);
         }
 
-        //// Reflects vector 'v' off surface with normal 'n'
         static Vector2 Reflect(const Vector2& v, const Vector2& n)
         {
-            return { 0, 0 };
+            return v - (2.f * (v.Dot(n) * n));
         }
 
         static Vector2 Lerp(const Vector2& a, const Vector2& b, float t)
         {
-            return (a * (1.f - t)) + (b * t);
+            return ((1.f - t) * a) + (t * b);
         }
 
         std::string ToString() const
@@ -197,14 +196,14 @@ namespace Vec23
             stream << "{" << x << ", " << y << "}";
             return stream.str();
         }
+
+        // -------------------------
+        // Global Operators
+        // -------------------------
+
+        friend Vector2 operator*(float scalar, const Vector2& vector)
+        {
+            return vector * scalar;
+        }
     };
-
-    // -------------------------
-    // Global Operators
-    // -------------------------
-
-    Vector2 operator*(float scalar, const Vector2& vector)
-    {
-        return vector * scalar;
-    }
 }
