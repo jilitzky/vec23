@@ -1,6 +1,7 @@
 /// Copyright (c) 2026 Jose Ilitzky
 
 #include <gtest/gtest.h>
+#include "Constants.h"
 #include "Vector2.h"
 
 using namespace Vec23;
@@ -179,6 +180,31 @@ TEST(Vector2Test, IsNormalized) {
     EXPECT_FALSE(nearZero.IsNormalized());
 }
 
+TEST(Vector2Test, IsNearlyEqual) {
+    Vector2 a(1.0f, 0.0f);
+    Vector2 b(1.00001f, 0.0f);
+    Vector2 c(1.0001f, 0.0f);
+    Vector2 d(-1.0f, 0.0f); // Same length, opposite direction
+
+    EXPECT_TRUE(a.IsNearlyEqual(b));
+    EXPECT_FALSE(a.IsNearlyEqual(c));
+    EXPECT_FALSE(a.IsNearlyEqual(d));
+}
+
+TEST(Vector2Test, Rotate) {
+    Vector2 v(1.0f, 0.0f);
+
+    // Rotate 90 degrees CCW
+    v.Rotate(90.0f);
+    EXPECT_NEAR(v.x, 0.0f, kToleranceEpsilon);
+    EXPECT_NEAR(v.y, 1.0f, kToleranceEpsilon);
+
+    // Rotate another 90 (total 180)
+    v.Rotate(90.0f);
+    EXPECT_NEAR(v.x, -1.0f, kToleranceEpsilon);
+    EXPECT_NEAR(v.y, 0.0f, kToleranceEpsilon);
+}
+
 // -------------------------
 // Utility Tests
 // -------------------------
@@ -213,6 +239,25 @@ TEST(Vector2Test, Lerp) {
     Vector2 quarter = Vector2::Lerp(start, end, 0.25f);
     EXPECT_FLOAT_EQ(quarter.x, 2.5f);
     EXPECT_FLOAT_EQ(quarter.y, 2.5f);
+}
+
+TEST(Vector2Test, SignedAngle) {
+    Vector2 a(1.0f, 0.0f);
+    Vector2 b(0.0f, 1.0f); // 90 degrees CCW from a
+
+    // CCW should be positive
+    EXPECT_NEAR(Vector2::SignedAngle(a, b), 90.0f, kToleranceEpsilon);
+
+    // CW should be negative
+    EXPECT_NEAR(Vector2::SignedAngle(b, a), -90.0f, kToleranceEpsilon);
+}
+
+TEST(Vector2Test, Angle) {
+    Vector2 a(1.0f, 0.0f);
+    Vector2 b(0.0f, -1.0f); // -90 degrees
+
+    // Basic Angle should always be positive
+    EXPECT_NEAR(Vector2::Angle(a, b), 90.0f, kToleranceEpsilon);
 }
 
 // -------------------------

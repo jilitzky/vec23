@@ -2,6 +2,12 @@
 
 #pragma once
 
+#include <cassert>
+#include <cmath>
+#include <sstream>
+#include <string>
+#include "Constants.h"
+
 namespace Vec23
 {
     struct Vector2
@@ -121,7 +127,7 @@ namespace Vec23
 
         float Length() const
         {
-            return std::sqrtf(LengthSquared());
+            return std::sqrt(LengthSquared());
         }
 
         float LengthSquared() const
@@ -129,11 +135,10 @@ namespace Vec23
             return (x * x) + (y * y);
         }
 
-        // TODO: Why are we using an epsilon of 1e-6f here?
         void Normalize()
         {
             float lengthSq = LengthSquared();
-            if (lengthSq > 1e-6f)
+            if (lengthSq > kSafetyEpsilon)
             {
                 float inv = 1.f / std::sqrt(lengthSq);
                 x *= inv;
@@ -146,11 +151,10 @@ namespace Vec23
             }
         }
 
-        // TODO: Why are we using an epsilon of 1e-6f here?
         Vector2 GetNormalized() const
         {
             float lengthSq = LengthSquared();
-            if (lengthSq > 1e-6f)
+            if (lengthSq > kSafetyEpsilon)
             {
                 float inv = 1.f / std::sqrt(lengthSq);
                 return { x * inv, y * inv };
@@ -158,10 +162,25 @@ namespace Vec23
             return { 0.f, 0.f };
         }
 
-        // TODO: Why are we using an epsilon of 1e-4f here?
         bool IsNormalized() const
         {
-            return (std::abs(LengthSquared() - 1.f) < 1e-4f);
+            return (std::abs(LengthSquared() - 1.f) < kToleranceEpsilon);
+        }
+
+        bool IsNearlyEqual(const Vector2& other, float epsilon = kToleranceEpsilon) const
+        {
+            return DistanceSquared(*this, other) < (epsilon * epsilon);
+        }
+
+        void Rotate(float degrees)
+        {
+            float radians = degrees * kDegreesToRadians;
+            float cosR = std::cos(radians);
+            float sinR = std::sin(radians);
+            float px = x;
+
+            x = (px * cosR) - (y * sinR);
+            y = (px * sinR) + (y * cosR);
         }
 
         // -------------------------
@@ -170,24 +189,35 @@ namespace Vec23
 
         static float Distance(const Vector2& a, const Vector2& b)
         {
-            return std::sqrt(DistanceSquared(a, b));
+            return (b - a).Length();
         }
 
         static float DistanceSquared(const Vector2& a, const Vector2& b)
         {
-            float dx = b.x - a.x;
-            float dy = b.y - a.y;
-            return (dx * dx) + (dy * dy);
+            return (b - a).LengthSquared();
         }
 
         static Vector2 Reflect(const Vector2& v, const Vector2& n)
         {
-            return v - (2.f * (v.Dot(n) * n));
+            return v - n * (2.f * v.Dot(n));
         }
 
         static Vector2 Lerp(const Vector2& a, const Vector2& b, float t)
         {
             return ((1.f - t) * a) + (t * b);
+        }
+
+        static float Angle(const Vector2& a, const Vector2& b)
+        {
+            return std::abs(SignedAngle(a, b));
+        }
+
+        static float SignedAngle(const Vector2& a, const Vector2& b)
+        {
+            float dot = a.Dot(b);
+            float cross = a.Cross(b);
+            float radians = std::atan2f(cross, dot);
+            return radians * kRadiansToDegrees;
         }
 
         std::string ToString() const
