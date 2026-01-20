@@ -129,11 +129,10 @@ namespace Vec23
             return (x * x) + (y * y);
         }
 
-        // TODO: Why are we using an epsilon of 1e-6f here?
         void Normalize()
         {
             float lengthSq = LengthSquared();
-            if (lengthSq > 1e-6f)
+            if (lengthSq > kSafetyEpsilon)
             {
                 float inv = 1.f / std::sqrt(lengthSq);
                 x *= inv;
@@ -146,11 +145,10 @@ namespace Vec23
             }
         }
 
-        // TODO: Why are we using an epsilon of 1e-6f here?
         Vector2 GetNormalized() const
         {
             float lengthSq = LengthSquared();
-            if (lengthSq > 1e-6f)
+            if (lengthSq > kSafetyEpsilon)
             {
                 float inv = 1.f / std::sqrt(lengthSq);
                 return { x * inv, y * inv };
@@ -158,10 +156,9 @@ namespace Vec23
             return { 0.f, 0.f };
         }
 
-        // TODO: Why are we using an epsilon of 1e-4f here?
         bool IsNormalized() const
         {
-            return (std::abs(LengthSquared() - 1.f) < 1e-4f);
+            return (std::abs(LengthSquared() - 1.f) < kToleranceEpsilon);
         }
 
         // -------------------------
@@ -205,5 +202,9 @@ namespace Vec23
         {
             return vector * scalar;
         }
+
+    private:
+        static constexpr float kSafetyEpsilon = 1e-6f;
+        static constexpr float kToleranceEpsilon = 1e-4f;
     };
 }
