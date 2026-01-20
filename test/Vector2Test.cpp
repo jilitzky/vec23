@@ -1,12 +1,10 @@
 /// Copyright (c) 2026 Jose Ilitzky
 
 #include <gtest/gtest.h>
+#include "Constants.h"
 #include "Vector2.h"
 
 using namespace Vec23;
-
-// TODO: Merge with the one inside Vector2
-constexpr float kToleranceEpsilon = 1e-4f;
 
 // -------------------------
 // Constructor Tests
@@ -189,11 +187,11 @@ TEST(Vector2Test, IsNearlyEqual) {
     Vector2 d(-1.0f, 0.0f); // Same length, opposite direction
 
     // Basic proximity
-    EXPECT_TRUE(a.IsNearlyEqual(b, kToleranceEpsilon));
-    EXPECT_FALSE(a.IsNearlyEqual(c, kToleranceEpsilon));
+    EXPECT_TRUE(a.IsNearlyEqual(b));
+    EXPECT_FALSE(a.IsNearlyEqual(c));
 
     // DIRECTION CHECK: This would have failed with your original logic
-    EXPECT_FALSE(a.IsNearlyEqual(d, kToleranceEpsilon));
+    EXPECT_FALSE(a.IsNearlyEqual(d));
 }
 
 TEST(Vector2Test, Rotate) {

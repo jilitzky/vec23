@@ -6,6 +6,7 @@
 #include <string>
 #include <sstream>
 #include <cassert>
+#include "Constants.h"
 
 namespace Vec23
 {
@@ -234,12 +235,5 @@ namespace Vec23
         {
             return vector * scalar;
         }
-
-    private:
-        static constexpr float kPi = 3.141592f;
-        static constexpr float kRadiansToDegrees = 180.f / kPi;
-        static constexpr float kDegreesToRadians = kPi / 180.f;
-        static constexpr float kSafetyEpsilon = 1e-6f;
-        static constexpr float kToleranceEpsilon = 1e-4f;
     };
 }
