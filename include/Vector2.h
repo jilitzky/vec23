@@ -2,6 +2,11 @@
 
 #pragma once
 
+#include <cmath>
+#include <string>
+#include <sstream>
+#include <cassert>
+
 namespace Vec23
 {
     struct Vector2
@@ -121,7 +126,7 @@ namespace Vec23
 
         float Length() const
         {
-            return std::sqrtf(LengthSquared());
+            return std::sqrt(LengthSquared());
         }
 
         float LengthSquared() const
@@ -161,15 +166,20 @@ namespace Vec23
             return (std::abs(LengthSquared() - 1.f) < kToleranceEpsilon);
         }
 
+        bool IsNearlyEqual(const Vector2& other, float epsilon = kToleranceEpsilon) const
+        {
+            return DistanceSquared(*this, other) < (epsilon * epsilon);
+        }
+
         void Rotate(float degrees)
         {
             float radians = degrees * kDegreesToRadians;
-            float cos = std::cos(radians);
-            float sin = std::sin(radians);
-            float previousX = x;
+            float cosR = std::cos(radians);
+            float sinR = std::sin(radians);
+            float px = x;
 
-            x = (previousX * cos) - (y * sin);
-            y = (previousX * sin) + (y * cos);
+            x = (px * cosR) - (y * sinR);
+            y = (px * sinR) + (y * cosR);
         }
 
         // -------------------------
@@ -178,19 +188,17 @@ namespace Vec23
 
         static float Distance(const Vector2& a, const Vector2& b)
         {
-            return std::sqrt(DistanceSquared(a, b));
+            return (b - a).Length();
         }
 
         static float DistanceSquared(const Vector2& a, const Vector2& b)
         {
-            float dx = b.x - a.x;
-            float dy = b.y - a.y;
-            return (dx * dx) + (dy * dy);
+            return (b - a).LengthSquared();
         }
 
         static Vector2 Reflect(const Vector2& v, const Vector2& n)
         {
-            return v - (2.f * (v.Dot(n) * n));
+            return v - n * (2.f * v.Dot(n));
         }
 
         static Vector2 Lerp(const Vector2& a, const Vector2& b, float t)

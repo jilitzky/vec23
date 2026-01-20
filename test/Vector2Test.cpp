@@ -182,6 +182,20 @@ TEST(Vector2Test, IsNormalized) {
     EXPECT_FALSE(nearZero.IsNormalized());
 }
 
+TEST(Vector2Test, IsNearlyEqual) {
+    Vector2 a(1.0f, 0.0f);
+    Vector2 b(1.00001f, 0.0f);
+    Vector2 c(1.0001f, 0.0f);
+    Vector2 d(-1.0f, 0.0f); // Same length, opposite direction
+
+    // Basic proximity
+    EXPECT_TRUE(a.IsNearlyEqual(b, kToleranceEpsilon));
+    EXPECT_FALSE(a.IsNearlyEqual(c, kToleranceEpsilon));
+
+    // DIRECTION CHECK: This would have failed with your original logic
+    EXPECT_FALSE(a.IsNearlyEqual(d, kToleranceEpsilon));
+}
+
 TEST(Vector2Test, Rotate) {
     Vector2 v(1.0f, 0.0f);
 
