@@ -2,10 +2,10 @@
 
 #pragma once
 
-#include <cmath>
-#include <string>
-#include <sstream>
 #include <cassert>
+#include <cmath>
+#include <sstream>
+#include <string>
 #include "Constants.h"
 
 namespace Vec23
