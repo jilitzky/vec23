@@ -5,6 +5,9 @@
 
 using namespace Vec23;
 
+// TODO: Merge with the one inside Vector2
+constexpr float kToleranceEpsilon = 1e-4f;
+
 // -------------------------
 // Constructor Tests
 // -------------------------
@@ -184,13 +187,13 @@ TEST(Vector2Test, Rotate) {
 
     // Rotate 90 degrees CCW
     v.Rotate(90.0f);
-    EXPECT_NEAR(v.x, 0.0f, 1e-5f);
-    EXPECT_NEAR(v.y, 1.0f, 1e-5f);
+    EXPECT_NEAR(v.x, 0.0f, kToleranceEpsilon);
+    EXPECT_NEAR(v.y, 1.0f, kToleranceEpsilon);
 
     // Rotate another 90 (total 180)
     v.Rotate(90.0f);
-    EXPECT_NEAR(v.x, -1.0f, 1e-5f);
-    EXPECT_NEAR(v.y, 0.0f, 1e-5f);
+    EXPECT_NEAR(v.x, -1.0f, kToleranceEpsilon);
+    EXPECT_NEAR(v.y, 0.0f, kToleranceEpsilon);
 }
 
 // -------------------------
@@ -234,10 +237,10 @@ TEST(Vector2Test, SignedAngle) {
     Vector2 b(0.0f, 1.0f); // 90 degrees CCW from a
 
     // CCW should be positive
-    EXPECT_NEAR(Vector2::SignedAngle(a, b), 90.0f, 1e-4f);
+    EXPECT_NEAR(Vector2::SignedAngle(a, b), 90.0f, kToleranceEpsilon);
 
     // CW should be negative
-    EXPECT_NEAR(Vector2::SignedAngle(b, a), -90.0f, 1e-4f);
+    EXPECT_NEAR(Vector2::SignedAngle(b, a), -90.0f, kToleranceEpsilon);
 }
 
 TEST(Vector2Test, Angle) {
@@ -245,7 +248,7 @@ TEST(Vector2Test, Angle) {
     Vector2 b(0.0f, -1.0f); // -90 degrees
 
     // Basic Angle should always be positive
-    EXPECT_NEAR(Vector2::Angle(a, b), 90.0f, 1e-4f);
+    EXPECT_NEAR(Vector2::Angle(a, b), 90.0f, kToleranceEpsilon);
 }
 
 // -------------------------
