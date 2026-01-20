@@ -161,6 +161,17 @@ namespace Vec23
             return (std::abs(LengthSquared() - 1.f) < kToleranceEpsilon);
         }
 
+        void Rotate(float degrees)
+        {
+            float radians = degrees * kDegreesToRadians;
+            float cos = std::cos(radians);
+            float sin = std::sin(radians);
+            float previousX = x;
+
+            x = (previousX * cos) - (y * sin);
+            y = (previousX * sin) + (y * cos);
+        }
+
         // -------------------------
         // Utilities
         // -------------------------
@@ -187,6 +198,19 @@ namespace Vec23
             return ((1.f - t) * a) + (t * b);
         }
 
+        static float Angle(const Vector2& a, const Vector2& b)
+        {
+            return std::abs(SignedAngle(a, b));
+        }
+
+        static float SignedAngle(const Vector2& a, const Vector2& b)
+        {
+            float dot = a.Dot(b);
+            float cross = a.Cross(b);
+            float radians = std::atan2f(cross, dot);
+            return radians * kRadiansToDegrees;
+        }
+
         std::string ToString() const
         {
             std::stringstream stream;
@@ -204,6 +228,9 @@ namespace Vec23
         }
 
     private:
+        static constexpr float kPi = 3.141592f;
+        static constexpr float kRadiansToDegrees = 180.f / kPi;
+        static constexpr float kDegreesToRadians = kPi / 180.f;
         static constexpr float kSafetyEpsilon = 1e-6f;
         static constexpr float kToleranceEpsilon = 1e-4f;
     };

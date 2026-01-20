@@ -179,6 +179,20 @@ TEST(Vector2Test, IsNormalized) {
     EXPECT_FALSE(nearZero.IsNormalized());
 }
 
+TEST(Vector2Test, Rotate) {
+    Vector2 v(1.0f, 0.0f);
+
+    // Rotate 90 degrees CCW
+    v.Rotate(90.0f);
+    EXPECT_NEAR(v.x, 0.0f, 1e-5f);
+    EXPECT_NEAR(v.y, 1.0f, 1e-5f);
+
+    // Rotate another 90 (total 180)
+    v.Rotate(90.0f);
+    EXPECT_NEAR(v.x, -1.0f, 1e-5f);
+    EXPECT_NEAR(v.y, 0.0f, 1e-5f);
+}
+
 // -------------------------
 // Utility Tests
 // -------------------------
@@ -213,6 +227,25 @@ TEST(Vector2Test, Lerp) {
     Vector2 quarter = Vector2::Lerp(start, end, 0.25f);
     EXPECT_FLOAT_EQ(quarter.x, 2.5f);
     EXPECT_FLOAT_EQ(quarter.y, 2.5f);
+}
+
+TEST(Vector2Test, SignedAngle) {
+    Vector2 a(1.0f, 0.0f);
+    Vector2 b(0.0f, 1.0f); // 90 degrees CCW from a
+
+    // CCW should be positive
+    EXPECT_NEAR(Vector2::SignedAngle(a, b), 90.0f, 1e-4f);
+
+    // CW should be negative
+    EXPECT_NEAR(Vector2::SignedAngle(b, a), -90.0f, 1e-4f);
+}
+
+TEST(Vector2Test, Angle) {
+    Vector2 a(1.0f, 0.0f);
+    Vector2 b(0.0f, -1.0f); // -90 degrees
+
+    // Basic Angle should always be positive
+    EXPECT_NEAR(Vector2::Angle(a, b), 90.0f, 1e-4f);
 }
 
 // -------------------------
