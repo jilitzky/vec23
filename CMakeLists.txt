@@ -16,7 +16,7 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(googletest)
 
-file(GLOB ALL_HEADERS "include/*.h")
+file(GLOB ALL_HEADERS "include/Vec23/*.h")
 
 # --- Vector2Test ---
 

@@ -1,8 +1,8 @@
 /// Copyright (c) 2026 Jose Ilitzky
 
 #include <gtest/gtest.h>
-#include "Constants.h"
-#include "Vector2.h"
+#include <Vec23/Constants.h>
+#include <Vec23/Vector2.h>
 
 using namespace Vec23;
 
