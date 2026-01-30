@@ -21,8 +21,6 @@ namespace Vec23
 
         Vector2() : x(0.f), y(0.f) {}
 
-        Vector2(float scalar) : x(scalar), y(scalar) {}
-
         Vector2(float x, float y) : x(x), y(y) {}
 
         // -------------------------
