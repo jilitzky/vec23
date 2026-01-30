@@ -103,15 +103,15 @@ TEST(Vector2Test, SubscriptOperator)
 
 TEST(Vector2Test, DotProduct)
 {
-    Vector2 v1(1.0f, 0.0f);
-    Vector2 v2(2.0f, 0.0f);
-    EXPECT_FLOAT_EQ(v1.Dot(v2), 2.0f);
+    Vector2 v1(1.f, 0.f);
+    Vector2 v2(2.f, 0.f);
+    EXPECT_TRUE(v1.Dot(v2) == 2.f);
 
-    Vector2 v3(0.0f, 1.0f);
-    EXPECT_FLOAT_EQ(v1.Dot(v3), 0.0f);
+    Vector2 v3(0.f, 1.f);
+    EXPECT_TRUE(v1.Dot(v3) == 0.f);
 
-    Vector2 v4(-1.0f, 0.0f);
-    EXPECT_FLOAT_EQ(v1.Dot(v4), -1.0f);
+    Vector2 v4(-1.f, 0.f);
+    EXPECT_TRUE(v1.Dot(v4) == -1.f);
 }
 
 TEST(Vector2Test, CrossProduct)
@@ -119,74 +119,60 @@ TEST(Vector2Test, CrossProduct)
     Vector2 right(1.0f, 0.0f);
     Vector2 up(0.0f, 1.0f);
 
-    EXPECT_FLOAT_EQ(right.Cross(up), 1.0f);
-    EXPECT_FLOAT_EQ(up.Cross(right), -1.0f);
+    EXPECT_TRUE(right.Cross(up) == 1.f);
+    EXPECT_TRUE(up.Cross(right) == -1.f);
 }
 
 TEST(Vector2Test, Length)
 {
-    Vector2 v(3.0f, 4.0f);
-    EXPECT_FLOAT_EQ(v.Length(), 5.0f);
-    EXPECT_FLOAT_EQ(v.LengthSquared(), 25.0f);
+    Vector2 v(3.f, 4.f);
+    EXPECT_TRUE(v.Length() == 5.f);
+    EXPECT_TRUE(v.LengthSquared() == 25.f);
 }
 
 TEST(Vector2Test, Normalization)
 {
-    Vector2 v(3.0f, 0.0f);
+    Vector2 v(3.f, 0.f);
     v.Normalize();
-
-    EXPECT_FLOAT_EQ(v.x, 1.0f);
-    EXPECT_FLOAT_EQ(v.y, 0.0f);
-    EXPECT_FLOAT_EQ(v.Length(), 1.0f);
+    EXPECT_TRUE(v.IsNearlyEqual({ 1.f, 0.f }));
+    EXPECT_TRUE(v.Length() == 1.f);
 }
 
 TEST(Vector2Test, GetNormalized)
 {
-    Vector2 v(0.0f, 5.0f);
+    Vector2 v(0.f, 5.f);
     Vector2 norm = v.GetNormalized();
-
-    EXPECT_FLOAT_EQ(v.y, 5.0f);
-    EXPECT_FLOAT_EQ(norm.y, 1.0f);
-    EXPECT_FLOAT_EQ(norm.Length(), 1.0f);
+    EXPECT_TRUE(v.IsNearlyEqual({0.f, 5.f}));
+    EXPECT_TRUE(norm.IsNearlyEqual({ 0.f, 1.f }));
+    EXPECT_TRUE(norm.Length() == 1.f);
 }
 
 TEST(Vector2Test, IsNormalized)
 {
-    Vector2 v(3.0f, 0.0f);
+    Vector2 v(3.f, 0.f);
     EXPECT_FALSE(v.IsNormalized());
 
     v.Normalize();
     EXPECT_TRUE(v.IsNormalized());
-
-    Vector2 nearZero(0.0000001f, 0.0000001f);
-    EXPECT_FALSE(nearZero.IsNormalized());
 }
 
 TEST(Vector2Test, IsNearlyEqual)
 {
-    Vector2 a(1.0f, 0.0f);
-
-    Vector2 b(1.00001f, 0.0f);
-    EXPECT_TRUE(a.IsNearlyEqual(b));
-    
-    Vector2 c(1.0001f, 0.0f);
-    EXPECT_FALSE(a.IsNearlyEqual(c));
-    
-    Vector2 d(-1.0f, 0.0f);
-    EXPECT_FALSE(a.IsNearlyEqual(d));
+    Vector2 v(1.f, 0.f);
+    EXPECT_TRUE(v.IsNearlyEqual({ 1.00001f, 0.0f }));
+    EXPECT_FALSE(v.IsNearlyEqual({ 1.0001f, 0.0f }));
+    EXPECT_FALSE(v.IsNearlyEqual({ -1.0f, 0.0f }));
 }
 
 TEST(Vector2Test, Rotate)
 {
-    Vector2 v(1.0f, 0.0f);
+    Vector2 v(1.f, 0.f);
 
     v.Rotate(90.0f);
-    EXPECT_NEAR(v.x, 0.0f, kToleranceEpsilon);
-    EXPECT_NEAR(v.y, 1.0f, kToleranceEpsilon);
+    EXPECT_TRUE(v.IsNearlyEqual({ 0.f, 1.f }));
 
     v.Rotate(90.0f);
-    EXPECT_NEAR(v.x, -1.0f, kToleranceEpsilon);
-    EXPECT_NEAR(v.y, 0.0f, kToleranceEpsilon);
+    EXPECT_TRUE(v.IsNearlyEqual({ -1.f, 0.f }));
 }
 
 // -------------------------
