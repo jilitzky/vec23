@@ -1,5 +1,6 @@
 /// Copyright (c) 2026 Jose Ilitzky
 
+#include <cmath>
 #include <gtest/gtest.h>
 #include <Vec23/Constants.h>
 #include <Vec23/Vector2.h>
@@ -55,6 +56,14 @@ TEST(Vector2Test, ComponentMultiplication)
     Vector2 v2(4.f, 5.f);
     Vector2 result = v1 * v2;
     EXPECT_TRUE(result.IsNearlyEqual({ 8.f, 15.f }));
+}
+
+TEST(Vector2Test, DivisionByZero)
+{
+    Vector2 v(10.f, 10.f);
+    Vector2 result = v / 0.f;
+    EXPECT_TRUE(std::isinf(result.x));
+    EXPECT_TRUE(std::isinf(result.y));
 }
 
 TEST(Vector2Test, Negation)
@@ -138,6 +147,13 @@ TEST(Vector2Test, Normalization)
     EXPECT_TRUE(v.Length() == 1.f);
 }
 
+TEST(Vector2Test, NormalizeZeroVector)
+{
+    Vector2 v(0.f, 0.f);
+    v.Normalize();
+    EXPECT_TRUE(v.x == 0.f && v.y == 0.f);
+}
+
 TEST(Vector2Test, GetNormalized)
 {
     Vector2 v(0.f, 5.f);
@@ -195,6 +211,22 @@ TEST(Vector2Test, Reflect)
     EXPECT_TRUE(result.IsNearlyEqual({ 1.f, 1.f }));
 }
 
+TEST(Vector2Test, ReflectHeadOn)
+{
+    Vector2 incoming(0.f, -1.f);
+    Vector2 normal(0.f, 1.f);
+    Vector2 result = Vector2::Reflect(incoming, normal);
+    EXPECT_TRUE(result.IsNearlyEqual({ 0.f, 1.f }));
+}
+
+TEST(Vector2Test, ReflectParallel)
+{
+    Vector2 incoming(1.f, 0.f);
+    Vector2 normal(0.f, 1.f);
+    Vector2 result = Vector2::Reflect(incoming, normal);
+    EXPECT_TRUE(result.IsNearlyEqual({ 1.f, 0.f }));
+}
+
 TEST(Vector2Test, Lerp)
 {
     Vector2 start(0.f, 0.f);
@@ -205,6 +237,14 @@ TEST(Vector2Test, Lerp)
 
     Vector2 quarter = Vector2::Lerp(start, end, 0.25f);
     EXPECT_TRUE(quarter.IsNearlyEqual({ 2.5f, 2.5f }));
+}
+
+TEST(Vector2Test, LerpExtrapolation)
+{
+    Vector2 start(0.f, 0.f);
+    Vector2 end(10.f, 10.f);
+    Vector2 result = Vector2::Lerp(start, end, 2.f);
+    EXPECT_TRUE(result.IsNearlyEqual({ 20.f, 20.f }));
 }
 
 TEST(Vector2Test, SignedAngle)
@@ -220,6 +260,13 @@ TEST(Vector2Test, Angle)
     Vector2 a(1.f, 0.f);
     Vector2 b(0.f, -1.f);
     EXPECT_NEAR(Vector2::Angle(a, b), 90.f, kToleranceEpsilon);
+}
+
+TEST(Vector2Test, AngleEdgeCases)
+{
+    Vector2 v(1.0f, 0.0f);
+    EXPECT_NEAR(Vector2::Angle(v, v), 0.f, kToleranceEpsilon);
+    EXPECT_NEAR(Vector2::Angle(v, -v), 180.f, kToleranceEpsilon);
 }
 
 // -------------------------
