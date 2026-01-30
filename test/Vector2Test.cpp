@@ -181,52 +181,45 @@ TEST(Vector2Test, Rotate)
 
 TEST(Vector2Test, Distance)
 {
-    Vector2 v1(0.0f, 0.0f);
-    Vector2 v2(0.0f, 10.0f);
-
-    EXPECT_FLOAT_EQ(Vector2::Distance(v1, v2), 10.0f);
-    EXPECT_FLOAT_EQ(Vector2::DistanceSquared(v1, v2), 100.0f);
+    Vector2 v1(0.f, 0.f);
+    Vector2 v2(0.f, 10.f);
+    EXPECT_TRUE(Vector2::Distance(v1, v2) == 10.f);
+    EXPECT_TRUE(Vector2::DistanceSquared(v1, v2) == 100.f);
 }
 
 TEST(Vector2Test, Reflect)
 {
-    Vector2 incoming(1.0f, -1.0f);
-    Vector2 normal(0.0f, 1.0f);
-
+    Vector2 incoming(1.f, -1.f);
+    Vector2 normal(0.f, 1.f);
     Vector2 result = Vector2::Reflect(incoming, normal);
-    EXPECT_NEAR(result.x, 1.0f, 0.0001f);
-    EXPECT_NEAR(result.y, 1.0f, 0.0001f);
+    EXPECT_TRUE(result.IsNearlyEqual({ 1.f, 1.f }));
 }
 
 TEST(Vector2Test, Lerp)
 {
-    Vector2 start(0.0f, 0.0f);
-    Vector2 end(10.0f, 10.0f);
+    Vector2 start(0.f, 0.f);
+    Vector2 end(10.f, 10.f);
 
     Vector2 mid = Vector2::Lerp(start, end, 0.5f);
-    EXPECT_FLOAT_EQ(mid.x, 5.0f);
-    EXPECT_FLOAT_EQ(mid.y, 5.0f);
+    EXPECT_TRUE(mid.IsNearlyEqual({ 5.f, 5.f }));
 
     Vector2 quarter = Vector2::Lerp(start, end, 0.25f);
-    EXPECT_FLOAT_EQ(quarter.x, 2.5f);
-    EXPECT_FLOAT_EQ(quarter.y, 2.5f);
+    EXPECT_TRUE(quarter.IsNearlyEqual({ 2.5f, 2.5f }));
 }
 
 TEST(Vector2Test, SignedAngle)
 {
-    Vector2 a(1.0f, 0.0f);
-    Vector2 b(0.0f, 1.0f);
-
-    EXPECT_NEAR(Vector2::SignedAngle(a, b), 90.0f, kToleranceEpsilon);
-    EXPECT_NEAR(Vector2::SignedAngle(b, a), -90.0f, kToleranceEpsilon);
+    Vector2 a(1.f, 0.f);
+    Vector2 b(0.f, 1.f);
+    EXPECT_NEAR(Vector2::SignedAngle(a, b), 90.f, kToleranceEpsilon);
+    EXPECT_NEAR(Vector2::SignedAngle(b, a), -90.f, kToleranceEpsilon);
 }
 
 TEST(Vector2Test, Angle)
 {
-    Vector2 a(1.0f, 0.0f);
-    Vector2 b(0.0f, -1.0f);
-
-    EXPECT_NEAR(Vector2::Angle(a, b), 90.0f, kToleranceEpsilon);
+    Vector2 a(1.f, 0.f);
+    Vector2 b(0.f, -1.f);
+    EXPECT_NEAR(Vector2::Angle(a, b), 90.f, kToleranceEpsilon);
 }
 
 // -------------------------
@@ -235,9 +228,7 @@ TEST(Vector2Test, Angle)
 
 TEST(Vector2Test, MultiplicationGlobalScalar)
 {
-    Vector2 v(2.0f, 4.0f);
-
-    Vector2 result = 2.0f * v;
-    EXPECT_FLOAT_EQ(result.x, 4.0f);
-    EXPECT_FLOAT_EQ(result.y, 8.0f);
+    Vector2 v(2.f, 4.f);
+    Vector2 result = 2.f * v;
+    EXPECT_TRUE(result.IsNearlyEqual({ 4.f, 8.f }));
 }
