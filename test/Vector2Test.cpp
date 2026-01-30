@@ -16,12 +16,6 @@ TEST(Vector2Test, DefaultConstructor)
     EXPECT_TRUE(v.x == 0.f && v.y == 0.f);
 }
 
-TEST(Vector2Test, ScalarConstructor)
-{
-    Vector2 v(5.f);
-    EXPECT_TRUE(v.x == 5.f && v.y == 5.f);
-}
-
 TEST(Vector2Test, ComponentConstructor)
 {
     Vector2 v(2.f, 3.f);
@@ -37,7 +31,7 @@ TEST(Vector2Test, Addition)
     Vector2 v1(1.f, 2.f);
     Vector2 v2(3.f, 4.f);
     Vector2 result = v1 + v2;
-    EXPECT_TRUE(result.IsNearlyEqual(4.f, 6.f));
+    EXPECT_TRUE(result.IsNearlyEqual({ 4.f, 6.f }));
 }
 
 TEST(Vector2Test, Subtraction)
@@ -45,14 +39,14 @@ TEST(Vector2Test, Subtraction)
     Vector2 v1(5.f, 6.f);
     Vector2 v2(2.f, 3.f);
     Vector2 result = v1 - v2;
-    EXPECT_TRUE(result.IsNearlyEqual(3.f, 3.f));
+    EXPECT_TRUE(result.IsNearlyEqual({ 3.f, 3.f }));
 }
 
 TEST(Vector2Test, MultiplicationScalar)
 {
     Vector2 v(2.f, 4.f);
     Vector2 result = v * 2.0f;
-    EXPECT_TRUE(result.IsNearlyEqual(4.f, 8.f));
+    EXPECT_TRUE(result.IsNearlyEqual({ 4.f, 8.f }));
 }
 
 TEST(Vector2Test, ComponentMultiplication)
@@ -60,14 +54,14 @@ TEST(Vector2Test, ComponentMultiplication)
     Vector2 v1(2.f, 3.f);
     Vector2 v2(4.f, 5.f);
     Vector2 result = v1 * v2;
-    EXPECT_TRUE(result.IsNearlyEqual(8.f, 15.f));
+    EXPECT_TRUE(result.IsNearlyEqual({ 8.f, 15.f }));
 }
 
 TEST(Vector2Test, Negation)
 {
     Vector2 v(1.f, -2.f);
     Vector2 result = -v;
-    EXPECT_TRUE(result.IsNearlyEqual(-1.f, 2.f));
+    EXPECT_TRUE(result.IsNearlyEqual({ -1.f, 2.f }));
 }
 
 TEST(Vector2Test, CompoundAddition)
@@ -75,7 +69,7 @@ TEST(Vector2Test, CompoundAddition)
     Vector2 v1(1.f, 2.f);
     Vector2 v2(3.f, 4.f);
     v1 += v2;
-    EXPECT_TRUE(v1.IsNearlyEqual(4.f, 6.f));
+    EXPECT_TRUE(v1.IsNearlyEqual({ 4.f, 6.f }));
 }
 
 TEST(Vector2Test, CompoundSubtraction)
@@ -83,14 +77,14 @@ TEST(Vector2Test, CompoundSubtraction)
     Vector2 v1(5.f, 6.f);
     Vector2 v2(2.f, 3.f);
     v1 -= v2;
-    EXPECT_TRUE(v1.IsNearlyEqual(3.f, 3.f));
+    EXPECT_TRUE(v1.IsNearlyEqual({ 3.f, 3.f }));
 }
 
 TEST(Vector2Test, CompoundScalarMultiplication)
 {
     Vector2 v(2.f, 4.f);
     v *= 0.5f;
-    EXPECT_TRUE(v.IsNearlyEqual(1.f, 2.f));
+    EXPECT_TRUE(v.IsNearlyEqual({ 1.f, 2.f }));
 }
 
 TEST(Vector2Test, SubscriptOperator)
