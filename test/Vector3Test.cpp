@@ -145,8 +145,8 @@ TEST(Vector3Test, Length)
 {
     // TODO: Fun challenge, how can I find 3 numbers that when squared and added up produce an integral square root?
     Vector3 v(1.f, 1.f, 1.f);
-    EXPECT_TRUE(v.Length() == 1.732050f);
-    EXPECT_TRUE(v.LengthSquared() == 3.f);
+    EXPECT_NEAR(v.Length(), 1.732050f, kToleranceEpsilon);
+    EXPECT_NEAR(v.LengthSquared(), 3.f, kToleranceEpsilon);
 }
 
 TEST(Vector3Test, Lerp)
