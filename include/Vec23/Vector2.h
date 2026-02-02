@@ -168,8 +168,7 @@ namespace Vec23
 
         Vector2 operator/(float scalar) const
         {
-            float inv = 1.f / scalar;
-            return { x * inv, y * inv };
+            return *this * (1.f / scalar);
         }
 
         Vector2 operator-() const
@@ -200,9 +199,7 @@ namespace Vec23
 
         Vector2& operator/=(float scalar)
         {
-            float inv = 1.f / scalar;
-            x *= inv;
-            y *= inv;
+            *this *= 1.f / scalar;
             return *this;
         }
 
