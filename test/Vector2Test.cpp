@@ -24,7 +24,7 @@ TEST(Vector2Test, Angle)
 
 TEST(Vector2Test, AngleEdgeCases)
 {
-    Vector2 v(1.0f, 0.0f);
+    Vector2 v(1.f, 0.f);
     EXPECT_NEAR(Vector2::Angle(v, v), 0.f, kToleranceEpsilon);
     EXPECT_NEAR(Vector2::Angle(v, -v), 180.f, kToleranceEpsilon);
 }
@@ -68,8 +68,8 @@ TEST(Vector2Test, CompoundSubtraction)
 
 TEST(Vector2Test, CrossProduct)
 {
-    Vector2 right(1.0f, 0.0f);
-    Vector2 up(0.0f, 1.0f);
+    Vector2 right(1.f, 0.f);
+    Vector2 up(0.f, 1.f);
 
     EXPECT_TRUE(right.Cross(up) == 1.f);
     EXPECT_TRUE(up.Cross(right) == -1.f);
@@ -173,7 +173,7 @@ TEST(Vector2Test, MultiplicationGlobalScalar)
 TEST(Vector2Test, MultiplicationScalar)
 {
     Vector2 v(2.f, 4.f);
-    Vector2 result = v * 2.0f;
+    Vector2 result = v * 2.f;
     EXPECT_TRUE(result.IsNearlyEqual({ 4.f, 8.f }));
 }
 
@@ -248,8 +248,9 @@ TEST(Vector2Test, SubscriptOperator)
     EXPECT_FLOAT_EQ(v[0], 5.f);
     EXPECT_FLOAT_EQ(v[1], 10.f);
 
-    v[0] = 7.f;
-    EXPECT_FLOAT_EQ(v.x, 7.f);
+    v[0] = 1.f;
+    v[1] = 2.f;
+    EXPECT_TRUE(v == { 1.f, 2.f });
 }
 
 TEST(Vector2Test, Subtraction)
