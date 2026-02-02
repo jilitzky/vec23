@@ -122,6 +122,7 @@ namespace Vec23
         static float SignedAngle(const Vector3& a, const Vector3& b)
         {
             // TODO: Is this the same implementation as Vector2?
+            return 0.f;
         }
 
         // -------------------------

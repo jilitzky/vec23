@@ -32,7 +32,9 @@ TEST(Vector3Test, AngleEdgeCases)
 TEST(Vector3Test, ComponentConstructor)
 {
     Vector3 v(2.f, 3.f, 4.f);
-    EXPECT_TRUE(v.x == 2.f && v.y == 3.f && v.z == 4.f);
+    EXPECT_FLOAT_EQ(v.x, 2.f);
+    EXPECT_FLOAT_EQ(v.y, 3.f);
+    EXPECT_FLOAT_EQ(v.z, 4.f);
 }
 
 TEST(Vector3Test, ComponentMultiplication)
@@ -69,7 +71,7 @@ TEST(Vector3Test, CompoundSubtraction)
 TEST(Vector3Test, CrossProduct)
 {
     Vector3 right(1.f, 0.f, 0.f);
-    Vector3 up(0.f, 1.f);
+    Vector3 up(0.f, 1.f, 0.f);
 
     EXPECT_TRUE(right.Cross(up) == 1.f);
     EXPECT_TRUE(up.Cross(right) == -1.f);
@@ -78,7 +80,9 @@ TEST(Vector3Test, CrossProduct)
 TEST(Vector3Test, DefaultConstructor)
 {
     Vector3 v;
-    EXPECT_TRUE(v.x == 0.f && v.y == 0.f, v.z == 0.f);
+    EXPECT_FLOAT_EQ(v.x, 0.f);
+    EXPECT_FLOAT_EQ(v.y, 0.f);
+    EXPECT_FLOAT_EQ(v.z, 0.f);
 }
 
 TEST(Vector3Test, Distance)
@@ -248,7 +252,7 @@ TEST(Vector3Test, SignedAngle)
 
 TEST(Vector3Test, SubscriptOperator)
 {
-    Vector2 v(5.f, 10.f, 15.f);
+    Vector3 v(5.f, 10.f, 15.f);
     EXPECT_FLOAT_EQ(v[0], 5.f);
     EXPECT_FLOAT_EQ(v[1], 10.f);
     EXPECT_FLOAT_EQ(v[2], 15.f);
@@ -256,7 +260,7 @@ TEST(Vector3Test, SubscriptOperator)
     v[0] = 1.f;
     v[1] = 2.f;
     v[2] = 3.f;
-    EXPECT_TRUE(v == { 1.f, 2.f, 3.f });
+    EXPECT_TRUE(v.IsNearlyEqual({ 1.f, 2.f, 3.f }));
 }
 
 TEST(Vector3Test, Subtraction)

@@ -32,7 +32,8 @@ TEST(Vector2Test, AngleEdgeCases)
 TEST(Vector2Test, ComponentConstructor)
 {
     Vector2 v(2.f, 3.f);
-    EXPECT_TRUE(v.x == 2.f && v.y == 3.f);
+    EXPECT_FLOAT_EQ(v.x, 2.f);
+    EXPECT_FLOAT_EQ(v.y, 3.f);
 }
 
 TEST(Vector2Test, ComponentMultiplication)
@@ -78,7 +79,8 @@ TEST(Vector2Test, CrossProduct)
 TEST(Vector2Test, DefaultConstructor)
 {
     Vector2 v;
-    EXPECT_TRUE(v.x == 0.f && v.y == 0.f);
+    EXPECT_FLOAT_EQ(v.x, 0.f);
+    EXPECT_FLOAT_EQ(v.y, 0.f);
 }
 
 TEST(Vector2Test, Distance)
@@ -250,7 +252,7 @@ TEST(Vector2Test, SubscriptOperator)
 
     v[0] = 1.f;
     v[1] = 2.f;
-    EXPECT_TRUE(v == { 1.f, 2.f });
+    EXPECT_TRUE(v.IsNearlyEqual({ 1.f, 2.f }));
 }
 
 TEST(Vector2Test, Subtraction)

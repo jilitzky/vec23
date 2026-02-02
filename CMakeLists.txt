@@ -18,19 +18,20 @@ FetchContent_MakeAvailable(googletest)
 
 file(GLOB ALL_HEADERS "include/Vec23/*.h")
 
-# --- Vector2Test ---
+# --- Vector23Test ---
 
-add_executable(Vector2Test
+add_executable(Vector23Test
     ${ALL_HEADERS}
-    test/Vector2Test.cpp 
+    test/Vector2Test.cpp
+    test/Vector3Test.cpp 
 )
 
-target_compile_features(Vector2Test PRIVATE cxx_std_17)
+target_compile_features(Vector23Test PRIVATE cxx_std_17)
 
-target_include_directories(Vector2Test PRIVATE
+target_include_directories(Vector23Test PRIVATE
     include
 )
 
-target_link_libraries(Vector2Test PRIVATE 
+target_link_libraries(Vector23Test PRIVATE 
     GTest::gtest_main
 )
