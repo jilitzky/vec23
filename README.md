@@ -12,7 +12,7 @@
 - [License](#license)
 
 ## Roadmap
-This library is being actively worked on. It only supports floating point 2D vectors at the moment, but the intention is to eventually offer both 2D and 3D templated vectors that can be configured to use integers or single/double floating point precision.
+This library is being actively worked on. It only supports floating point vectors at the moment, but the intention is to eventually offer vectors that can be configured to use integers or single/double floating point precision.
 
 ## Features
 * **Modern Design:** Written in C++17.
