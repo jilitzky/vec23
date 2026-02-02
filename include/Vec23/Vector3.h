@@ -26,7 +26,20 @@ namespace Vec23
 
         void Normalize()
         {
-            // TODO: Implement me!
+            float lengthSq = LengthSquared();
+            if (lengthSq > kSafetyEpsilon)
+            {
+                float inv = 1.f / std::sqrt(lengthSq);
+                x *= inv;
+                y *= inv;
+                z *= inv;
+            }
+            else
+            {
+                x = 0.f;
+                y = 0.f;
+                z = 0.f;
+            }
         }
 
         void Rotate(float degrees, const Vector3& axis)
