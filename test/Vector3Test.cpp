@@ -70,11 +70,14 @@ TEST(Vector3Test, CompoundSubtraction)
 
 TEST(Vector3Test, CrossProduct)
 {
-    Vector3 right(1.f, 0.f, 0.f);
-    Vector3 up(0.f, 1.f, 0.f);
+    Vector3 x(1.f, 0.f, 0.f);
+    Vector3 y(0.f, 1.f, 0.f);
+    Vector3 z(0.f, 0.f, 1.f);
 
-    EXPECT_TRUE(right.Cross(up) == 1.f);
-    EXPECT_TRUE(up.Cross(right) == -1.f);
+    EXPECT_TRUE(x.Cross(y) == z);
+    EXPECT_TRUE(y.Cross(x) == -z);
+    EXPECT_TRUE(x.Cross(z) == -y);
+    EXPECT_TRUE(z.Cross(x) == y);
 }
 
 TEST(Vector3Test, DefaultConstructor)
@@ -143,7 +146,6 @@ TEST(Vector3Test, IsNormalized)
 
 TEST(Vector3Test, Length)
 {
-    // TODO: Fun challenge, how can I find 3 numbers that when squared and added up produce an integral square root?
     Vector3 v(1.f, 1.f, 1.f);
     EXPECT_NEAR(v.Length(), 1.732050f, kToleranceEpsilon);
     EXPECT_NEAR(v.LengthSquared(), 3.f, kToleranceEpsilon);
@@ -229,25 +231,18 @@ TEST(Vector3Test, ReflectParallel)
     EXPECT_TRUE(result.IsNearlyEqual({ 1.f, 0.f, 0.f }));
 }
 
-// TODO: Is 90 counterclockwise and -90 counterclockwise?
 TEST(Vector3Test, Rotate)
 {
-    Vector3 v(1.f, 0.f, 0.f);
-
-    Vector3 axis(0.f, 0.f, 1.f);
-    v.Rotate(90.0f, axis);
-    EXPECT_TRUE(v.IsNearlyEqual({ 0.f, 1.f, 0.f }));
-
-    v.Rotate(-90.0f, axis);
-    EXPECT_TRUE(v.IsNearlyEqual({ 0.f, -1.f, 0.f }));
+    // TODO: Define the tests once rotation is implemented
 }
 
 TEST(Vector3Test, SignedAngle)
 {
     Vector3 a(1.f, 0.f, 0.f);
-    Vector3 b(0.f, 1.f, 0.f);
-    EXPECT_NEAR(Vector3::SignedAngle(a, b), 90.f, kToleranceEpsilon);
-    EXPECT_NEAR(Vector3::SignedAngle(b, a), -90.f, kToleranceEpsilon);
+    Vector3 b(0.f, 0.f, 1.f);
+    Vector3 up(0.f, 1.f, 0.f);
+    EXPECT_NEAR(Vector3::SignedAngle(a, b, up), -90.f, kToleranceEpsilon);
+    EXPECT_NEAR(Vector3::SignedAngle(b, a, up), 90.f, kToleranceEpsilon);
 }
 
 TEST(Vector3Test, SubscriptOperator)

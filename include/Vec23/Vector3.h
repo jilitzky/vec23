@@ -44,7 +44,7 @@ namespace Vec23
 
         void Rotate(float degrees, const Vector3& axis)
         {
-            // TODO: Implement me!
+            // TODO: Implement this using quaternions
         }
 
         // -------------------------
@@ -85,10 +85,13 @@ namespace Vec23
             return (x * other.x) + (y * other.y) + (z * other.z);
         }
 
-        float Cross(const Vector3& other) const
+        Vector3 Cross(const Vector3& other) const
         {
-            // TODO: Implement me!
-            return 0.f;
+            Vector3 cross;
+            cross.x = (y * other.z) - (z * other.y);
+            cross.y = (z * other.x) - (x * other.z);
+            cross.z = (x * other.y) - (y * other.x);
+            return cross;
         }
 
         bool IsNearlyEqual(const Vector3& other, float epsilon = kToleranceEpsilon) const
@@ -129,13 +132,20 @@ namespace Vec23
 
         static float Angle(const Vector3& a, const Vector3& b)
         {
-            return std::abs(SignedAngle(a, b));
+            float dot = a.Dot(b);
+            Vector3 cross = a.Cross(b);
+            float radians = std::atan2f(cross.Length(), dot);
+            return radians * kRadiansToDegrees;
         }
 
-        static float SignedAngle(const Vector3& a, const Vector3& b)
+        static float SignedAngle(const Vector3& a, const Vector3& b, const Vector3& axis)
         {
-            // TODO: Is this the same implementation as Vector2?
-            return 0.f;
+            Vector3 cross = a.Cross(b);
+            float dot = a.Dot(b);
+            float radians = std::atan2f(cross.Length(), dot);
+            float degrees = radians * kRadiansToDegrees;
+            float sign = cross.Dot(axis);
+            return (sign < 0.f) ? -degrees : degrees;
         }
 
         // -------------------------
