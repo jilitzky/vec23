@@ -42,12 +42,12 @@ namespace Vec23
         void Rotate(float degrees)
         {
             float radians = degrees * kDegreesToRadians;
-            float cosR = std::cos(radians);
-            float sinR = std::sin(radians);
+            float cosT = std::cos(radians);
+            float sinT = std::sin(radians);
             float oldX = x;
 
-            x = (oldX * cosR) - (y * sinR);
-            y = (oldX * sinR) + (y * cosR);
+            x = (oldX * cosT) - (y * sinT);
+            y = (oldX * sinT) + (y * cosT);
         }
 
         // -------------------------

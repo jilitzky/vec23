@@ -233,7 +233,37 @@ TEST(Vector3Test, ReflectParallel)
 
 TEST(Vector3Test, Rotate)
 {
-    // TODO: Define the tests once rotation is implemented
+    Vector3 r(1.f, 2.f, 0.f);
+    Vector3 up(0.f, 1.f, 0.f);
+    r.Rotate(90.f, up);
+    EXPECT_TRUE(r.IsNearlyEqual({ 0.f, 2.f, -1.f }));
+}
+
+TEST(Vector3Test, RotateNegation)
+{
+    Vector3 up(0.f, 1.f, 0.f);
+    Vector3 v1(1.f, 0.f, 0.f);
+    Vector3 v2 = v1;
+    v1.Rotate(-90.f, up);
+    v2.Rotate(90.f, -up);
+    EXPECT_TRUE(v1.IsNearlyEqual(v2));
+}
+
+TEST(Vector3Test, RotateOneEighty)
+{
+    Vector3 right(1.f, 0.f, 0.f);
+    Vector3 flipped = right;
+    Vector3 up(0.f, 1.f, 0.f);
+    flipped.Rotate(180.f, up);
+    EXPECT_TRUE(flipped.IsNearlyEqual(-right));
+}
+
+TEST(Vector3Test, RotateSpinInPlace)
+{
+    Vector3 v(0.f, 5.f, 0.f);
+    Vector3 up(0.f, 1.f, 0.f);
+    v.Rotate(45.f, up);
+    EXPECT_TRUE(v.IsNearlyEqual({ 0.f, 5.f, 0.f }));
 }
 
 TEST(Vector3Test, SignedAngle)

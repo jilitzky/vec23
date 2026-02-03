@@ -44,7 +44,18 @@ namespace Vec23
 
         void Rotate(float degrees, const Vector3& axis)
         {
-            // TODO: Implement this using quaternions
+            float radians = degrees * kDegreesToRadians;
+            float cosT = std::cos(radians);
+            float sinT = std::sin(radians);
+
+            Vector3 u = axis;
+            if (std::abs(u.LengthSquared() - 1.0f) > kSafetyEpsilon)
+            {
+                u.Normalize();
+            }
+
+            Vector3 v = *this;
+            *this = (v * cosT) + (u.Cross(v) * sinT) + (u * u.Dot(v) * (1.f - cosT));
         }
 
         // -------------------------
