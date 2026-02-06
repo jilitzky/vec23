@@ -21,7 +21,7 @@ namespace Vec23
         T x;
         T y;
 
-        TVector2() : x{}, y{} {}
+        TVector2() : x(T()), y(T()) {}
 
         TVector2(T x, T y) : x(x), y(y) {}
 
