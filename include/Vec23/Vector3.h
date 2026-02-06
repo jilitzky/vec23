@@ -259,4 +259,5 @@ namespace Vec23
 
     using Vector3 = TVector3<float>;
     using DVector3 = TVector3<double>;
+    using LDVector3 = TVector3<long double>;
 }
