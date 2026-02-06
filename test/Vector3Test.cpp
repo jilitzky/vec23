@@ -2,7 +2,6 @@
 
 #include <cmath>
 #include <gtest/gtest.h>
-#include <Vec23/Constants.h>
 #include <Vec23/Vector3.h>
 
 using namespace Vec23;
