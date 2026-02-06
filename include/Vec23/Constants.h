@@ -16,8 +16,14 @@ namespace Vec23
     inline constexpr T kDegreesToRadians = kPi<T> / static_cast<T>(180.L);
 
     template<typename T>
-    inline constexpr T kToleranceEpsilon = std::numeric_limits<T>::epsilon() * static_cast<T>(1000);
+    inline constexpr T kToleranceEpsilon =
+        (sizeof(T) > 8) ? static_cast<T>(1e-12L) :
+        (sizeof(T) == 8) ? static_cast<T>(1e-9) :
+        static_cast<T>(1e-4f);
 
     template<typename T>
-    inline constexpr T kSafetyEpsilon = std::numeric_limits<T>::epsilon() * static_cast<T>(10);
+    inline constexpr T kSafetyEpsilon =
+        (sizeof(T) > 8) ? static_cast<T>(1e-15L) :
+        (sizeof(T) == 8) ? static_cast<T>(1e-12) :
+        static_cast<T>(1e-6f);
 }
