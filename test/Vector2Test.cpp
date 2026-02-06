@@ -2,7 +2,6 @@
 
 #include <cmath>
 #include <gtest/gtest.h>
-#include <Vec23/Constants.h>
 #include <Vec23/Vector2.h>
 
 using namespace Vec23;
@@ -19,14 +18,14 @@ TEST(Vector2Test, Angle)
 {
     Vector2 a(1.f, 0.f);
     Vector2 b(0.f, -1.f);
-    EXPECT_NEAR(Vector2::Angle(a, b), 90.f, kToleranceEpsilon);
+    EXPECT_NEAR(Vector2::Angle(a, b), 90.f, Vector2::ToleranceEpsilon);
 }
 
 TEST(Vector2Test, AngleEdgeCases)
 {
     Vector2 v(1.f, 0.f);
-    EXPECT_NEAR(Vector2::Angle(v, v), 0.f, kToleranceEpsilon);
-    EXPECT_NEAR(Vector2::Angle(v, -v), 180.f, kToleranceEpsilon);
+    EXPECT_NEAR(Vector2::Angle(v, v), 0.f, Vector2::ToleranceEpsilon);
+    EXPECT_NEAR(Vector2::Angle(v, -v), 180.f, Vector2::ToleranceEpsilon);
 }
 
 TEST(Vector2Test, ComponentConstructor)
@@ -240,8 +239,8 @@ TEST(Vector2Test, SignedAngle)
 {
     Vector2 a(1.f, 0.f);
     Vector2 b(0.f, 1.f);
-    EXPECT_NEAR(Vector2::SignedAngle(a, b), 90.f, kToleranceEpsilon);
-    EXPECT_NEAR(Vector2::SignedAngle(b, a), -90.f, kToleranceEpsilon);
+    EXPECT_NEAR(Vector2::SignedAngle(a, b), 90.f, Vector2::ToleranceEpsilon);
+    EXPECT_NEAR(Vector2::SignedAngle(b, a), -90.f, Vector2::ToleranceEpsilon);
 }
 
 TEST(Vector2Test, SubscriptOperator)

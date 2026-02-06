@@ -6,16 +6,13 @@
 **A lean library of 2D and 3D vectors written in modern C++.**
 
 ## Table of Contents
-- [Roadmap](#roadmap)
 - [Features](#features)
 - [Installation](#installation)
 - [License](#license)
 
-## Roadmap
-This library is being actively worked on. It only supports floating point vectors at the moment, but the intention is to eventually offer vectors that can be configured to use integers or single/double floating point precision.
-
 ## Features
 * **Modern Design:** Written in C++17.
+* **Flexible:** Supports all floating point types.
 * **Header-only:** Easy to drop into any project.
 
 ## Installation
