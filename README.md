@@ -13,7 +13,7 @@
 ## Features
 * **Modern Design:** Written in C++17.
 * **Flexible:** Supports all floating point types.
-* **Header-only:** Easy to drop into any project.
+* **Header-Only:** Easy to drop into any project.
 
 ## Installation
 Copy the `include/Vec23` folder into your project's include path.
