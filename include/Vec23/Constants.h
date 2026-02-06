@@ -2,8 +2,6 @@
 
 #pragma once
 
-#include <limits>
-
 namespace Vec23
 {
     template<typename T>
