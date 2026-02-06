@@ -2,11 +2,22 @@
 
 #pragma once
 
+#include <limits>
+
 namespace Vec23
 {
-    inline constexpr float kPi = 3.141592f;
-    inline constexpr float kRadiansToDegrees = 180.f / kPi;
-    inline constexpr float kDegreesToRadians = kPi / 180.f;
-    inline constexpr float kToleranceEpsilon = 1e-4f;
-    inline constexpr float kSafetyEpsilon = 1e-6f;
+    template<typename T>
+    inline constexpr T kPi = static_cast<T>(3.1415926535897932384626433L);
+    
+    template<typename T>
+    inline constexpr T kRadiansToDegrees = static_cast<T>(180.L) / kPi<T>;
+
+    template<typename T>
+    inline constexpr T kDegreesToRadians = kPi<T> / static_cast<T>(180.L);
+
+    template<typename T>
+    inline constexpr T kToleranceEpsilon = std::numeric_limits<T>::epsilon() * static_cast<T>(1000);
+
+    template<typename T>
+    inline constexpr T kSafetyEpsilon = std::numeric_limits<T>::epsilon() * static_cast<T>(10);
 }
