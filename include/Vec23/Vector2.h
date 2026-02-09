@@ -22,9 +22,9 @@ namespace Vec23
         T x;
         T y;
 
-        TVector2() : x(Zero), y(Zero) {}
+        constexpr TVector2() noexcept : x(Zero), y(Zero) {}
 
-        TVector2(T x, T y) : x(x), y(y) {}
+        constexpr TVector2(T x, T y) noexcept : x(x), y(y) {}
 
         // -------------------------
         // Modifiers

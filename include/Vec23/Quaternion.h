@@ -19,9 +19,9 @@ namespace Vec23
         T y;
         T z;
 
-        TQuaternion() : w(One), x(Zero), y(Zero), z(Zero) {}
+        constexpr TQuaternion() noexcept : w(One), x(Zero), y(Zero), z(Zero) {}
 
-        TQuaternion(T x, T y) : x(x), y(y) {}
+        constexpr TQuaternion(T w, T x, T y, T z) noexcept : w(w), x(x), y(y), z(z) {}
 
         // -------------------------
         // Modifiers
