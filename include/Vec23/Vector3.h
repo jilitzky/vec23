@@ -42,9 +42,9 @@ namespace Vec23
             }
             else
             {
-                x = 0.f;
-                y = 0.f;
-                z = 0.f;
+                x = kZero;
+                y = kZero;
+                z = kZero;
             }
         }
 
@@ -162,7 +162,7 @@ namespace Vec23
             T radians = std::atan2f(cross.Length(), dot);
             T degrees = radians * kRadiansToDegrees;
             T sign = cross.Dot(axis);
-            return (sign < 0.f) ? -degrees : degrees;
+            return (sign < kZero) ? -degrees : degrees;
         }
 
         // -------------------------

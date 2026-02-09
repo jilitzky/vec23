@@ -40,8 +40,8 @@ namespace Vec23
             }
             else
             {
-                x = 0.f;
-                y = 0.f;
+                x = kZero;
+                y = kZero;
             }
         }
 
