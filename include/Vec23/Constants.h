@@ -8,6 +8,9 @@ namespace Vec23
     inline constexpr T TZero = static_cast<T>(0.L);
 
     template<typename T>
+    inline constexpr T THalf = static_cast<T>(0.5L);
+
+    template<typename T>
     inline constexpr T TOne = static_cast<T>(1.L);
 
     template<typename T>

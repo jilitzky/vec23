@@ -35,7 +35,7 @@ namespace Vec23
             T lengthSq = LengthSquared();
             if (lengthSq > kSafetyEpsilon)
             {
-                T inv = 1.f / std::sqrt(lengthSq);
+                T inv = kOne / std::sqrt(lengthSq);
                 x *= inv;
                 y *= inv;
                 z *= inv;
@@ -55,13 +55,13 @@ namespace Vec23
             T sinT = std::sin(radians);
 
             TVector3 u = axis;
-            if (std::abs(u.LengthSquared() - 1.0f) > kSafetyEpsilon)
+            if (std::abs(u.LengthSquared() - kOne) > kSafetyEpsilon)
             {
                 u.Normalize();
             }
 
             TVector3 v = *this;
-            *this = (v * cosT) + (u.Cross(v) * sinT) + (u * u.Dot(v) * (1.f - cosT));
+            *this = (v * cosT) + (u.Cross(v) * sinT) + (u * u.Dot(v) * (kOne - cosT));
         }
 
         // -------------------------
@@ -70,7 +70,7 @@ namespace Vec23
 
         bool IsNormalized() const
         {
-            return (std::abs(LengthSquared() - 1.f) < kToleranceEpsilon);
+            return (std::abs(LengthSquared() - kOne) < kToleranceEpsilon);
         }
 
         TVector3 GetNormalized() const
@@ -144,7 +144,7 @@ namespace Vec23
 
         static TVector3 Lerp(const TVector3& a, const TVector3& b, T t)
         {
-            return ((1.f - t) * a) + (t * b);
+            return ((kOne - t) * a) + (t * b);
         }
 
         static T Angle(const TVector3& a, const TVector3& b)
@@ -191,7 +191,7 @@ namespace Vec23
 
         TVector3 operator/(T scalar) const
         {
-            return *this * (1.f / scalar);
+            return *this * (kOne / scalar);
         }
 
         TVector3 operator-() const
@@ -225,7 +225,7 @@ namespace Vec23
 
         TVector3& operator/=(T scalar)
         {
-            *this *= 1.f / scalar;
+            *this *= kOne / scalar;
             return *this;
         }
 
@@ -258,6 +258,7 @@ namespace Vec23
 
     private:
         static constexpr T kZero = TZero<T>;
+        static constexpr T kOne = TOne<T>;
         static constexpr T kDegreesToRadians = TDegreesToRadians<T>;
         static constexpr T kRadiansToDegrees = TRadiansToDegrees<T>;
     };

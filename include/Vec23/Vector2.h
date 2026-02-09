@@ -34,7 +34,7 @@ namespace Vec23
             T lengthSq = LengthSquared();
             if (lengthSq > kSafetyEpsilon)
             {
-                T inv = 1.f / std::sqrt(lengthSq);
+                T inv = kOne / std::sqrt(lengthSq);
                 x *= inv;
                 y *= inv;
             }
@@ -62,7 +62,7 @@ namespace Vec23
 
         bool IsNormalized() const
         {
-            return (std::abs(LengthSquared() - 1.f) < kToleranceEpsilon);
+            return (std::abs(LengthSquared() - kOne) < kToleranceEpsilon);
         }
 
         TVector2 GetNormalized() const
@@ -132,7 +132,7 @@ namespace Vec23
 
         static TVector2 Lerp(const TVector2& a, const TVector2& b, T t)
         {
-            return ((1.f - t) * a) + (t * b);
+            return ((kOne - t) * a) + (t * b);
         }
 
         static T Angle(const TVector2& a, const TVector2& b)
@@ -174,7 +174,7 @@ namespace Vec23
 
         TVector2 operator/(T scalar) const
         {
-            return *this * (1.f / scalar);
+            return *this * (kOne / scalar);
         }
 
         TVector2 operator-() const
@@ -205,7 +205,7 @@ namespace Vec23
 
         TVector2& operator/=(T scalar)
         {
-            *this *= 1.f / scalar;
+            *this *= kOne / scalar;
             return *this;
         }
 
@@ -238,6 +238,7 @@ namespace Vec23
 
     private:
         static constexpr T kZero = TZero<T>;
+        static constexpr T kOne = TOne<T>;
         static constexpr T kDegreesToRadians = TDegreesToRadians<T>;
         static constexpr T kRadiansToDegrees = TRadiansToDegrees<T>;
     };

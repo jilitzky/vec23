@@ -21,9 +21,31 @@ namespace Vec23
 
         constexpr TQuaternion(T w, T x, T y, T z) noexcept : w(w), x(x), y(y), z(z) {}
 
-        static TQuaternion FromAxisAngle(const TVector3<T>& axis, float degrees)
+        static constexpr TQuaternion Identity() noexcept
         {
-            float radians = degrees * kDegreesToRadians;
+            return TQuaternion();
+        }
+        
+        static TQuaternion FromAxisAngle(const TVector3<T>& axis, T degrees)
+        {
+            T halfRadians = degrees * kHalf * kDegreesToRadians;
+            T cosT = std::cos(halfRadians);
+            T sinT = std::sin(halfRadians);
+
+            TVector3 u = axis;
+            T lengthSq = u.LengthSquared();
+
+            if (lengthSq < kSafetyEpsilon)
+            {
+                return Identity();
+            }
+
+            if (std::abs(lengthSq - kOne) > kSafetyEpsilon)
+            {
+                u.Normalize();
+            }
+
+            return { cosT, u.x * sinT, u.y * sinT, u.z * sinT };
         }
 
         // -------------------------
@@ -44,8 +66,10 @@ namespace Vec23
 
     private:
         static constexpr T kZero = TZero<T>;
+        static constexpr T kHalf = THalf<T>;
         static constexpr T kOne = TOne<T>;
         static constexpr T kDegreesToRadians = TDegreesToRadians<T>;
+        static constexpr T kSafetyEpsilon = TVector3<T>::kSafetyEpsilon;
     };
 
     using Quaternion = TQuaternion<float>;
