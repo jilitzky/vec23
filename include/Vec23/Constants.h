@@ -5,6 +5,12 @@
 namespace Vec23
 {
     template<typename T>
+    inline constexpr T kZero = static_cast<T>(0.L);
+
+    template<typename T>
+    inline constexpr T kOne = static_cast<T>(1.L);
+
+    template<typename T>
     inline constexpr T kPi = static_cast<T>(3.1415926535897932384626433L);
     
     template<typename T>

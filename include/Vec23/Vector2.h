@@ -15,13 +15,14 @@ namespace Vec23
     {
         static_assert(std::is_floating_point_v<T>, "TVector2 template parameter must be a floating point type");
 
+        static constexpr T Zero = kZero<T>;
         static constexpr T ToleranceEpsilon = kToleranceEpsilon<T>;
         static constexpr T SafetyEpsilon = kSafetyEpsilon<T>;
 
         T x;
         T y;
 
-        TVector2() : x(T()), y(T()) {}
+        TVector2() : x(Zero), y(Zero) {}
 
         TVector2(T x, T y) : x(x), y(y) {}
 
