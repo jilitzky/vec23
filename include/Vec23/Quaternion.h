@@ -3,6 +3,7 @@
 #pragma once
 
 #include "Constants.h"
+#include "Vector3.h"
 
 namespace Vec23
 {
@@ -11,17 +12,19 @@ namespace Vec23
     {
         static_assert(std::is_floating_point_v<T>, "TQuaternion template parameter must be a floating point type");
 
-        static constexpr T Zero = kZero<T>;
-        static constexpr T One = kOne<T>;
-
         T w;
         T x;
         T y;
         T z;
 
-        constexpr TQuaternion() noexcept : w(One), x(Zero), y(Zero), z(Zero) {}
+        constexpr TQuaternion() noexcept : w(kOne), x(kZero), y(kZero), z(kZero) {}
 
         constexpr TQuaternion(T w, T x, T y, T z) noexcept : w(w), x(x), y(y), z(z) {}
+
+        static TQuaternion FromAxisAngle(const TVector3<T>& axis, float degrees)
+        {
+            float radians = degrees * kDegreesToRadians;
+        }
 
         // -------------------------
         // Modifiers
@@ -38,6 +41,11 @@ namespace Vec23
         // -------------------------
         // Operators
         // -------------------------
+
+    private:
+        static constexpr T kZero = TZero<T>;
+        static constexpr T kOne = TOne<T>;
+        static constexpr T kDegreesToRadians = TDegreesToRadians<T>;
     };
 
     using Quaternion = TQuaternion<float>;

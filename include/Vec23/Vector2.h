@@ -15,14 +15,13 @@ namespace Vec23
     {
         static_assert(std::is_floating_point_v<T>, "TVector2 template parameter must be a floating point type");
 
-        static constexpr T Zero = kZero<T>;
-        static constexpr T ToleranceEpsilon = kToleranceEpsilon<T>;
-        static constexpr T SafetyEpsilon = kSafetyEpsilon<T>;
+        static constexpr T kToleranceEpsilon = TToleranceEpsilon<T>;
+        static constexpr T kSafetyEpsilon = TSafetyEpsilon<T>;
 
         T x;
         T y;
 
-        constexpr TVector2() noexcept : x(Zero), y(Zero) {}
+        constexpr TVector2() noexcept : x(kZero), y(kZero) {}
 
         constexpr TVector2(T x, T y) noexcept : x(x), y(y) {}
 
@@ -33,7 +32,7 @@ namespace Vec23
         void Normalize()
         {
             T lengthSq = LengthSquared();
-            if (lengthSq > SafetyEpsilon)
+            if (lengthSq > kSafetyEpsilon)
             {
                 T inv = 1.f / std::sqrt(lengthSq);
                 x *= inv;
@@ -48,7 +47,7 @@ namespace Vec23
 
         void Rotate(T degrees)
         {
-            T radians = degrees * kDegreesToRadians<T>;
+            T radians = degrees * kDegreesToRadians;
             T cosT = std::cos(radians);
             T sinT = std::sin(radians);
             T oldX = x;
@@ -63,7 +62,7 @@ namespace Vec23
 
         bool IsNormalized() const
         {
-            return (std::abs(LengthSquared() - 1.f) < ToleranceEpsilon);
+            return (std::abs(LengthSquared() - 1.f) < kToleranceEpsilon);
         }
 
         TVector2 GetNormalized() const
@@ -100,7 +99,7 @@ namespace Vec23
             return (x * other.y) - (y * other.x);
         }
 
-        bool IsNearlyEqual(const TVector2& other, T epsilon = kToleranceEpsilon<T>) const
+        bool IsNearlyEqual(const TVector2& other, T epsilon = kToleranceEpsilon) const
         {
             return DistanceSquared(*this, other) < (epsilon * epsilon);
         }
@@ -146,7 +145,7 @@ namespace Vec23
             T dot = a.Dot(b);
             T cross = a.Cross(b);
             T radians = std::atan2f(cross, dot);
-            return radians * kRadiansToDegrees<T>;
+            return radians * kRadiansToDegrees;
         }
 
         // -------------------------
@@ -236,6 +235,11 @@ namespace Vec23
         {
             return vector * scalar;
         }
+
+    private:
+        static constexpr T kZero = TZero<T>;
+        static constexpr T kDegreesToRadians = TDegreesToRadians<T>;
+        static constexpr T kRadiansToDegrees = TRadiansToDegrees<T>;
     };
 
     using Vector2 = TVector2<float>;

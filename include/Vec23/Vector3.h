@@ -15,15 +15,14 @@ namespace Vec23
     {
         static_assert(std::is_floating_point_v<T>, "TVector3 template parameter must be a floating point type");
 
-        static constexpr T Zero = kZero<T>;
-        static constexpr T ToleranceEpsilon = kToleranceEpsilon<T>;
-        static constexpr T SafetyEpsilon = kSafetyEpsilon<T>;
+        static constexpr T kToleranceEpsilon = TToleranceEpsilon<T>;
+        static constexpr T kSafetyEpsilon = TSafetyEpsilon<T>;
 
         T x;
         T y;
         T z;
 
-        constexpr TVector3() noexcept : x(Zero), y(Zero), z(Zero) {}
+        constexpr TVector3() noexcept : x(kZero), y(kZero), z(kZero) {}
 
         constexpr TVector3(T x, T y, T z) noexcept : x(x), y(y), z(z) {}
 
@@ -34,7 +33,7 @@ namespace Vec23
         void Normalize()
         {
             T lengthSq = LengthSquared();
-            if (lengthSq > SafetyEpsilon)
+            if (lengthSq > kSafetyEpsilon)
             {
                 T inv = 1.f / std::sqrt(lengthSq);
                 x *= inv;
@@ -51,12 +50,12 @@ namespace Vec23
 
         void Rotate(T degrees, const TVector3& axis)
         {
-            T radians = degrees * kDegreesToRadians<T>;
+            T radians = degrees * kDegreesToRadians;
             T cosT = std::cos(radians);
             T sinT = std::sin(radians);
 
             TVector3 u = axis;
-            if (std::abs(u.LengthSquared() - 1.0f) > SafetyEpsilon)
+            if (std::abs(u.LengthSquared() - 1.0f) > kSafetyEpsilon)
             {
                 u.Normalize();
             }
@@ -71,7 +70,7 @@ namespace Vec23
 
         bool IsNormalized() const
         {
-            return (std::abs(LengthSquared() - 1.f) < ToleranceEpsilon);
+            return (std::abs(LengthSquared() - 1.f) < kToleranceEpsilon);
         }
 
         TVector3 GetNormalized() const
@@ -112,7 +111,7 @@ namespace Vec23
             return cross;
         }
 
-        bool IsNearlyEqual(const TVector3& other, T epsilon = ToleranceEpsilon) const
+        bool IsNearlyEqual(const TVector3& other, T epsilon = kToleranceEpsilon) const
         {
             return DistanceSquared(*this, other) < (epsilon * epsilon);
         }
@@ -153,7 +152,7 @@ namespace Vec23
             T dot = a.Dot(b);
             TVector3 cross = a.Cross(b);
             T radians = std::atan2f(cross.Length(), dot);
-            return radians * kRadiansToDegrees<T>;
+            return radians * kRadiansToDegrees;
         }
 
         static T SignedAngle(const TVector3& a, const TVector3& b, const TVector3& axis)
@@ -161,7 +160,7 @@ namespace Vec23
             TVector3 cross = a.Cross(b);
             T dot = a.Dot(b);
             T radians = std::atan2f(cross.Length(), dot);
-            T degrees = radians * kRadiansToDegrees<T>;
+            T degrees = radians * kRadiansToDegrees;
             T sign = cross.Dot(axis);
             return (sign < 0.f) ? -degrees : degrees;
         }
@@ -256,6 +255,11 @@ namespace Vec23
         {
             return vector * scalar;
         }
+
+    private:
+        static constexpr T kZero = TZero<T>;
+        static constexpr T kDegreesToRadians = TDegreesToRadians<T>;
+        static constexpr T kRadiansToDegrees = TRadiansToDegrees<T>;
     };
 
     using Vector3 = TVector3<float>;

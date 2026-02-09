@@ -18,14 +18,14 @@ TEST(Vector3Test, Angle)
 {
     Vector3 a(1.f, 0.f, 0.f);
     Vector3 b(0.f, -1.f, 0.f);
-    EXPECT_NEAR(Vector3::Angle(a, b), 90.f, Vector3::ToleranceEpsilon);
+    EXPECT_NEAR(Vector3::Angle(a, b), 90.f, Vector3::kToleranceEpsilon);
 }
 
 TEST(Vector3Test, AngleEdgeCases)
 {
     Vector3 v(1.f, 0.f, 0.f);
-    EXPECT_NEAR(Vector3::Angle(v, v), 0.f, Vector3::ToleranceEpsilon);
-    EXPECT_NEAR(Vector3::Angle(v, -v), 180.f, Vector3::ToleranceEpsilon);
+    EXPECT_NEAR(Vector3::Angle(v, v), 0.f, Vector3::kToleranceEpsilon);
+    EXPECT_NEAR(Vector3::Angle(v, -v), 180.f, Vector3::kToleranceEpsilon);
 }
 
 TEST(Vector3Test, ComponentConstructor)
@@ -146,8 +146,8 @@ TEST(Vector3Test, IsNormalized)
 TEST(Vector3Test, Length)
 {
     Vector3 v(1.f, 1.f, 1.f);
-    EXPECT_NEAR(v.Length(), 1.732050f, Vector3::ToleranceEpsilon);
-    EXPECT_NEAR(v.LengthSquared(), 3.f, Vector3::ToleranceEpsilon);
+    EXPECT_NEAR(v.Length(), 1.732050f, Vector3::kToleranceEpsilon);
+    EXPECT_NEAR(v.LengthSquared(), 3.f, Vector3::kToleranceEpsilon);
 }
 
 TEST(Vector3Test, Lerp)
@@ -270,8 +270,8 @@ TEST(Vector3Test, SignedAngle)
     Vector3 a(1.f, 0.f, 0.f);
     Vector3 b(0.f, 0.f, 1.f);
     Vector3 up(0.f, 1.f, 0.f);
-    EXPECT_NEAR(Vector3::SignedAngle(a, b, up), -90.f, Vector3::ToleranceEpsilon);
-    EXPECT_NEAR(Vector3::SignedAngle(b, a, up), 90.f, Vector3::ToleranceEpsilon);
+    EXPECT_NEAR(Vector3::SignedAngle(a, b, up), -90.f, Vector3::kToleranceEpsilon);
+    EXPECT_NEAR(Vector3::SignedAngle(b, a, up), 90.f, Vector3::kToleranceEpsilon);
 }
 
 TEST(Vector3Test, SubscriptOperator)

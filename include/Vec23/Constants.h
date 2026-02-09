@@ -5,28 +5,28 @@
 namespace Vec23
 {
     template<typename T>
-    inline constexpr T kZero = static_cast<T>(0.L);
+    inline constexpr T TZero = static_cast<T>(0.L);
 
     template<typename T>
-    inline constexpr T kOne = static_cast<T>(1.L);
+    inline constexpr T TOne = static_cast<T>(1.L);
 
     template<typename T>
-    inline constexpr T kPi = static_cast<T>(3.1415926535897932384626433L);
+    inline constexpr T TPi = static_cast<T>(3.1415926535897932384626433L);
     
     template<typename T>
-    inline constexpr T kRadiansToDegrees = static_cast<T>(180.L) / kPi<T>;
+    inline constexpr T TDegreesToRadians = TPi<T> / static_cast<T>(180.L);
 
     template<typename T>
-    inline constexpr T kDegreesToRadians = kPi<T> / static_cast<T>(180.L);
+    inline constexpr T TRadiansToDegrees = static_cast<T>(180.L) / TPi<T>;
 
     template<typename T>
-    inline constexpr T kToleranceEpsilon =
+    inline constexpr T TToleranceEpsilon =
         (sizeof(T) > 8) ? static_cast<T>(1e-12L) :
         (sizeof(T) == 8) ? static_cast<T>(1e-9) :
         static_cast<T>(1e-4f);
 
     template<typename T>
-    inline constexpr T kSafetyEpsilon =
+    inline constexpr T TSafetyEpsilon =
         (sizeof(T) > 8) ? static_cast<T>(1e-15L) :
         (sizeof(T) == 8) ? static_cast<T>(1e-12) :
         static_cast<T>(1e-6f);
