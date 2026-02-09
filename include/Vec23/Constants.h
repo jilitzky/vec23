@@ -14,6 +14,9 @@ namespace Vec23
     inline constexpr T TOne = static_cast<T>(1.L);
 
     template<typename T>
+    inline constexpr T TTwo = static_cast<T>(2.L);
+
+    template<typename T>
     inline constexpr T TPi = static_cast<T>(3.1415926535897932384626433L);
     
     template<typename T>
