@@ -56,6 +56,11 @@ namespace Vec23
         // Core Logic
         // -------------------------
 
+        bool IsNearlyEqual(const TQuaternion& other, T epsilon = kSafetyEpsilon) const
+        {
+            return std::abs(w - other.w) <= epsilon && std::abs(x - other.x) <= epsilon && std::abs(y - other.y) <= epsilon && std::abs(z - other.z) <= epsilon;
+        }
+
         // -------------------------
         // Utilities
         // -------------------------
@@ -63,6 +68,26 @@ namespace Vec23
         // -------------------------
         // Operators
         // -------------------------
+
+        TQuaternion& operator*=(const TQuaternion& other)
+        {
+            TQuaternion temp = *this;
+            w = temp.w * other.w - temp.x * other.x - temp.y * other.y - temp.z * other.z;
+            x = temp.w * other.x + temp.x * other.w + temp.y * other.z - temp.z * other.y;
+            y = temp.w * other.y - temp.x * other.z + temp.y * other.w + temp.z * other.x;
+            z = temp.w * other.z + temp.x * other.y - temp.y * other.x + temp.z * other.w;
+            return *this;
+        }
+
+        TQuaternion operator*(const TQuaternion& other) const
+        {
+            return TQuaternion(
+                w * other.w - x * other.x - y * other.y - z * other.z,
+                w * other.x + x * other.w + y * other.z - z * other.y,
+                w * other.y - x * other.z + y * other.w + z * other.x,
+                w * other.z + x * other.y - y * other.x + z * other.w
+            );
+        }
 
     private:
         static constexpr T kZero = TZero<T>;
