@@ -3,7 +3,7 @@
 ![Language](https://img.shields.io/badge/language-C%2B%2B17-blue.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 
-**A lean library of 2D and 3D vectors written in modern C++.**
+**A lean library of vectors and quaternions written in modern C++.**
 
 ## Table of Contents
 - [Features](#features)
