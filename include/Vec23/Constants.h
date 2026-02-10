@@ -5,25 +5,25 @@
 namespace Vec23
 {
     template<typename T>
-    inline constexpr T TZero = static_cast<T>(0.L);
+    inline constexpr T TZero = static_cast<T>(0.0L);
 
     template<typename T>
     inline constexpr T THalf = static_cast<T>(0.5L);
 
     template<typename T>
-    inline constexpr T TOne = static_cast<T>(1.L);
+    inline constexpr T TOne = static_cast<T>(1.0L);
 
     template<typename T>
-    inline constexpr T TTwo = static_cast<T>(2.L);
+    inline constexpr T TTwo = static_cast<T>(2.0L);
 
     template<typename T>
     inline constexpr T TPi = static_cast<T>(3.1415926535897932384626433L);
     
     template<typename T>
-    inline constexpr T TDegreesToRadians = TPi<T> / static_cast<T>(180.L);
+    inline constexpr T TDegreesToRadians = TPi<T> / static_cast<T>(180.0L);
 
     template<typename T>
-    inline constexpr T TRadiansToDegrees = static_cast<T>(180.L) / TPi<T>;
+    inline constexpr T TRadiansToDegrees = static_cast<T>(180.0L) / TPi<T>;
 
     template<typename T>
     inline constexpr T TToleranceEpsilon =
