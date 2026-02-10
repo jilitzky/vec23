@@ -17,11 +17,11 @@ namespace Vec23
         T y;
         T z;
 
-        constexpr TQuaternion() noexcept : w(kOne), x(kZero), y(kZero), z(kZero) {}
+        constexpr TQuaternion() : w(kOne), x(kZero), y(kZero), z(kZero) {}
 
-        constexpr TQuaternion(T w, T x, T y, T z) noexcept : w(w), x(x), y(y), z(z) {}
+        constexpr TQuaternion(T w, T x, T y, T z) : w(w), x(x), y(y), z(z) {}
 
-        static constexpr TQuaternion Identity() noexcept
+        static constexpr TQuaternion Identity()
         {
             return TQuaternion();
         }
