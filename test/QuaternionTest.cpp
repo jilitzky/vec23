@@ -6,15 +6,36 @@
 
 using namespace Vec23;
 
-// TODO: Improve the way the tests are written
-
 TEST(QuaternionTest, DefaultConstructorIsIdentity)
 {
-    TQuaternion<float> q;
+    Quaternion q;
     EXPECT_FLOAT_EQ(q.w, 1.0f);
     EXPECT_FLOAT_EQ(q.x, 0.0f);
     EXPECT_FLOAT_EQ(q.y, 0.0f);
     EXPECT_FLOAT_EQ(q.z, 0.0f);
+}
+
+TEST(QuaternionTest, FromAxisAngle)
+{
+    Vector3 axis(0, 1, 0);
+    auto q = Quaternion::FromAxisAngle(axis, 90.0f);
+    EXPECT_TRUE(q.IsNearlyEqual({ 0.707106f, 0, 0.707106f, 0 }));
+}
+
+TEST(QuaternionTest, MultiplicationAssignmentOperator)
+{
+    auto q = Quaternion::Identity();
+    Quaternion rotation(0.5f, 0.5f, 0.5f, 0.5f);
+    q *= rotation;
+    EXPECT_TRUE(q.IsNearlyEqual(rotation));
+}
+
+TEST(QuaternionTest, MultiplicationOperator)
+{
+    auto qX = Quaternion::FromAxisAngle({ 1, 0, 0 }, 90.0f);
+    auto qY = Quaternion::FromAxisAngle({ 0, 1, 0 }, 90.0f);
+    Quaternion result = qY * qX;
+    EXPECT_TRUE(result.IsNearlyEqual({ 0.5f, 0.5f, 0.5f, -0.5f }));
 }
 
 TEST(QuaternionTest, ParameterConstructor)
@@ -24,30 +45,4 @@ TEST(QuaternionTest, ParameterConstructor)
     EXPECT_DOUBLE_EQ(q.x, 2.0);
     EXPECT_DOUBLE_EQ(q.y, 3.0);
     EXPECT_DOUBLE_EQ(q.z, 4.0);
-}
-
-TEST(QuaternionTest, FromAxisAngle)
-{
-    TVector3<float> axis(0, 0, 1);
-    auto q = TQuaternion<float>::FromAxisAngle(axis, 90.0f);
-    TQuaternion<float> expected(0.70710678f, 0, 0, 0.70710678f);
-    EXPECT_TRUE(q.IsNearlyEqual(expected));
-}
-
-// TODO: Investigate why this test is failing
-TEST(QuaternionTest, MultiplicationOperator)
-{
-    // Rotate 90 deg X, then 90 deg Y
-    auto qX = TQuaternion<float>::FromAxisAngle({ 1, 0, 0 }, 90.0f);
-    auto qY = TQuaternion<float>::FromAxisAngle({ 0, 1, 0 }, 90.0f);
-    TQuaternion<float> result = qY * qX; // Applying X then Y
-    EXPECT_TRUE(result.IsNearlyEqual(TQuaternion<float>(0.5f, 0.5f, 0.5f, -0.5f)));
-}
-
-TEST(QuaternionTest, MultiplicationAssignmentOperator)
-{
-    TQuaternion<float> q(1, 0, 0, 0); // Identity
-    TQuaternion<float> rot(0.5f, 0.5f, 0.5f, 0.5f);
-    q *= rot;
-    EXPECT_TRUE(q.IsNearlyEqual(rot));
 }
