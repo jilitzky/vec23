@@ -15,15 +15,15 @@ namespace Vec23
     {
         static_assert(std::is_floating_point_v<T>, "TVector2 template parameter must be a floating point type");
 
-        static constexpr T ToleranceEpsilon = kToleranceEpsilon<T>;
-        static constexpr T SafetyEpsilon = kSafetyEpsilon<T>;
+        static constexpr T kToleranceEpsilon = TToleranceEpsilon<T>;
+        static constexpr T kSafetyEpsilon = TSafetyEpsilon<T>;
 
         T x;
         T y;
 
-        TVector2() : x(T()), y(T()) {}
+        constexpr TVector2() noexcept : x(kZero), y(kZero) {}
 
-        TVector2(T x, T y) : x(x), y(y) {}
+        constexpr TVector2(T x, T y) noexcept : x(x), y(y) {}
 
         // -------------------------
         // Modifiers
@@ -32,22 +32,22 @@ namespace Vec23
         void Normalize()
         {
             T lengthSq = LengthSquared();
-            if (lengthSq > SafetyEpsilon)
+            if (lengthSq > kSafetyEpsilon)
             {
-                T inv = 1.f / std::sqrt(lengthSq);
+                T inv = kOne / std::sqrt(lengthSq);
                 x *= inv;
                 y *= inv;
             }
             else
             {
-                x = 0.f;
-                y = 0.f;
+                x = kZero;
+                y = kZero;
             }
         }
 
         void Rotate(T degrees)
         {
-            T radians = degrees * kDegreesToRadians<T>;
+            T radians = degrees * kDegreesToRadians;
             T cosT = std::cos(radians);
             T sinT = std::sin(radians);
             T oldX = x;
@@ -62,7 +62,7 @@ namespace Vec23
 
         bool IsNormalized() const
         {
-            return (std::abs(LengthSquared() - 1.f) < ToleranceEpsilon);
+            return (std::abs(LengthSquared() - kOne) < kToleranceEpsilon);
         }
 
         TVector2 GetNormalized() const
@@ -99,7 +99,7 @@ namespace Vec23
             return (x * other.y) - (y * other.x);
         }
 
-        bool IsNearlyEqual(const TVector2& other, T epsilon = kToleranceEpsilon<T>) const
+        bool IsNearlyEqual(const TVector2& other, T epsilon = kToleranceEpsilon) const
         {
             return DistanceSquared(*this, other) < (epsilon * epsilon);
         }
@@ -127,12 +127,12 @@ namespace Vec23
 
         static TVector2 Reflect(const TVector2& v, const TVector2& n)
         {
-            return v - n * (2.f * v.Dot(n));
+            return v - n * (kTwo * v.Dot(n));
         }
 
         static TVector2 Lerp(const TVector2& a, const TVector2& b, T t)
         {
-            return ((1.f - t) * a) + (t * b);
+            return ((kOne - t) * a) + (t * b);
         }
 
         static T Angle(const TVector2& a, const TVector2& b)
@@ -145,7 +145,7 @@ namespace Vec23
             T dot = a.Dot(b);
             T cross = a.Cross(b);
             T radians = std::atan2f(cross, dot);
-            return radians * kRadiansToDegrees<T>;
+            return radians * kRadiansToDegrees;
         }
 
         // -------------------------
@@ -174,7 +174,7 @@ namespace Vec23
 
         TVector2 operator/(T scalar) const
         {
-            return *this * (1.f / scalar);
+            return *this * (kOne / scalar);
         }
 
         TVector2 operator-() const
@@ -205,7 +205,7 @@ namespace Vec23
 
         TVector2& operator/=(T scalar)
         {
-            *this *= 1.f / scalar;
+            *this *= kOne / scalar;
             return *this;
         }
 
@@ -235,6 +235,13 @@ namespace Vec23
         {
             return vector * scalar;
         }
+
+    private:
+        static constexpr T kZero = TZero<T>;
+        static constexpr T kOne = TOne<T>;
+        static constexpr T kTwo = TTwo<T>;
+        static constexpr T kDegreesToRadians = TDegreesToRadians<T>;
+        static constexpr T kRadiansToDegrees = TRadiansToDegrees<T>;
     };
 
     using Vector2 = TVector2<float>;

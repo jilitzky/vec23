@@ -23,7 +23,8 @@ file(GLOB ALL_HEADERS "include/Vec23/*.h")
 add_executable(Vector23Test
     ${ALL_HEADERS}
     test/Vector2Test.cpp
-    test/Vector3Test.cpp 
+    test/Vector3Test.cpp
+    test/QuaternionTest.cpp
 )
 
 target_compile_features(Vector23Test PRIVATE cxx_std_17)
