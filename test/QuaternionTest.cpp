@@ -40,9 +40,9 @@ TEST(QuaternionTest, MultiplicationOperator)
 
 TEST(QuaternionTest, ParameterConstructor)
 {
-    TQuaternion<double> q(1.0, 2.0, 3.0, 4.0);
-    EXPECT_DOUBLE_EQ(q.w, 1.0);
-    EXPECT_DOUBLE_EQ(q.x, 2.0);
-    EXPECT_DOUBLE_EQ(q.y, 3.0);
-    EXPECT_DOUBLE_EQ(q.z, 4.0);
+    Quaternion q(1.0f, 2.0f, 3.0f, 4.0f);
+    EXPECT_DOUBLE_EQ(q.w, 1.0f);
+    EXPECT_DOUBLE_EQ(q.x, 2.0f);
+    EXPECT_DOUBLE_EQ(q.y, 3.0f);
+    EXPECT_DOUBLE_EQ(q.z, 4.0f);
 }
