@@ -77,7 +77,7 @@ namespace Vec23
             }
             else
             {
-                w = x = y = z = kZero;
+                *this = Identity();
             }
         }
 
@@ -90,18 +90,14 @@ namespace Vec23
 
         void Inverse()
         {
-            // TODO: Is this the most efficient normalization check?
-            if (IsNormalized())
+            T lengthSq = LengthSquared();
+            if (lengthSq > kSafetyEpsilon)
             {
-                Conjugate();
-            }
-            else
-            {
-                T inv = kOne / LengthSquared();
-                w = w * inv;
-                x = -x * inv;
-                y = -y * inv;
-                z = -z * inv;
+                T inv = kOne / lengthSq;
+                w *= inv;
+                x *= -inv;
+                y *= -inv;
+                z *= -inv;
             }
         }
 
@@ -152,8 +148,15 @@ namespace Vec23
 
         TVector3<T> RotateVector(const TVector3<T>& v) const
         {
-            // TODO: Implement me!
-            return {};
+            T tempX = kTwo * (y * v.z - z * v.y);
+            T tempY = kTwo * (z * v.x - x * v.z);
+            T tempZ = kTwo * (x * v.y - y * v.x);
+
+            return TVector3<T>(
+                v.x + w * tempX + (y * tempZ - z * tempY),
+                v.y + w * tempY + (z * tempX - x * tempZ),
+                v.z + w * tempZ + (x * tempY - y * tempX)
+            );
         }
 
         TVector3<T> ToEuler() const
@@ -170,6 +173,13 @@ namespace Vec23
         bool IsNearlyEqual(const TQuaternion& other, T epsilon = kSafetyEpsilon) const
         {
             return std::abs(w - other.w) <= epsilon && std::abs(x - other.x) <= epsilon && std::abs(y - other.y) <= epsilon && std::abs(z - other.z) <= epsilon;
+        }
+
+        std::string ToString() const
+        {
+            std::stringstream stream;
+            stream << "(" << w << ", " << x << ", " << y << ", " << z << ")";
+            return stream.str();
         }
 
         // -------------------------
@@ -231,6 +241,7 @@ namespace Vec23
         static constexpr T kZero = TZero<T>;
         static constexpr T kHalf = THalf<T>;
         static constexpr T kOne = TOne<T>;
+        static constexpr T kTwo = TTwo<T>;
         static constexpr T kDegreesToRadians = TDegreesToRadians<T>;
         static constexpr T kSafetyEpsilon = TSafetyEpsilon<T>;
     };

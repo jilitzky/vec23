@@ -103,7 +103,7 @@ namespace Vec23
         std::string ToString() const
         {
             std::stringstream stream;
-            stream << "{" << x << ", " << y << "}";
+            stream << "(" << x << ", " << y << ")";
             return stream.str();
         }
 
