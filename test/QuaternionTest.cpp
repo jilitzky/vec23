@@ -45,6 +45,9 @@ TEST(QuaternionTest, FromAxisAngle)
 
 TEST(QuaternionTest, Inverse)
 {
+    Quaternion q(1.0f, 0.0f, 1.0f, 0.0f);
+    q.Inverse();
+    EXPECT_TRUE(q.IsNearlyEqual({ 0.5f, 0.0f, -0.5f, 0.0f }));
 }
 
 TEST(QuaternionTest, IsNormalized)

@@ -90,7 +90,19 @@ namespace Vec23
 
         void Inverse()
         {
-            // TODO: Implement me!
+            // TODO: Is this the most efficient normalization check?
+            if (IsNormalized())
+            {
+                Conjugate();
+            }
+            else
+            {
+                T inv = kOne / LengthSquared();
+                w = w * inv;
+                x = -x * inv;
+                y = -y * inv;
+                z = -z * inv;
+            }
         }
 
         // -------------------------
