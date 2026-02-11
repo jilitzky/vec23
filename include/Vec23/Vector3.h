@@ -15,9 +15,6 @@ namespace Vec23
     {
         static_assert(std::is_floating_point_v<T>, "TVector3 template parameter must be a floating point type");
 
-        static constexpr T kToleranceEpsilon = TToleranceEpsilon<T>;
-        static constexpr T kSafetyEpsilon = TSafetyEpsilon<T>;
-
         T x;
         T y;
         T z;
@@ -42,9 +39,7 @@ namespace Vec23
             }
             else
             {
-                x = kZero;
-                y = kZero;
-                z = kZero;
+                x = y = z = kZero;
             }
         }
 
@@ -70,7 +65,7 @@ namespace Vec23
 
         bool IsNormalized() const
         {
-            return (std::abs(LengthSquared() - kOne) < kToleranceEpsilon);
+            return std::abs(LengthSquared() - kOne) < kToleranceEpsilon;
         }
 
         TVector3 GetNormalized() const
@@ -119,7 +114,7 @@ namespace Vec23
         std::string ToString() const
         {
             std::stringstream stream;
-            stream << "{" << x << ", " << y << ", " << z << "}";
+            stream << "(" << x << ", " << y << ", " << z << ")";
             return stream.str();
         }
 
@@ -262,6 +257,8 @@ namespace Vec23
         static constexpr T kTwo = TTwo<T>;
         static constexpr T kDegreesToRadians = TDegreesToRadians<T>;
         static constexpr T kRadiansToDegrees = TRadiansToDegrees<T>;
+        static constexpr T kToleranceEpsilon = TToleranceEpsilon<T>;
+        static constexpr T kSafetyEpsilon = TSafetyEpsilon<T>;
     };
 
     using Vector3 = TVector3<float>;

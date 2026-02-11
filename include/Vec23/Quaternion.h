@@ -48,22 +48,159 @@ namespace Vec23
             return { cosT, u.x * sinT, u.y * sinT, u.z * sinT };
         }
 
+        static TQuaternion FromEuler(T pitch, T yaw, T roll)
+        {
+            // TODO: Implement me!
+            return {};
+        }
+
+        static TQuaternion LookAt(const TVector3<T>& forward, const TVector3<T>& up)
+        {
+            // TODO: Implement me!
+            return {};
+        }
+
         // -------------------------
         // Modifiers
         // -------------------------
 
+        void Normalize()
+        {
+            T lengthSq = LengthSquared();
+            if (lengthSq > kSafetyEpsilon)
+            {
+                T inv = kOne / std::sqrt(lengthSq);
+                w *= inv;
+                x *= inv;
+                y *= inv;
+                z *= inv;
+            }
+            else
+            {
+                *this = Identity();
+            }
+        }
+
+        void Conjugate()
+        {
+            x = -x;
+            y = -y;
+            z = -z;
+        }
+
+        void Inverse()
+        {
+            T lengthSq = LengthSquared();
+            if (lengthSq > kSafetyEpsilon)
+            {
+                T inv = kOne / lengthSq;
+                w *= inv;
+                x *= -inv;
+                y *= -inv;
+                z *= -inv;
+            }
+            else
+            {
+                *this = Identity();
+            }
+        }
+
         // -------------------------
         // Core Logic
         // -------------------------
+
+        bool IsNormalized() const
+        {
+            return std::abs(LengthSquared() - kOne) < kToleranceEpsilon;
+        }
+
+        T Length() const
+        {
+            return std::sqrt(LengthSquared());
+        }
+
+        T LengthSquared() const
+        {
+            return (w * w) + (x * x) + (y * y) + (z * z);
+        }
+
+        T Dot(const TQuaternion& other) const
+        {
+            return (w * other.w) + (x * other.x) + (y * other.y) + (z * other.z);
+        }
+
+        TQuaternion GetNormalized() const
+        {
+            TQuaternion result = *this;
+            result.Normalize();
+            return result;
+        }
+
+        TQuaternion GetConjugated() const
+        {
+            TQuaternion result = *this;
+            result.Conjugate();
+            return result;
+        }
+
+        TQuaternion GetInversed() const
+        {
+            TQuaternion result = *this;
+            result.Inverse();
+            return result;
+        }
+
+        TVector3<T> RotateVector(const TVector3<T>& v) const
+        {
+            T tempX = kTwo * (y * v.z - z * v.y);
+            T tempY = kTwo * (z * v.x - x * v.z);
+            T tempZ = kTwo * (x * v.y - y * v.x);
+
+            return TVector3<T>(
+                v.x + w * tempX + (y * tempZ - z * tempY),
+                v.y + w * tempY + (z * tempX - x * tempZ),
+                v.z + w * tempZ + (x * tempY - y * tempX)
+            );
+        }
+
+        TVector3<T> ToEuler() const
+        {
+            // TODO: Implement me!
+            return {};
+        }
+
+        void ToAxisAngle(TVector3<T>& outAxis, T& outDegrees) const
+        {
+            // TODO: Implement me!
+        }
 
         bool IsNearlyEqual(const TQuaternion& other, T epsilon = kSafetyEpsilon) const
         {
             return std::abs(w - other.w) <= epsilon && std::abs(x - other.x) <= epsilon && std::abs(y - other.y) <= epsilon && std::abs(z - other.z) <= epsilon;
         }
 
+        std::string ToString() const
+        {
+            std::stringstream stream;
+            stream << "(" << w << ", " << x << ", " << y << ", " << z << ")";
+            return stream.str();
+        }
+
         // -------------------------
         // Utilities
         // -------------------------
+
+        static TQuaternion Lerp(const TQuaternion& a, const TQuaternion& b, T t)
+        {
+            // TODO: Implement me!
+            return {};
+        }
+
+        static TQuaternion Slerp(const TQuaternion& a, const TQuaternion& b, T t)
+        {
+            // TODO: Implement me!
+            return {};
+        }
 
         // -------------------------
         // Operators
@@ -89,12 +226,28 @@ namespace Vec23
             );
         }
 
+        TVector3<T> operator*(const TVector3<T>& v) const
+        {
+            return RotateVector(v);
+        }
+
+        bool operator==(const TQuaternion& other) const
+        {
+            return w == other.w && x == other.x && y == other.y && z == other.z;
+        }
+
+        bool operator!=(const TQuaternion& other) const
+        {
+            return !(*this == other);
+        }
+
     private:
         static constexpr T kZero = TZero<T>;
         static constexpr T kHalf = THalf<T>;
         static constexpr T kOne = TOne<T>;
+        static constexpr T kTwo = TTwo<T>;
         static constexpr T kDegreesToRadians = TDegreesToRadians<T>;
-        static constexpr T kSafetyEpsilon = TVector3<T>::kSafetyEpsilon;
+        static constexpr T kSafetyEpsilon = TSafetyEpsilon<T>;
     };
 
     using Quaternion = TQuaternion<float>;
