@@ -7,6 +7,7 @@
 using namespace Vec23;
 
 static constexpr float kToleranceEpsilon = TToleranceEpsilon<float>;
+
 TEST(QuaternionTest, Conjugate)
 {
     Quaternion q(2.0f, -1.0f, 1.0f, 3.0f);
