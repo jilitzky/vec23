@@ -15,9 +15,6 @@ namespace Vec23
     {
         static_assert(std::is_floating_point_v<T>, "TVector2 template parameter must be a floating point type");
 
-        static constexpr T kToleranceEpsilon = TToleranceEpsilon<T>;
-        static constexpr T kSafetyEpsilon = TSafetyEpsilon<T>;
-
         T x;
         T y;
 
@@ -242,6 +239,8 @@ namespace Vec23
         static constexpr T kTwo = TTwo<T>;
         static constexpr T kDegreesToRadians = TDegreesToRadians<T>;
         static constexpr T kRadiansToDegrees = TRadiansToDegrees<T>;
+        static constexpr T kToleranceEpsilon = TToleranceEpsilon<T>;
+        static constexpr T kSafetyEpsilon = TSafetyEpsilon<T>;
     };
 
     using Vector2 = TVector2<float>;

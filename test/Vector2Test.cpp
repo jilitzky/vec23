@@ -6,6 +6,8 @@
 
 using namespace Vec23;
 
+static constexpr float kToleranceEpsilon = TToleranceEpsilon<float>;
+
 TEST(Vector2Test, Addition)
 {
     Vector2 v1(1.0f, 2.0f);
@@ -18,14 +20,14 @@ TEST(Vector2Test, Angle)
 {
     Vector2 a(1.0f, 0.0f);
     Vector2 b(0.0f, -1.0f);
-    EXPECT_NEAR(Vector2::Angle(a, b), 90.0f, Vector2::kToleranceEpsilon);
+    EXPECT_NEAR(Vector2::Angle(a, b), 90.0f, kToleranceEpsilon);
 }
 
 TEST(Vector2Test, AngleEdgeCases)
 {
     Vector2 v(1.0f, 0.0f);
-    EXPECT_NEAR(Vector2::Angle(v, v), 0.0f, Vector2::kToleranceEpsilon);
-    EXPECT_NEAR(Vector2::Angle(v, -v), 180.0f, Vector2::kToleranceEpsilon);
+    EXPECT_NEAR(Vector2::Angle(v, v), 0.0f, kToleranceEpsilon);
+    EXPECT_NEAR(Vector2::Angle(v, -v), 180.0f, kToleranceEpsilon);
 }
 
 TEST(Vector2Test, ComponentConstructor)
@@ -239,8 +241,8 @@ TEST(Vector2Test, SignedAngle)
 {
     Vector2 a(1.0f, 0.0f);
     Vector2 b(0.0f, 1.0f);
-    EXPECT_NEAR(Vector2::SignedAngle(a, b), 90.0f, Vector2::kToleranceEpsilon);
-    EXPECT_NEAR(Vector2::SignedAngle(b, a), -90.0f, Vector2::kToleranceEpsilon);
+    EXPECT_NEAR(Vector2::SignedAngle(a, b), 90.0f, kToleranceEpsilon);
+    EXPECT_NEAR(Vector2::SignedAngle(b, a), -90.0f, kToleranceEpsilon);
 }
 
 TEST(Vector2Test, SubscriptOperator)

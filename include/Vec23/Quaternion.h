@@ -209,7 +209,7 @@ namespace Vec23
         static constexpr T kHalf = THalf<T>;
         static constexpr T kOne = TOne<T>;
         static constexpr T kDegreesToRadians = TDegreesToRadians<T>;
-        static constexpr T kSafetyEpsilon = TVector3<T>::kSafetyEpsilon;
+        static constexpr T kSafetyEpsilon = TSafetyEpsilon<T>;
     };
 
     using Quaternion = TQuaternion<float>;
