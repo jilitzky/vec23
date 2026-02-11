@@ -103,7 +103,7 @@ namespace Vec23
 
         T Dot(const TQuaternion& other) const
         {
-            return (w * other.w) + (x * other.x) * (y * other.y) + (z * other.z);
+            return (w * other.w) + (x * other.x) + (y * other.y) + (z * other.z);
         }
 
         TQuaternion GetNormalized() const

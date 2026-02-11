@@ -6,9 +6,10 @@
 
 using namespace Vec23;
 
+static constexpr float kToleranceEpsilon = TToleranceEpsilon<float>;
 TEST(QuaternionTest, Conjugate)
 {
-    Quaternion q = { 2.0f, -1.0f, 1.0f, 3.0f };
+    Quaternion q(2.0f, -1.0f, 1.0f, 3.0f);
     q.Conjugate();
     EXPECT_TRUE(q.IsNearlyEqual({ 2.0f, 1.0f, -1.0f, -3.0f }));
 }
@@ -24,11 +25,14 @@ TEST(QuaternionTest, DefaultConstructor)
 
 TEST(QuaternionTest, Dot)
 {
+    Quaternion q1(1.0f, 2.0f, 3.0f, 4.0f);
+    Quaternion q2(4.0f, 3.0f, 2.0f, 1.0f);
+    EXPECT_NEAR(q1.Dot(q2), 20.f, kToleranceEpsilon);
 }
 
 TEST(QuaternionTest, EqualsOperator)
 {
-    Quaternion q = { 1.0f, 2.0f, 3.0f, 4.0f };
+    Quaternion q(1.0f, 2.0f, 3.0f, 4.0f);
     EXPECT_TRUE(q == q);
 }
 
@@ -49,10 +53,9 @@ TEST(QuaternionTest, IsNormalized)
 
 TEST(QuaternionTest, Length)
 {
-}
-
-TEST(QuaternionTest, LengthSquared)
-{
+    Quaternion q(1.0f, 1.0f, 1.0f, 1.0f);
+    EXPECT_NEAR(q.Length(), 2.0f, kToleranceEpsilon);
+    EXPECT_NEAR(q.LengthSquared(), 4.0f, kToleranceEpsilon);
 }
 
 TEST(QuaternionTest, MultiplicationAssignmentOperator)
