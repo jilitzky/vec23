@@ -99,6 +99,10 @@ namespace Vec23
                 y *= -inv;
                 z *= -inv;
             }
+            else
+            {
+                *this = Identity();
+            }
         }
 
         // -------------------------
