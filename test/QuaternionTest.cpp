@@ -49,6 +49,11 @@ TEST(QuaternionTest, Inverse)
 
 TEST(QuaternionTest, IsNormalized)
 {
+    Quaternion q1(1.0f, 2.0f, 3.0f, 4.0f);
+    EXPECT_FALSE(q1.IsNormalized());
+
+    Quaternion q2(0.0f, 0.0f, 1.0f, 0.0f);
+    EXPECT_TRUE(q2.IsNormalized());
 }
 
 TEST(QuaternionTest, Length)
@@ -68,14 +73,17 @@ TEST(QuaternionTest, MultiplicationAssignmentOperator)
 
 TEST(QuaternionTest, MultiplicationOperator)
 {
-    auto qX = Quaternion::FromAxisAngle({ 1, 0, 0 }, 90.0f);
-    auto qY = Quaternion::FromAxisAngle({ 0, 1, 0 }, 90.0f);
+    auto qX = Quaternion::FromAxisAngle({ 1.0f, 0.0f, 0.0f }, 90.0f);
+    auto qY = Quaternion::FromAxisAngle({ 0.0f, 1.0f, 0.0f }, 90.0f);
     Quaternion result = qY * qX;
     EXPECT_TRUE(result.IsNearlyEqual({ 0.5f, 0.5f, 0.5f, -0.5f }));
 }
 
 TEST(QuaternionTest, Normalize)
 {
+    Quaternion q(0.0f, 0.0f, 2.0f, 0.0f);
+    q.Normalize();
+    EXPECT_TRUE(q.IsNearlyEqual({ 0.0f, 0.0f, 1.0f, 0.0f }));
 }
 
 TEST(QuaternionTest, ParameterConstructor)
@@ -89,6 +97,10 @@ TEST(QuaternionTest, ParameterConstructor)
 
 TEST(QuaternionTest, RotateVector)
 {
+    Vector3 v(1, 0, 0);
+    auto q = Quaternion::FromAxisAngle({ 0.0f, 1.0f, 0.0f }, 90.0f);
+    Vector3 result = q.RotateVector(v);
+    EXPECT_TRUE(result.IsNearlyEqual({ 0.0f, 0.0f, -1.0f }));
 }
 
 TEST(QuaternionTest, ToEuler)

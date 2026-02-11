@@ -39,9 +39,7 @@ namespace Vec23
             }
             else
             {
-                x = kZero;
-                y = kZero;
-                z = kZero;
+                x = y = z = kZero;
             }
         }
 
@@ -67,7 +65,7 @@ namespace Vec23
 
         bool IsNormalized() const
         {
-            return (std::abs(LengthSquared() - kOne) < kToleranceEpsilon);
+            return std::abs(LengthSquared() - kOne) < kToleranceEpsilon;
         }
 
         TVector3 GetNormalized() const

@@ -66,7 +66,19 @@ namespace Vec23
 
         void Normalize()
         {
-            // TODO: Implement me!
+            T lengthSq = LengthSquared();
+            if (lengthSq > kSafetyEpsilon)
+            {
+                T inv = kOne / std::sqrt(lengthSq);
+                w *= inv;
+                x *= inv;
+                y *= inv;
+                z *= inv;
+            }
+            else
+            {
+                w = x = y = z = kZero;
+            }
         }
 
         void Conjugate()
@@ -87,8 +99,7 @@ namespace Vec23
 
         bool IsNormalized() const
         {
-            // TODO: Implement me!
-            return false;
+            return std::abs(LengthSquared() - kOne) < kToleranceEpsilon;
         }
 
         T Length() const
