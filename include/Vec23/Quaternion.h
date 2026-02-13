@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include <algorithm>
 #include "Constants.h"
 #include "Vector3.h"
 
@@ -187,7 +188,23 @@ namespace Vec23
 
         void ToAxisAngle(TVector3<T>& outAxis, T& outDegrees) const
         {
-            // TODO: Implement me!
+            T clampedW = std::clamp(w, -kOne, kOne);
+            T sinSqT = kOne - clampedW * clampedW;
+            if (sinSqT > kSafetyEpsilon)
+            {
+
+                T invSinT = kOne / std::sqrt(sinSqT);
+                outAxis.x = x * invSinT;
+                outAxis.y = y * invSinT;
+                outAxis.z = z * invSinT;
+            }
+            else
+            {
+                outAxis = { kOne, kZero, kZero };
+            }
+
+            T halfRadians = std::acos(clampedW);
+            outDegrees = halfRadians * kTwo * kRadiansToDegrees;
         }
 
         bool IsNearlyEqual(const TQuaternion& other, T epsilon = kSafetyEpsilon) const
@@ -262,7 +279,10 @@ namespace Vec23
         static constexpr T kHalf = THalf<T>;
         static constexpr T kOne = TOne<T>;
         static constexpr T kTwo = TTwo<T>;
+        static constexpr T kPi = TPi<T>;
         static constexpr T kDegreesToRadians = TDegreesToRadians<T>;
+        static constexpr T kRadiansToDegrees = TRadiansToDegrees<T>;
+        static constexpr T kToleranceEpsilon = TToleranceEpsilon<T>;
         static constexpr T kSafetyEpsilon = TSafetyEpsilon<T>;
     };
 

@@ -39,21 +39,21 @@ TEST(QuaternionTest, EqualsOperator)
 
 TEST(QuaternionTest, FromAxisAngle)
 {
-    Vector3 axis(0, 1, 0);
+    Vector3 axis(0.0f, 1.0f, 0.0f);
     auto q = Quaternion::FromAxisAngle(axis, 90.0f);
-    EXPECT_TRUE(q.IsNearlyEqual({ 0.707106f, 0.0f, 0.707106f, 0.0f }));
+    EXPECT_TRUE(q.IsNearlyEqual({ 0.707106781f, 0.0f, 0.707106781f, 0.0f }));
 }
 
 TEST(QuaternionTest, FromEulerPure)
 {
     auto qYaw = Quaternion::FromEuler(90.0f, 0.0f, 0.0f);
-    EXPECT_TRUE(qYaw.IsNearlyEqual(Quaternion(0.707106f, 0.0f, 0.0f, 0.707106f)));
+    EXPECT_TRUE(qYaw.IsNearlyEqual(Quaternion(0.707106781f, 0.0f, 0.0f, 0.707106781f)));
 
     auto qPitch = Quaternion::FromEuler(0.0f, 90.0f, 0.0f);
-    EXPECT_TRUE(qPitch.IsNearlyEqual(Quaternion(0.707106f, 0.0f, 0.707106f, 0.0f)));
+    EXPECT_TRUE(qPitch.IsNearlyEqual(Quaternion(0.707106781f, 0.0f, 0.707106781f, 0.0f)));
 
     auto qRoll = Quaternion::FromEuler(0.0f, 0.0f, 90.0f);
-    EXPECT_TRUE(qRoll.IsNearlyEqual(Quaternion(0.707106f, 0.707106f, 0.0f, 0.0f)));
+    EXPECT_TRUE(qRoll.IsNearlyEqual(Quaternion(0.707106781f, 0.707106781f, 0.0f, 0.0f)));
 }
 
 TEST(QuaternionTest, FromEulerCombined)
@@ -119,7 +119,7 @@ TEST(QuaternionTest, ParameterConstructor)
 
 TEST(QuaternionTest, RotateVector)
 {
-    Vector3 v(1, 0, 0);
+    Vector3 v(1.0f, 0.0f, 0.0f);
     auto q = Quaternion::FromAxisAngle({ 0.0f, 1.0f, 0.0f }, 90.0f);
     Vector3 result = q.RotateVector(v);
     EXPECT_TRUE(result.IsNearlyEqual({ 0.0f, 0.0f, -1.0f }));
@@ -131,4 +131,12 @@ TEST(QuaternionTest, ToEuler)
 
 TEST(QuaternionTest, ToAxisAngle)
 {
+    Quaternion q(0.707106781f, 0.0f, 0.707106781f, 0.0f);
+
+    Vector3 axis;
+    float degrees;
+    q.ToAxisAngle(axis, degrees);
+    
+    EXPECT_TRUE(axis.IsNearlyEqual({ 0.0f, 1.0f, 0.0f }));
+    EXPECT_NEAR(degrees, 90.0f, kToleranceEpsilon);
 }
