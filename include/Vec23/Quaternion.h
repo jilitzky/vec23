@@ -49,19 +49,19 @@ namespace Vec23
             return { cosT, u.x * sinT, u.y * sinT, u.z * sinT };
         }
 
-        static TQuaternion FromEuler(T yawDegrees, T pitchDegrees, T rollDegrees)
+        static TQuaternion FromEuler(T rollDegrees, T pitchDegrees, T yawDegrees)
         {
-            T halfYawRadians = yawDegrees * kHalf * kDegreesToRadians;
-            T cosYaw = std::cos(halfYawRadians);
-            T sinYaw = std::sin(halfYawRadians);
+            T halfRollRadians = rollDegrees * kHalf * kDegreesToRadians;
+            T cosRoll = std::cos(halfRollRadians);
+            T sinRoll = std::sin(halfRollRadians);
 
             T halfPitchRadians = pitchDegrees * kHalf * kDegreesToRadians;
             T cosPitch = std::cos(halfPitchRadians);
             T sinPitch = std::sin(halfPitchRadians);
-            
-            T halfRollRadians = rollDegrees * kHalf * kDegreesToRadians;
-            T cosRoll = std::cos(halfRollRadians);
-            T sinRoll = std::sin(halfRollRadians);
+
+            T halfYawRadians = yawDegrees * kHalf * kDegreesToRadians;
+            T cosYaw = std::cos(halfYawRadians);
+            T sinYaw = std::sin(halfYawRadians);
 
             return TQuaternion(
                 cosRoll * cosPitch * cosYaw + sinRoll * sinPitch * sinYaw,
@@ -182,8 +182,16 @@ namespace Vec23
 
         TVector3<T> ToEuler() const
         {
-            // TODO: Implement me!
-            return {};
+            T wSq = w * w;
+            T xSq = x * x;
+            T ySq = y * y;
+            T zSq = z * z;
+            
+            T roll = std::atan2(kTwo * (w * x + y * z), wSq - xSq - ySq + zSq);
+            T pitch = std::asin(-kTwo * (x * z - w * y));
+            T yaw = std::atan2(kTwo * (x * y + w * z), wSq + xSq - ySq - zSq);
+            
+            return { roll * kRadiansToDegrees, pitch * kRadiansToDegrees, yaw * kRadiansToDegrees };
         }
 
         void ToAxisAngle(TVector3<T>& outAxis, T& outDegrees) const

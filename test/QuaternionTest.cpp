@@ -46,14 +46,14 @@ TEST(QuaternionTest, FromAxisAngle)
 
 TEST(QuaternionTest, FromEulerPure)
 {
-    auto qYaw = Quaternion::FromEuler(90.0f, 0.0f, 0.0f);
-    EXPECT_TRUE(qYaw.IsNearlyEqual(Quaternion(0.707106781f, 0.0f, 0.0f, 0.707106781f)));
+    auto qRoll = Quaternion::FromEuler(90.0f, 0.0f, 0.0f);
+    EXPECT_TRUE(qRoll.IsNearlyEqual(Quaternion(0.707106781f, 0.707106781f, 0.0f, 0.0f)));
 
     auto qPitch = Quaternion::FromEuler(0.0f, 90.0f, 0.0f);
     EXPECT_TRUE(qPitch.IsNearlyEqual(Quaternion(0.707106781f, 0.0f, 0.707106781f, 0.0f)));
 
-    auto qRoll = Quaternion::FromEuler(0.0f, 0.0f, 90.0f);
-    EXPECT_TRUE(qRoll.IsNearlyEqual(Quaternion(0.707106781f, 0.707106781f, 0.0f, 0.0f)));
+    auto qYaw = Quaternion::FromEuler(0.0f, 0.0f, 90.0f);
+    EXPECT_TRUE(qYaw.IsNearlyEqual(Quaternion(0.707106781f, 0.0f, 0.0f, 0.707106781f)));
 }
 
 TEST(QuaternionTest, FromEulerCombined)
@@ -127,6 +127,26 @@ TEST(QuaternionTest, RotateVector)
 
 TEST(QuaternionTest, ToEuler)
 {
+    float roll = 30.0f;
+    float pitch = 15.0f;
+    float yaw = 45.0f;
+
+    auto q = Quaternion::FromEuler(roll, pitch, yaw);
+    auto result = q.ToEuler();
+
+    EXPECT_NEAR(result.x, roll, kToleranceEpsilon);
+    EXPECT_NEAR(result.y, pitch, kToleranceEpsilon);
+    EXPECT_NEAR(result.z, yaw, kToleranceEpsilon);
+}
+
+TEST(QuaternionTest, ToEulerGimbalLock)
+{
+    auto q = Quaternion::FromEuler(0.0f, 90.0f, 45.0f);
+    auto result = q.ToEuler();
+
+    EXPECT_NEAR(result.x, 0.0f, kToleranceEpsilon);
+    EXPECT_NEAR(result.y, 90.0f, kToleranceEpsilon);
+    EXPECT_NEAR(result.z, 0.0f, kToleranceEpsilon);
 }
 
 TEST(QuaternionTest, ToAxisAngle)
