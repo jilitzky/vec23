@@ -48,10 +48,26 @@ namespace Vec23
             return { cosT, u.x * sinT, u.y * sinT, u.z * sinT };
         }
 
-        static TQuaternion FromEuler(T pitch, T yaw, T roll)
+        static TQuaternion FromEuler(T yawDegrees, T pitchDegrees, T rollDegrees)
         {
-            // TODO: Implement me!
-            return {};
+            T halfYawRadians = yawDegrees * kHalf * kDegreesToRadians;
+            T cosYaw = std::cos(halfYawRadians);
+            T sinYaw = std::sin(halfYawRadians);
+
+            T halfPitchRadians = pitchDegrees * kHalf * kDegreesToRadians;
+            T cosPitch = std::cos(halfPitchRadians);
+            T sinPitch = std::sin(halfPitchRadians);
+            
+            T halfRollRadians = rollDegrees * kHalf * kDegreesToRadians;
+            T cosRoll = std::cos(halfRollRadians);
+            T sinRoll = std::sin(halfRollRadians);
+
+            return TQuaternion(
+                cosRoll * cosPitch * cosYaw + sinRoll * sinPitch * sinYaw,
+                sinRoll * cosPitch * cosYaw - cosRoll * sinPitch * sinYaw,
+                cosRoll * sinPitch * cosYaw + sinRoll * cosPitch * sinYaw,
+                cosRoll * cosPitch * sinYaw - sinRoll * sinPitch * cosYaw
+            );
         }
 
         static TQuaternion LookAt(const TVector3<T>& forward, const TVector3<T>& up)
