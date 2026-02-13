@@ -146,7 +146,7 @@ TEST(QuaternionTest, ToEulerGimbalLock)
 
     EXPECT_NEAR(result.x, 0.0f, kToleranceEpsilon);
     EXPECT_NEAR(result.y, 90.0f, kToleranceEpsilon);
-    EXPECT_NEAR(result.z, 0.0f, kToleranceEpsilon);
+    EXPECT_NEAR(result.z, 45.0f, kToleranceEpsilon);
 }
 
 TEST(QuaternionTest, ToAxisAngle)

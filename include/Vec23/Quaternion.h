@@ -182,16 +182,34 @@ namespace Vec23
 
         TVector3<T> ToEuler() const
         {
-            T wSq = w * w;
-            T xSq = x * x;
-            T ySq = y * y;
-            T zSq = z * z;
-            
-            T roll = std::atan2(kTwo * (w * x + y * z), wSq - xSq - ySq + zSq);
-            T pitch = std::asin(-kTwo * (x * z - w * y));
-            T yaw = std::atan2(kTwo * (x * y + w * z), wSq + xSq - ySq - zSq);
-            
-            return { roll * kRadiansToDegrees, pitch * kRadiansToDegrees, yaw * kRadiansToDegrees };
+            TVector3<T> euler;
+
+            T gimbalTest = w * y - x * z;
+            if (gimbalTest > kHalf - kToleranceEpsilon)
+            {
+                euler.x = kZero;
+                euler.y = kPi * kHalf;
+                euler.z = kTwo * std::atan2(z, w);
+            }
+            else if (gimbalTest < kToleranceEpsilon - kHalf)
+            {
+                euler.x = kZero;
+                euler.y = -kPi * kHalf;
+                euler.z = kTwo * std::atan2(x, w);
+            }
+            else
+            {
+                T wSq = w * w;
+                T xSq = x * x;
+                T ySq = y * y;
+                T zSq = z * z;
+
+                euler.x = std::atan2(kTwo * (w * x + y * z), wSq - xSq - ySq + zSq);
+                euler.y = std::asin(-kTwo * (x * z - w * y));
+                euler.z = std::atan2(kTwo * (x * y + w * z), wSq + xSq - ySq - zSq);
+            }
+
+            return euler * kRadiansToDegrees;
         }
 
         void ToAxisAngle(TVector3<T>& outAxis, T& outDegrees) const
