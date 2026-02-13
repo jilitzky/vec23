@@ -44,6 +44,12 @@ TEST(QuaternionTest, FromAxisAngle)
     EXPECT_TRUE(q.IsNearlyEqual({ 0.707106781f, 0.0f, 0.707106781f, 0.0f }));
 }
 
+TEST(QuaternionTest, FromEulerCombined)
+{
+    auto q = Quaternion::FromEuler(45.0f, 45.0f, 45.0f);
+    EXPECT_TRUE(q.IsNearlyEqual(Quaternion(0.8446232f, 0.1913417f, 0.4619398f, 0.1913417f)));
+}
+
 TEST(QuaternionTest, FromEulerPure)
 {
     auto qRoll = Quaternion::FromEuler(90.0f, 0.0f, 0.0f);
@@ -54,12 +60,6 @@ TEST(QuaternionTest, FromEulerPure)
 
     auto qYaw = Quaternion::FromEuler(0.0f, 0.0f, 90.0f);
     EXPECT_TRUE(qYaw.IsNearlyEqual(Quaternion(0.707106781f, 0.0f, 0.0f, 0.707106781f)));
-}
-
-TEST(QuaternionTest, FromEulerCombined)
-{
-    auto q = Quaternion::FromEuler(45.0f, 45.0f, 45.0f);
-    EXPECT_TRUE(q.IsNearlyEqual(Quaternion(0.8446232f, 0.1913417f, 0.4619398f, 0.1913417f)));
 }
 
 TEST(QuaternionTest, Inverse)
