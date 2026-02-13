@@ -253,8 +253,10 @@ namespace Vec23
 
     private:
         static constexpr T kZero = TZero<T>;
+        static constexpr T kHalf = THalf<T>;
         static constexpr T kOne = TOne<T>;
         static constexpr T kTwo = TTwo<T>;
+        static constexpr T kPi = TPi<T>;
         static constexpr T kDegreesToRadians = TDegreesToRadians<T>;
         static constexpr T kRadiansToDegrees = TRadiansToDegrees<T>;
         static constexpr T kToleranceEpsilon = TToleranceEpsilon<T>;

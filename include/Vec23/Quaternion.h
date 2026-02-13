@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include <algorithm>
 #include "Constants.h"
 #include "Vector3.h"
 
@@ -48,10 +49,26 @@ namespace Vec23
             return { cosT, u.x * sinT, u.y * sinT, u.z * sinT };
         }
 
-        static TQuaternion FromEuler(T pitch, T yaw, T roll)
+        static TQuaternion FromEuler(T rollDegrees, T pitchDegrees, T yawDegrees)
         {
-            // TODO: Implement me!
-            return {};
+            T halfRollRadians = rollDegrees * kHalf * kDegreesToRadians;
+            T cosRoll = std::cos(halfRollRadians);
+            T sinRoll = std::sin(halfRollRadians);
+
+            T halfPitchRadians = pitchDegrees * kHalf * kDegreesToRadians;
+            T cosPitch = std::cos(halfPitchRadians);
+            T sinPitch = std::sin(halfPitchRadians);
+
+            T halfYawRadians = yawDegrees * kHalf * kDegreesToRadians;
+            T cosYaw = std::cos(halfYawRadians);
+            T sinYaw = std::sin(halfYawRadians);
+
+            return TQuaternion(
+                cosRoll * cosPitch * cosYaw + sinRoll * sinPitch * sinYaw,
+                sinRoll * cosPitch * cosYaw - cosRoll * sinPitch * sinYaw,
+                cosRoll * sinPitch * cosYaw + sinRoll * cosPitch * sinYaw,
+                cosRoll * cosPitch * sinYaw - sinRoll * sinPitch * cosYaw
+            );
         }
 
         static TQuaternion LookAt(const TVector3<T>& forward, const TVector3<T>& up)
@@ -165,13 +182,55 @@ namespace Vec23
 
         TVector3<T> ToEuler() const
         {
-            // TODO: Implement me!
-            return {};
+            TVector3<T> euler;
+
+            T gimbalTest = w * y - x * z;
+            if (gimbalTest > kHalf - kToleranceEpsilon)
+            {
+                euler.x = kZero;
+                euler.y = kPi * kHalf;
+                euler.z = kTwo * std::atan2(z, w);
+            }
+            else if (gimbalTest < kToleranceEpsilon - kHalf)
+            {
+                euler.x = kZero;
+                euler.y = -kPi * kHalf;
+                euler.z = kTwo * std::atan2(x, w);
+            }
+            else
+            {
+                T wSq = w * w;
+                T xSq = x * x;
+                T ySq = y * y;
+                T zSq = z * z;
+
+                euler.x = std::atan2(kTwo * (w * x + y * z), wSq - xSq - ySq + zSq);
+                euler.y = std::asin(-kTwo * (x * z - w * y));
+                euler.z = std::atan2(kTwo * (x * y + w * z), wSq + xSq - ySq - zSq);
+            }
+
+            return euler * kRadiansToDegrees;
         }
 
         void ToAxisAngle(TVector3<T>& outAxis, T& outDegrees) const
         {
-            // TODO: Implement me!
+            T clampedW = std::clamp(w, -kOne, kOne);
+            T sinSqT = kOne - clampedW * clampedW;
+            if (sinSqT > kSafetyEpsilon)
+            {
+
+                T invSinT = kOne / std::sqrt(sinSqT);
+                outAxis.x = x * invSinT;
+                outAxis.y = y * invSinT;
+                outAxis.z = z * invSinT;
+            }
+            else
+            {
+                outAxis = { kOne, kZero, kZero };
+            }
+
+            T halfRadians = std::acos(clampedW);
+            outDegrees = halfRadians * kTwo * kRadiansToDegrees;
         }
 
         bool IsNearlyEqual(const TQuaternion& other, T epsilon = kSafetyEpsilon) const
@@ -246,7 +305,10 @@ namespace Vec23
         static constexpr T kHalf = THalf<T>;
         static constexpr T kOne = TOne<T>;
         static constexpr T kTwo = TTwo<T>;
+        static constexpr T kPi = TPi<T>;
         static constexpr T kDegreesToRadians = TDegreesToRadians<T>;
+        static constexpr T kRadiansToDegrees = TRadiansToDegrees<T>;
+        static constexpr T kToleranceEpsilon = TToleranceEpsilon<T>;
         static constexpr T kSafetyEpsilon = TSafetyEpsilon<T>;
     };
 

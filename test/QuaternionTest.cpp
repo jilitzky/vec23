@@ -39,9 +39,27 @@ TEST(QuaternionTest, EqualsOperator)
 
 TEST(QuaternionTest, FromAxisAngle)
 {
-    Vector3 axis(0, 1, 0);
+    Vector3 axis(0.0f, 1.0f, 0.0f);
     auto q = Quaternion::FromAxisAngle(axis, 90.0f);
-    EXPECT_TRUE(q.IsNearlyEqual({ 0.707106f, 0, 0.707106f, 0 }));
+    EXPECT_TRUE(q.IsNearlyEqual({ 0.707106781f, 0.0f, 0.707106781f, 0.0f }));
+}
+
+TEST(QuaternionTest, FromEulerCombined)
+{
+    auto q = Quaternion::FromEuler(45.0f, 45.0f, 45.0f);
+    EXPECT_TRUE(q.IsNearlyEqual(Quaternion(0.8446232f, 0.1913417f, 0.4619398f, 0.1913417f)));
+}
+
+TEST(QuaternionTest, FromEulerPure)
+{
+    auto qRoll = Quaternion::FromEuler(90.0f, 0.0f, 0.0f);
+    EXPECT_TRUE(qRoll.IsNearlyEqual(Quaternion(0.707106781f, 0.707106781f, 0.0f, 0.0f)));
+
+    auto qPitch = Quaternion::FromEuler(0.0f, 90.0f, 0.0f);
+    EXPECT_TRUE(qPitch.IsNearlyEqual(Quaternion(0.707106781f, 0.0f, 0.707106781f, 0.0f)));
+
+    auto qYaw = Quaternion::FromEuler(0.0f, 0.0f, 90.0f);
+    EXPECT_TRUE(qYaw.IsNearlyEqual(Quaternion(0.707106781f, 0.0f, 0.0f, 0.707106781f)));
 }
 
 TEST(QuaternionTest, Inverse)
@@ -101,7 +119,7 @@ TEST(QuaternionTest, ParameterConstructor)
 
 TEST(QuaternionTest, RotateVector)
 {
-    Vector3 v(1, 0, 0);
+    Vector3 v(1.0f, 0.0f, 0.0f);
     auto q = Quaternion::FromAxisAngle({ 0.0f, 1.0f, 0.0f }, 90.0f);
     Vector3 result = q.RotateVector(v);
     EXPECT_TRUE(result.IsNearlyEqual({ 0.0f, 0.0f, -1.0f }));
@@ -109,8 +127,36 @@ TEST(QuaternionTest, RotateVector)
 
 TEST(QuaternionTest, ToEuler)
 {
+    float roll = 30.0f;
+    float pitch = 15.0f;
+    float yaw = 45.0f;
+
+    auto q = Quaternion::FromEuler(roll, pitch, yaw);
+    auto result = q.ToEuler();
+
+    EXPECT_NEAR(result.x, roll, kToleranceEpsilon);
+    EXPECT_NEAR(result.y, pitch, kToleranceEpsilon);
+    EXPECT_NEAR(result.z, yaw, kToleranceEpsilon);
+}
+
+TEST(QuaternionTest, ToEulerGimbalLock)
+{
+    auto q = Quaternion::FromEuler(0.0f, 90.0f, 45.0f);
+    auto result = q.ToEuler();
+
+    EXPECT_NEAR(result.x, 0.0f, kToleranceEpsilon);
+    EXPECT_NEAR(result.y, 90.0f, kToleranceEpsilon);
+    EXPECT_NEAR(result.z, 45.0f, kToleranceEpsilon);
 }
 
 TEST(QuaternionTest, ToAxisAngle)
 {
+    Quaternion q(0.707106781f, 0.0f, 0.707106781f, 0.0f);
+
+    Vector3 axis;
+    float degrees;
+    q.ToAxisAngle(axis, degrees);
+    
+    EXPECT_TRUE(axis.IsNearlyEqual({ 0.0f, 1.0f, 0.0f }));
+    EXPECT_NEAR(degrees, 90.0f, kToleranceEpsilon);
 }
