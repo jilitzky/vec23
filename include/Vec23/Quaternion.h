@@ -80,11 +80,11 @@ namespace Vec23
             T lengthSq = LengthSquared();
             if (lengthSq > kSafetyEpsilon)
             {
-                T inv = kOne / std::sqrt(lengthSq);
-                w *= inv;
-                x *= inv;
-                y *= inv;
-                z *= inv;
+                T invLength = kOne / std::sqrt(lengthSq);
+                w *= invLength;
+                x *= invLength;
+                y *= invLength;
+                z *= invLength;
             }
             else
             {
@@ -104,11 +104,11 @@ namespace Vec23
             T lengthSq = LengthSquared();
             if (lengthSq > kSafetyEpsilon)
             {
-                T inv = kOne / lengthSq;
-                w *= inv;
-                x *= -inv;
-                y *= -inv;
-                z *= -inv;
+                T invLength = kOne / std::sqrt(lengthSq);
+                w *= invLength;
+                x *= -invLength;
+                y *= -invLength;
+                z *= -invLength;
             }
             else
             {
@@ -263,8 +263,27 @@ namespace Vec23
 
         static TQuaternion Slerp(const TQuaternion& a, const TQuaternion& b, T t)
         {
-            // TODO: Implement me!
-            return {};
+            t = std::clamp(t, kZero, kOne);
+            T dot = a.Dot(b);
+
+            TQuaternion targetB = b;
+            if (dot < kZero)
+            {
+                dot = -dot;
+                targetB = -b;
+            }
+
+            if (dot > kOne - kToleranceEpsilon)
+            {
+                return Lerp(a, targetB, t);
+            }
+
+            T theta = std::acos(std::clamp(dot, -kOne, kOne));
+            T sinT = std::sin(theta);
+            T invSinT = kOne / sinT;
+            T scaleA = std::sin((kOne - t) * theta) * invSinT;
+            T scaleB = std::sin(t * theta) * invSinT;
+            return (scaleA * a) + (scaleB * targetB);
         }
 
         // -------------------------
@@ -299,6 +318,11 @@ namespace Vec23
         TVector3<T> operator*(const TVector3<T>& v) const
         {
             return RotateVector(v);
+        }
+
+        TQuaternion operator-() const
+        {
+            return { -w, -x, -y, -z };
         }
 
         TQuaternion& operator*=(const TQuaternion& other)

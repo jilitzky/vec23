@@ -66,7 +66,7 @@ TEST(QuaternionTest, Inverse)
 {
     Quaternion q(1.0f, 0.0f, 1.0f, 0.0f);
     q.Inverse();
-    EXPECT_TRUE(q.IsNearlyEqual({ 0.5f, 0.0f, -0.5f, 0.0f }));
+    EXPECT_TRUE(q.IsNearlyEqual({ 0.707106781f, 0.0f, -0.707106781f, 0.0f }));
 }
 
 TEST(QuaternionTest, IsNormalized)

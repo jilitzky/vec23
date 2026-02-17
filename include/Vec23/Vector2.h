@@ -31,9 +31,9 @@ namespace Vec23
             T lengthSq = LengthSquared();
             if (lengthSq > kSafetyEpsilon)
             {
-                T inv = kOne / std::sqrt(lengthSq);
-                x *= inv;
-                y *= inv;
+                T invLength = kOne / std::sqrt(lengthSq);
+                x *= invLength;
+                y *= invLength;
             }
             else
             {
