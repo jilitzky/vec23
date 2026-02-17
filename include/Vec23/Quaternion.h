@@ -320,6 +320,11 @@ namespace Vec23
             return RotateVector(v);
         }
 
+        TQuaternion operator/(T scalar) const
+        {
+            return *this * (kOne / scalar);
+        }
+
         TQuaternion operator-() const
         {
             return { -w, -x, -y, -z };
@@ -332,6 +337,21 @@ namespace Vec23
             x = temp.w * other.x + temp.x * other.w + temp.y * other.z - temp.z * other.y;
             y = temp.w * other.y - temp.x * other.z + temp.y * other.w + temp.z * other.x;
             z = temp.w * other.z + temp.x * other.y - temp.y * other.x + temp.z * other.w;
+            return *this;
+        }
+
+        TQuaternion& operator*=(T scalar)
+        {
+            w *= scalar;
+            x *= scalar;
+            y *= scalar;
+            z *= scalar;
+            return *this;
+        }
+
+        TQuaternion& operator/=(T scalar)
+        {
+            *this *= kOne / scalar;
             return *this;
         }
 
