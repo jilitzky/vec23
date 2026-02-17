@@ -74,7 +74,6 @@ TEST(Vector3Test, CrossProduct)
     Vector3 x(1.0f, 0.0f, 0.0f);
     Vector3 y(0.0f, 1.0f, 0.0f);
     Vector3 z(0.0f, 0.0f, 1.0f);
-
     EXPECT_TRUE(x.Cross(y) == z);
     EXPECT_TRUE(y.Cross(x) == -z);
     EXPECT_TRUE(x.Cross(z) == -y);

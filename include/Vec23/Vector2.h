@@ -31,9 +31,9 @@ namespace Vec23
             T lengthSq = LengthSquared();
             if (lengthSq > kSafetyEpsilon)
             {
-                T inv = kOne / std::sqrt(lengthSq);
-                x *= inv;
-                y *= inv;
+                T invLength = kOne / std::sqrt(lengthSq);
+                x *= invLength;
+                y *= invLength;
             }
             else
             {
@@ -227,9 +227,9 @@ namespace Vec23
             return (&x)[index];
         }
 
-        friend TVector2 operator*(T scalar, const TVector2& vector)
+        friend TVector2 operator*(T scalar, const TVector2& v)
         {
-            return vector * scalar;
+            return v * scalar;
         }
 
     private:

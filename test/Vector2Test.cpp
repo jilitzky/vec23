@@ -72,7 +72,6 @@ TEST(Vector2Test, CrossProduct)
 {
     Vector2 right(1.0f, 0.0f);
     Vector2 up(0.0f, 1.0f);
-
     EXPECT_TRUE(right.Cross(up) == 1.0f);
     EXPECT_TRUE(up.Cross(right) == -1.0f);
 }

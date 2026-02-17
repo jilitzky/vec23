@@ -71,12 +71,6 @@ namespace Vec23
             );
         }
 
-        static TQuaternion LookAt(const TVector3<T>& forward, const TVector3<T>& up)
-        {
-            // TODO: Implement me!
-            return {};
-        }
-
         // -------------------------
         // Modifiers
         // -------------------------
@@ -86,11 +80,11 @@ namespace Vec23
             T lengthSq = LengthSquared();
             if (lengthSq > kSafetyEpsilon)
             {
-                T inv = kOne / std::sqrt(lengthSq);
-                w *= inv;
-                x *= inv;
-                y *= inv;
-                z *= inv;
+                T invLength = kOne / std::sqrt(lengthSq);
+                w *= invLength;
+                x *= invLength;
+                y *= invLength;
+                z *= invLength;
             }
             else
             {
@@ -110,11 +104,11 @@ namespace Vec23
             T lengthSq = LengthSquared();
             if (lengthSq > kSafetyEpsilon)
             {
-                T inv = kOne / lengthSq;
-                w *= inv;
-                x *= -inv;
-                y *= -inv;
-                z *= -inv;
+                T invLengthSq = kOne / lengthSq;
+                w *= invLengthSq;
+                x *= -invLengthSq;
+                y *= -invLengthSq;
+                z *= -invLengthSq;
             }
             else
             {
@@ -215,22 +209,20 @@ namespace Vec23
         void ToAxisAngle(TVector3<T>& outAxis, T& outDegrees) const
         {
             T clampedW = std::clamp(w, -kOne, kOne);
-            T sinSqT = kOne - clampedW * clampedW;
-            if (sinSqT > kSafetyEpsilon)
+            T sinSqT = kOne - (clampedW * clampedW);
+            if (sinSqT < kSafetyEpsilon)
             {
-
+                outAxis = { kOne, kZero, kZero };
+                outDegrees = kZero;
+            }
+            else
+            {
                 T invSinT = kOne / std::sqrt(sinSqT);
                 outAxis.x = x * invSinT;
                 outAxis.y = y * invSinT;
                 outAxis.z = z * invSinT;
+                outDegrees = std::acos(clampedW) * kTwo * kRadiansToDegrees;
             }
-            else
-            {
-                outAxis = { kOne, kZero, kZero };
-            }
-
-            T halfRadians = std::acos(clampedW);
-            outDegrees = halfRadians * kTwo * kRadiansToDegrees;
         }
 
         bool IsNearlyEqual(const TQuaternion& other, T epsilon = kSafetyEpsilon) const
@@ -251,28 +243,59 @@ namespace Vec23
 
         static TQuaternion Lerp(const TQuaternion& a, const TQuaternion& b, T t)
         {
-            // TODO: Implement me!
-            return {};
+            t = std::clamp(t, kZero, kOne);
+            T dot = a.Dot(b);
+            T scaleA = kOne - t;
+            T scaleB = (dot < kZero) ? -t : t;
+
+            TQuaternion result(
+                scaleA * a.w + scaleB * b.w,
+                scaleA * a.x + scaleB * b.x,
+                scaleA * a.y + scaleB * b.y,
+                scaleA * a.z + scaleB * b.z
+            );
+
+            result.Normalize();
+            return result;
         }
 
         static TQuaternion Slerp(const TQuaternion& a, const TQuaternion& b, T t)
         {
-            // TODO: Implement me!
-            return {};
+            t = std::clamp(t, kZero, kOne);
+            T dot = a.Dot(b);
+
+            TQuaternion target = b;
+            if (dot < kZero)
+            {
+                dot = -dot;
+                target = -b;
+            }
+
+            if (dot > kOne - kToleranceEpsilon)
+            {
+                return Lerp(a, target, t);
+            }
+
+            T theta = std::acos(std::clamp(dot, -kOne, kOne));
+            T sinT = std::sin(theta);
+            T invSinT = kOne / sinT;
+            T scaleA = std::sin((kOne - t) * theta) * invSinT;
+            T scaleB = std::sin(t * theta) * invSinT;
+            return (scaleA * a) + (scaleB * target);
         }
 
         // -------------------------
         // Operators
         // -------------------------
 
-        TQuaternion& operator*=(const TQuaternion& other)
+        TQuaternion operator+(const TQuaternion& other) const
         {
-            TQuaternion temp = *this;
-            w = temp.w * other.w - temp.x * other.x - temp.y * other.y - temp.z * other.z;
-            x = temp.w * other.x + temp.x * other.w + temp.y * other.z - temp.z * other.y;
-            y = temp.w * other.y - temp.x * other.z + temp.y * other.w + temp.z * other.x;
-            z = temp.w * other.z + temp.x * other.y - temp.y * other.x + temp.z * other.w;
-            return *this;
+            return { w + other.w, x + other.x, y + other.y, z + other.z };
+        }
+
+        TQuaternion operator-(const TQuaternion& other) const
+        {
+            return { w - other.w, x - other.x, y - other.y, z - other.z };
         }
 
         TQuaternion operator*(const TQuaternion& other) const
@@ -285,9 +308,49 @@ namespace Vec23
             );
         }
 
+        TQuaternion operator*(T scalar) const
+        {
+            return { w * scalar, x * scalar, y * scalar, z * scalar };
+        }
+
         TVector3<T> operator*(const TVector3<T>& v) const
         {
             return RotateVector(v);
+        }
+
+        TQuaternion operator/(T scalar) const
+        {
+            return *this * (kOne / scalar);
+        }
+
+        TQuaternion operator-() const
+        {
+            return { -w, -x, -y, -z };
+        }
+
+        TQuaternion& operator*=(const TQuaternion& other)
+        {
+            TQuaternion temp = *this;
+            w = temp.w * other.w - temp.x * other.x - temp.y * other.y - temp.z * other.z;
+            x = temp.w * other.x + temp.x * other.w + temp.y * other.z - temp.z * other.y;
+            y = temp.w * other.y - temp.x * other.z + temp.y * other.w + temp.z * other.x;
+            z = temp.w * other.z + temp.x * other.y - temp.y * other.x + temp.z * other.w;
+            return *this;
+        }
+
+        TQuaternion& operator*=(T scalar)
+        {
+            w *= scalar;
+            x *= scalar;
+            y *= scalar;
+            z *= scalar;
+            return *this;
+        }
+
+        TQuaternion& operator/=(T scalar)
+        {
+            *this *= kOne / scalar;
+            return *this;
         }
 
         bool operator==(const TQuaternion& other) const
@@ -298,6 +361,11 @@ namespace Vec23
         bool operator!=(const TQuaternion& other) const
         {
             return !(*this == other);
+        }
+
+        friend TQuaternion operator*(T scalar, const TQuaternion& q)
+        {
+            return q * scalar;
         }
 
     private:
