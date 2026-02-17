@@ -264,16 +264,16 @@ namespace Vec23
             t = std::clamp(t, kZero, kOne);
             T dot = a.Dot(b);
 
-            TQuaternion targetB = b;
+            TQuaternion target = b;
             if (dot < kZero)
             {
                 dot = -dot;
-                targetB = -b;
+                target = -b;
             }
 
             if (dot > kOne - kToleranceEpsilon)
             {
-                return Lerp(a, targetB, t);
+                return Lerp(a, target, t);
             }
 
             T theta = std::acos(std::clamp(dot, -kOne, kOne));
@@ -281,7 +281,7 @@ namespace Vec23
             T invSinT = kOne / sinT;
             T scaleA = std::sin((kOne - t) * theta) * invSinT;
             T scaleB = std::sin(t * theta) * invSinT;
-            return (scaleA * a) + (scaleB * targetB);
+            return (scaleA * a) + (scaleB * target);
         }
 
         // -------------------------
