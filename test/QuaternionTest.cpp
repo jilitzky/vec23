@@ -111,6 +111,13 @@ TEST(QuaternionTest, MultiplicationOperator)
     EXPECT_TRUE(result.IsNearlyEqual({ 0.5f, 0.5f, 0.5f, -0.5f }));
 }
 
+TEST(QuaternionTest, MultiplicationScalarOperator)
+{
+    Quaternion q(1.0f, 2.0f, 3.0f, 4.0f);
+    q *= 2.0f;
+    EXPECT_TRUE(q.IsNearlyEqual({ 2.0f, 4.0f, 6.0f, 8.0f }));
+}
+
 TEST(QuaternionTest, Normalize)
 {
     Quaternion q(0.0f, 0.0f, 2.0f, 0.0f);
