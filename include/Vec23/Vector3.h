@@ -246,9 +246,9 @@ namespace Vec23
             return (&x)[index];
         }
 
-        friend TVector3 operator*(T scalar, const TVector3& vector)
+        friend TVector3 operator*(T scalar, const TVector3& v)
         {
-            return vector * scalar;
+            return v * scalar;
         }
 
     private:

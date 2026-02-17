@@ -71,12 +71,6 @@ namespace Vec23
             );
         }
 
-        static TQuaternion LookAt(const TVector3<T>& forward, const TVector3<T>& up)
-        {
-            // TODO: Implement me!
-            return {};
-        }
-
         // -------------------------
         // Modifiers
         // -------------------------
@@ -251,8 +245,9 @@ namespace Vec23
 
         static TQuaternion Lerp(const TQuaternion& a, const TQuaternion& b, T t)
         {
-            // TODO: Implement me!
-            return {};
+            TQuaternion target = (a.Dot(b) < kZero) ? -b : b;
+            TQuaternion result = ((kOne - t) * a) + (t * target);
+            return result.GetNormalized();
         }
 
         static TQuaternion Slerp(const TQuaternion& a, const TQuaternion& b, T t)
@@ -265,14 +260,14 @@ namespace Vec23
         // Operators
         // -------------------------
 
-        TQuaternion& operator*=(const TQuaternion& other)
+        TQuaternion operator+(const TQuaternion& other) const
         {
-            TQuaternion temp = *this;
-            w = temp.w * other.w - temp.x * other.x - temp.y * other.y - temp.z * other.z;
-            x = temp.w * other.x + temp.x * other.w + temp.y * other.z - temp.z * other.y;
-            y = temp.w * other.y - temp.x * other.z + temp.y * other.w + temp.z * other.x;
-            z = temp.w * other.z + temp.x * other.y - temp.y * other.x + temp.z * other.w;
-            return *this;
+            return { w + other.w, x + other.x, y + other.y, z + other.z };
+        }
+
+        TQuaternion operator-(const TQuaternion& other) const
+        {
+            return { w - other.w, x - other.x, y - other.y, z - other.z };
         }
 
         TQuaternion operator*(const TQuaternion& other) const
@@ -285,9 +280,29 @@ namespace Vec23
             );
         }
 
+        TQuaternion operator*(T scalar) const
+        {
+            return { w * scalar, x * scalar, y * scalar, z * scalar };
+        }
+
         TVector3<T> operator*(const TVector3<T>& v) const
         {
             return RotateVector(v);
+        }
+
+        TQuaternion operator-() const
+        {
+            return { -w, -x, -y, -z };
+        }
+
+        TQuaternion& operator*=(const TQuaternion& other)
+        {
+            TQuaternion temp = *this;
+            w = temp.w * other.w - temp.x * other.x - temp.y * other.y - temp.z * other.z;
+            x = temp.w * other.x + temp.x * other.w + temp.y * other.z - temp.z * other.y;
+            y = temp.w * other.y - temp.x * other.z + temp.y * other.w + temp.z * other.x;
+            z = temp.w * other.z + temp.x * other.y - temp.y * other.x + temp.z * other.w;
+            return *this;
         }
 
         bool operator==(const TQuaternion& other) const
@@ -298,6 +313,11 @@ namespace Vec23
         bool operator!=(const TQuaternion& other) const
         {
             return !(*this == other);
+        }
+
+        friend TQuaternion operator*(T scalar, const TQuaternion& q)
+        {
+            return q * scalar;
         }
 
     private:

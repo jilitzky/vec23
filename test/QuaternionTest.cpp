@@ -85,6 +85,16 @@ TEST(QuaternionTest, Length)
     EXPECT_NEAR(q.LengthSquared(), 4.0f, kToleranceEpsilon);
 }
 
+TEST(QuaternionTest, Lerp)
+{
+    Quaternion begin = Quaternion::Identity();
+    Quaternion end = Quaternion::FromAxisAngle({ 0.0f, 0.0f, 1.0f }, 90.0f);
+    Quaternion lerp = Quaternion::Lerp(begin, end, 0.5f);
+    Quaternion expected = Quaternion::FromAxisAngle({ 0.0f, 0.0f, 1.0f }, 45.0f);
+    EXPECT_TRUE(lerp.IsNearlyEqual(expected));
+    EXPECT_TRUE(lerp.IsNormalized());
+}
+
 TEST(QuaternionTest, MultiplicationAssignmentOperator)
 {
     auto q = Quaternion::Identity();
@@ -99,6 +109,13 @@ TEST(QuaternionTest, MultiplicationOperator)
     auto qY = Quaternion::FromAxisAngle({ 0.0f, 1.0f, 0.0f }, 90.0f);
     Quaternion result = qY * qX;
     EXPECT_TRUE(result.IsNearlyEqual({ 0.5f, 0.5f, 0.5f, -0.5f }));
+}
+
+TEST(QuaternionTest, Negation)
+{
+    Quaternion q(1.0f, 2.0f, 3.0f, 4.0f);
+    Quaternion result = -q;
+    EXPECT_TRUE(result.IsNearlyEqual({ -1.0f, -2.0f, -3.0f, -4.0f }));
 }
 
 TEST(QuaternionTest, Normalize)
@@ -123,6 +140,10 @@ TEST(QuaternionTest, RotateVector)
     auto q = Quaternion::FromAxisAngle({ 0.0f, 1.0f, 0.0f }, 90.0f);
     Vector3 result = q.RotateVector(v);
     EXPECT_TRUE(result.IsNearlyEqual({ 0.0f, 0.0f, -1.0f }));
+}
+
+TEST(QuaternionTest, Slerp)
+{
 }
 
 TEST(QuaternionTest, ToEuler)
