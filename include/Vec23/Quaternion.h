@@ -209,22 +209,20 @@ namespace Vec23
         void ToAxisAngle(TVector3<T>& outAxis, T& outDegrees) const
         {
             T clampedW = std::clamp(w, -kOne, kOne);
-            T sinSqT = kOne - clampedW * clampedW;
-            if (sinSqT > kSafetyEpsilon)
+            T sinSqT = kOne - (clampedW * clampedW);
+            if (sinSqT < kSafetyEpsilon)
             {
-
+                outAxis = { kOne, kZero, kZero };
+                outDegrees = kZero;
+            }
+            else
+            {
                 T invSinT = kOne / std::sqrt(sinSqT);
                 outAxis.x = x * invSinT;
                 outAxis.y = y * invSinT;
                 outAxis.z = z * invSinT;
+                outDegrees = std::acos(clampedW) * kTwo * kRadiansToDegrees;
             }
-            else
-            {
-                outAxis = { kOne, kZero, kZero };
-            }
-
-            T halfRadians = std::acos(clampedW);
-            outDegrees = halfRadians * kTwo * kRadiansToDegrees;
         }
 
         bool IsNearlyEqual(const TQuaternion& other, T epsilon = kSafetyEpsilon) const
