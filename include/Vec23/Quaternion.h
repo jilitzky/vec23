@@ -245,9 +245,20 @@ namespace Vec23
 
         static TQuaternion Lerp(const TQuaternion& a, const TQuaternion& b, T t)
         {
-            TQuaternion target = (a.Dot(b) < kZero) ? -b : b;
-            TQuaternion result = ((kOne - t) * a) + (t * target);
-            return result.GetNormalized();
+            t = std::clamp(t, kZero, kOne);
+            T dot = a.Dot(b);
+            T scaleA = kOne - t;
+            T scaleB = (dot < kZero) ? -t : t;
+
+            TQuaternion result(
+                scaleA * a.w + scaleB * b.w,
+                scaleA * a.x + scaleB * b.x,
+                scaleA * a.y + scaleB * b.y,
+                scaleA * a.z + scaleB * b.z
+            );
+
+            result.Normalize();
+            return result;
         }
 
         static TQuaternion Slerp(const TQuaternion& a, const TQuaternion& b, T t)
@@ -288,11 +299,6 @@ namespace Vec23
         TVector3<T> operator*(const TVector3<T>& v) const
         {
             return RotateVector(v);
-        }
-
-        TQuaternion operator-() const
-        {
-            return { -w, -x, -y, -z };
         }
 
         TQuaternion& operator*=(const TQuaternion& other)
