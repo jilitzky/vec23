@@ -18,7 +18,7 @@ namespace Vec23
         T y;
         T z;
 
-        constexpr TQuaternion() : w(kOne), x(kZero), y(kZero), z(kZero) {}
+        constexpr TQuaternion() : w(kOne), x(TZero<T>), y(TZero<T>), z(TZero<T>) {}
 
         constexpr TQuaternion(T w, T x, T y, T z) : w(w), x(x), y(y), z(z) {}
 
@@ -29,7 +29,7 @@ namespace Vec23
         
         static TQuaternion FromAxisAngle(const TVector3<T>& axis, T degrees)
         {
-            T halfRadians = degrees * kHalf * kDegreesToRadians;
+            T halfRadians = degrees * THalf<T> * kDegreesToRadians;
             T cosT = std::cos(halfRadians);
             T sinT = std::sin(halfRadians);
 
@@ -51,15 +51,15 @@ namespace Vec23
 
         static TQuaternion FromEuler(T rollDegrees, T pitchDegrees, T yawDegrees)
         {
-            T halfRollRadians = rollDegrees * kHalf * kDegreesToRadians;
+            T halfRollRadians = rollDegrees * THalf<T> * kDegreesToRadians;
             T cosRoll = std::cos(halfRollRadians);
             T sinRoll = std::sin(halfRollRadians);
 
-            T halfPitchRadians = pitchDegrees * kHalf * kDegreesToRadians;
+            T halfPitchRadians = pitchDegrees * THalf<T> * kDegreesToRadians;
             T cosPitch = std::cos(halfPitchRadians);
             T sinPitch = std::sin(halfPitchRadians);
 
-            T halfYawRadians = yawDegrees * kHalf * kDegreesToRadians;
+            T halfYawRadians = yawDegrees * THalf<T> * kDegreesToRadians;
             T cosYaw = std::cos(halfYawRadians);
             T sinYaw = std::sin(halfYawRadians);
 
@@ -179,16 +179,16 @@ namespace Vec23
             TVector3<T> euler;
 
             T gimbalTest = w * y - x * z;
-            if (gimbalTest > kHalf - kToleranceEpsilon)
+            if (gimbalTest > THalf<T> - kToleranceEpsilon)
             {
-                euler.x = kZero;
-                euler.y = kPi * kHalf;
+                euler.x = TZero<T>;
+                euler.y = kPi * THalf<T>;
                 euler.z = kTwo * std::atan2(z, w);
             }
-            else if (gimbalTest < kToleranceEpsilon - kHalf)
+            else if (gimbalTest < kToleranceEpsilon - THalf<T>)
             {
-                euler.x = kZero;
-                euler.y = -kPi * kHalf;
+                euler.x = TZero<T>;
+                euler.y = -kPi * THalf<T>;
                 euler.z = kTwo * std::atan2(x, w);
             }
             else
@@ -212,8 +212,8 @@ namespace Vec23
             T sinSqT = kOne - (clampedW * clampedW);
             if (sinSqT < kSafetyEpsilon)
             {
-                outAxis = { kOne, kZero, kZero };
-                outDegrees = kZero;
+                outAxis = { kOne, TZero<T>, TZero<T> };
+                outDegrees = TZero<T>;
             }
             else
             {
@@ -249,10 +249,10 @@ namespace Vec23
 
         static TQuaternion Lerp(const TQuaternion& a, const TQuaternion& b, T t)
         {
-            t = std::clamp(t, kZero, kOne);
+            t = std::clamp(t, TZero<T>, kOne);
 
             const T dot = a.Dot(b);
-            const T sign = (dot < kZero) ? -kOne : kOne;
+            const T sign = (dot < TZero<T>) ? -kOne : kOne;
 
             TQuaternion result(
                 std::lerp(a.w, b.w * sign, t),
@@ -267,11 +267,11 @@ namespace Vec23
 
         static TQuaternion Slerp(const TQuaternion& a, const TQuaternion& b, T t)
         {
-            t = std::clamp(t, kZero, kOne);
+            t = std::clamp(t, TZero<T>, kOne);
 
             T dot = a.Dot(b);
             TQuaternion target = b;
-            if (dot < kZero)
+            if (dot < TZero<T>)
             {
                 dot = -dot;
                 target = -b;
@@ -367,7 +367,6 @@ namespace Vec23
         }
 
     private:
-        static constexpr T kHalf = THalf<T>;
         static constexpr T kOne = TOne<T>;
         static constexpr T kTwo = TTwo<T>;
         static constexpr T kPi = TPi<T>;

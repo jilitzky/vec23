@@ -242,7 +242,6 @@ namespace Vec23
         }
 
     private:
-        static constexpr T kHalf = THalf<T>;
         static constexpr T kOne = TOne<T>;
         static constexpr T kTwo = TTwo<T>;
         static constexpr T kPi = TPi<T>;
