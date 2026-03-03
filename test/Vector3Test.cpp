@@ -6,8 +6,6 @@
 
 using namespace Vec23;
 
-static constexpr float kToleranceEpsilon = TToleranceEpsilon<float>;
-
 TEST(Vector3Test, Addition)
 {
     Vector3 v1(1.0f, 2.0f, 3.0f);
@@ -20,14 +18,14 @@ TEST(Vector3Test, Angle)
 {
     Vector3 a(1.0f, 0.0f, 0.0f);
     Vector3 b(0.0f, -1.0f, 0.0f);
-    EXPECT_NEAR(Vector3::Angle(a, b), 90.0f, kToleranceEpsilon);
+    EXPECT_NEAR(Vector3::Angle(a, b), 90.0f, kToleranceEpsilon<float>);
 }
 
 TEST(Vector3Test, AngleEdgeCases)
 {
     Vector3 v(1.0f, 0.0f, 0.0f);
-    EXPECT_NEAR(Vector3::Angle(v, v), 0.0f, kToleranceEpsilon);
-    EXPECT_NEAR(Vector3::Angle(v, -v), 180.0f, kToleranceEpsilon);
+    EXPECT_NEAR(Vector3::Angle(v, v), 0.0f, kToleranceEpsilon<float>);
+    EXPECT_NEAR(Vector3::Angle(v, -v), 180.0f, kToleranceEpsilon<float>);
 }
 
 TEST(Vector3Test, ComponentConstructor)
@@ -147,8 +145,8 @@ TEST(Vector3Test, IsNormalized)
 TEST(Vector3Test, Length)
 {
     Vector3 v(1.0f, 1.0f, 1.0f);
-    EXPECT_NEAR(v.Length(), 1.732050f, kToleranceEpsilon);
-    EXPECT_NEAR(v.LengthSquared(), 3.0f, kToleranceEpsilon);
+    EXPECT_NEAR(v.Length(), 1.732050f, kToleranceEpsilon<float>);
+    EXPECT_NEAR(v.LengthSquared(), 3.0f, kToleranceEpsilon<float>);
 }
 
 TEST(Vector3Test, Lerp)
@@ -271,8 +269,8 @@ TEST(Vector3Test, SignedAngle)
     Vector3 a(1.0f, 0.0f, 0.0f);
     Vector3 b(0.0f, 0.0f, 1.0f);
     Vector3 up(0.0f, 1.0f, 0.0f);
-    EXPECT_NEAR(Vector3::SignedAngle(a, b, up), -90.0f, kToleranceEpsilon);
-    EXPECT_NEAR(Vector3::SignedAngle(b, a, up), 90.0f, kToleranceEpsilon);
+    EXPECT_NEAR(Vector3::SignedAngle(a, b, up), -90.0f, kToleranceEpsilon<float>);
+    EXPECT_NEAR(Vector3::SignedAngle(b, a, up), 90.0f, kToleranceEpsilon<float>);
 }
 
 TEST(Vector3Test, SubscriptOperator)

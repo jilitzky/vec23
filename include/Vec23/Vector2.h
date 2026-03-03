@@ -17,7 +17,7 @@ namespace Vec23
         T x;
         T y;
 
-        constexpr TVector2() : x(TZero<T>), y(TZero<T>) {}
+        constexpr TVector2() : x(kZero<T>), y(kZero<T>) {}
 
         constexpr TVector2(T x, T y) : x(x), y(y) {}
 
@@ -28,21 +28,21 @@ namespace Vec23
         void Normalize()
         {
             T lengthSq = LengthSquared();
-            if (lengthSq > TSafetyEpsilon<T>)
+            if (lengthSq > kSafetyEpsilon<T>)
             {
-                T invLength = TOne<T> / std::sqrt(lengthSq);
+                T invLength = kOne<T> / std::sqrt(lengthSq);
                 x *= invLength;
                 y *= invLength;
             }
             else
             {
-                x = y = TZero<T>;
+                x = y = kZero<T>;
             }
         }
 
         void Rotate(T degrees)
         {
-            T radians = degrees * TDegreesToRadians<T>;
+            T radians = degrees * kDegreesToRadians<T>;
             T cosT = std::cos(radians);
             T sinT = std::sin(radians);
             T oldX = x;
@@ -57,7 +57,7 @@ namespace Vec23
 
         bool IsNormalized() const
         {
-            return std::abs(LengthSquared() - TOne<T>) < TToleranceEpsilon<T>;
+            return std::abs(LengthSquared() - kOne<T>) < kToleranceEpsilon<T>;
         }
 
         TVector2 GetNormalized() const
@@ -94,7 +94,7 @@ namespace Vec23
             return (x * other.y) - (y * other.x);
         }
 
-        bool IsNearlyEqual(const TVector2& other, T epsilon = TToleranceEpsilon<T>) const
+        bool IsNearlyEqual(const TVector2& other, T epsilon = kToleranceEpsilon<T>) const
         {
             return DistanceSquared(*this, other) < (epsilon * epsilon);
         }
@@ -120,7 +120,7 @@ namespace Vec23
 
         static TVector2 Reflect(const TVector2& v, const TVector2& n)
         {
-            return v - n * (TTwo<T> * v.Dot(n));
+            return v - n * (kTwo<T> * v.Dot(n));
         }
 
         static TVector2 Lerp(const TVector2& a, const TVector2& b, T t)
@@ -138,7 +138,7 @@ namespace Vec23
             T dot = a.Dot(b);
             T cross = a.Cross(b);
             T radians = std::atan2(cross, dot);
-            return radians * TRadiansToDegrees<T>;
+            return radians * kRadiansToDegrees<T>;
         }
 
         // -------------------------
@@ -169,7 +169,7 @@ namespace Vec23
 
         TVector2 operator/(T scalar) const
         {
-            return *this * (TOne<T> / scalar);
+            return *this * (kOne<T> / scalar);
         }
 
         TVector2 operator-() const
@@ -200,7 +200,7 @@ namespace Vec23
 
         TVector2& operator/=(T scalar)
         {
-            *this *= TOne<T> / scalar;
+            *this *= kOne<T> / scalar;
             return *this;
         }
 

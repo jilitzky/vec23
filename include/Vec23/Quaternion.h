@@ -18,7 +18,7 @@ namespace Vec23
         T y;
         T z;
 
-        constexpr TQuaternion() : w(TOne<T>), x(TZero<T>), y(TZero<T>), z(TZero<T>) {}
+        constexpr TQuaternion() : w(kOne<T>), x(kZero<T>), y(kZero<T>), z(kZero<T>) {}
 
         constexpr TQuaternion(T w, T x, T y, T z) : w(w), x(x), y(y), z(z) {}
 
@@ -29,19 +29,19 @@ namespace Vec23
         
         static TQuaternion FromAxisAngle(const TVector3<T>& axis, T degrees)
         {
-            T halfRadians = degrees * THalf<T> * TDegreesToRadians<T>;
+            T halfRadians = degrees * kHalf<T> * kDegreesToRadians<T>;
             T cosT = std::cos(halfRadians);
             T sinT = std::sin(halfRadians);
 
             TVector3 u = axis;
             T lengthSq = u.LengthSquared();
 
-            if (lengthSq < TSafetyEpsilon<T>)
+            if (lengthSq < kSafetyEpsilon<T>)
             {
                 return Identity();
             }
 
-            if (std::abs(lengthSq - TOne<T>) > TSafetyEpsilon<T>)
+            if (std::abs(lengthSq - kOne<T>) > kSafetyEpsilon<T>)
             {
                 u.Normalize();
             }
@@ -51,15 +51,15 @@ namespace Vec23
 
         static TQuaternion FromEuler(T rollDegrees, T pitchDegrees, T yawDegrees)
         {
-            T halfRollRadians = rollDegrees * THalf<T> * TDegreesToRadians<T>;
+            T halfRollRadians = rollDegrees * kHalf<T> * kDegreesToRadians<T>;
             T cosRoll = std::cos(halfRollRadians);
             T sinRoll = std::sin(halfRollRadians);
 
-            T halfPitchRadians = pitchDegrees * THalf<T> * TDegreesToRadians<T>;
+            T halfPitchRadians = pitchDegrees * kHalf<T> * kDegreesToRadians<T>;
             T cosPitch = std::cos(halfPitchRadians);
             T sinPitch = std::sin(halfPitchRadians);
 
-            T halfYawRadians = yawDegrees * THalf<T> * TDegreesToRadians<T>;
+            T halfYawRadians = yawDegrees * kHalf<T> * kDegreesToRadians<T>;
             T cosYaw = std::cos(halfYawRadians);
             T sinYaw = std::sin(halfYawRadians);
 
@@ -78,9 +78,9 @@ namespace Vec23
         void Normalize()
         {
             T lengthSq = LengthSquared();
-            if (lengthSq > TSafetyEpsilon<T>)
+            if (lengthSq > kSafetyEpsilon<T>)
             {
-                T invLength = TOne<T> / std::sqrt(lengthSq);
+                T invLength = kOne<T> / std::sqrt(lengthSq);
                 w *= invLength;
                 x *= invLength;
                 y *= invLength;
@@ -102,9 +102,9 @@ namespace Vec23
         void Inverse()
         {
             T lengthSq = LengthSquared();
-            if (lengthSq > TSafetyEpsilon<T>)
+            if (lengthSq > kSafetyEpsilon<T>)
             {
-                T invLengthSq = TOne<T> / lengthSq;
+                T invLengthSq = kOne<T> / lengthSq;
                 w *= invLengthSq;
                 x *= -invLengthSq;
                 y *= -invLengthSq;
@@ -122,7 +122,7 @@ namespace Vec23
 
         bool IsNormalized() const
         {
-            return std::abs(LengthSquared() - TOne<T>) < TToleranceEpsilon<T>;
+            return std::abs(LengthSquared() - kOne<T>) < kToleranceEpsilon<T>;
         }
 
         T Length() const
@@ -163,9 +163,9 @@ namespace Vec23
 
         TVector3<T> RotateVector(const TVector3<T>& v) const
         {
-            T tempX = TTwo<T> * (y * v.z - z * v.y);
-            T tempY = TTwo<T> * (z * v.x - x * v.z);
-            T tempZ = TTwo<T> * (x * v.y - y * v.x);
+            T tempX = kTwo<T> * (y * v.z - z * v.y);
+            T tempY = kTwo<T> * (z * v.x - x * v.z);
+            T tempZ = kTwo<T> * (x * v.y - y * v.x);
 
             return TVector3<T>(
                 v.x + w * tempX + (y * tempZ - z * tempY),
@@ -179,17 +179,17 @@ namespace Vec23
             TVector3<T> euler;
 
             T gimbalTest = w * y - x * z;
-            if (gimbalTest > THalf<T> - TToleranceEpsilon<T>)
+            if (gimbalTest > kHalf<T> - kToleranceEpsilon<T>)
             {
-                euler.x = TZero<T>;
-                euler.y = TPi<T> * THalf<T>;
-                euler.z = TTwo<T> * std::atan2(z, w);
+                euler.x = kZero<T>;
+                euler.y = kPi<T> * kHalf<T>;
+                euler.z = kTwo<T> * std::atan2(z, w);
             }
-            else if (gimbalTest < TToleranceEpsilon<T> - THalf<T>)
+            else if (gimbalTest < kToleranceEpsilon<T> - kHalf<T>)
             {
-                euler.x = TZero<T>;
-                euler.y = -TPi<T> * THalf<T>;
-                euler.z = TTwo<T> * std::atan2(x, w);
+                euler.x = kZero<T>;
+                euler.y = -kPi<T> * kHalf<T>;
+                euler.z = kTwo<T> * std::atan2(x, w);
             }
             else
             {
@@ -198,40 +198,40 @@ namespace Vec23
                 T ySq = y * y;
                 T zSq = z * z;
 
-                euler.x = std::atan2(TTwo<T> * (w * x + y * z), wSq - xSq - ySq + zSq);
-                euler.y = std::asin(-TTwo<T> * (x * z - w * y));
-                euler.z = std::atan2(TTwo<T> * (x * y + w * z), wSq + xSq - ySq - zSq);
+                euler.x = std::atan2(kTwo<T> * (w * x + y * z), wSq - xSq - ySq + zSq);
+                euler.y = std::asin(-kTwo<T> * (x * z - w * y));
+                euler.z = std::atan2(kTwo<T> * (x * y + w * z), wSq + xSq - ySq - zSq);
             }
 
-            return euler * TRadiansToDegrees<T>;
+            return euler * kRadiansToDegrees<T>;
         }
 
         void ToAxisAngle(TVector3<T>& outAxis, T& outDegrees) const
         {
-            T clampedW = std::clamp(w, -TOne<T>, TOne<T>);
-            T sinSqT = TOne<T> - (clampedW * clampedW);
-            if (sinSqT < TSafetyEpsilon<T>)
+            T clampedW = std::clamp(w, -kOne<T>, kOne<T>);
+            T sinSqT = kOne<T> - (clampedW * clampedW);
+            if (sinSqT < kSafetyEpsilon<T>)
             {
-                outAxis = { TOne<T>, TZero<T>, TZero<T> };
-                outDegrees = TZero<T>;
+                outAxis = { kOne<T>, kZero<T>, kZero<T> };
+                outDegrees = kZero<T>;
             }
             else
             {
-                T invSinT = TOne<T> / std::sqrt(sinSqT);
+                T invSinT = kOne<T> / std::sqrt(sinSqT);
                 outAxis.x = x * invSinT;
                 outAxis.y = y * invSinT;
                 outAxis.z = z * invSinT;
-                outDegrees = std::acos(clampedW) * TTwo<T> * TRadiansToDegrees<T>;
+                outDegrees = std::acos(clampedW) * kTwo<T> * kRadiansToDegrees<T>;
             }
         }
 
-        bool IsNearlyEqual(const TQuaternion& other, T epsilon = TSafetyEpsilon<T>) const
+        bool IsNearlyEqual(const TQuaternion& other, T epsilon = kSafetyEpsilon<T>) const
         {
             T lenSqA = LengthSquared();
             T lenSqB = other.LengthSquared();
-            if (lenSqA < TSafetyEpsilon<T> || lenSqB < TSafetyEpsilon<T>)
+            if (lenSqA < kSafetyEpsilon<T> || lenSqB < kSafetyEpsilon<T>)
             {
-                return lenSqA < TSafetyEpsilon<T> && lenSqB < TSafetyEpsilon<T>;
+                return lenSqA < kSafetyEpsilon<T> && lenSqB < kSafetyEpsilon<T>;
             }
 
             T dot = Dot(other);
@@ -249,10 +249,10 @@ namespace Vec23
 
         static TQuaternion Lerp(const TQuaternion& a, const TQuaternion& b, T t)
         {
-            t = std::clamp(t, TZero<T>, TOne<T>);
+            t = std::clamp(t, kZero<T>, kOne<T>);
 
             const T dot = a.Dot(b);
-            const T sign = (dot < TZero<T>) ? -TOne<T> : TOne<T>;
+            const T sign = (dot < kZero<T>) ? -kOne<T> : kOne<T>;
 
             TQuaternion result(
                 std::lerp(a.w, b.w * sign, t),
@@ -267,25 +267,25 @@ namespace Vec23
 
         static TQuaternion Slerp(const TQuaternion& a, const TQuaternion& b, T t)
         {
-            t = std::clamp(t, TZero<T>, TOne<T>);
+            t = std::clamp(t, kZero<T>, kOne<T>);
 
             T dot = a.Dot(b);
             TQuaternion target = b;
-            if (dot < TZero<T>)
+            if (dot < kZero<T>)
             {
                 dot = -dot;
                 target = -b;
             }
 
-            if (dot > TOne<T> - TToleranceEpsilon<T>)
+            if (dot > kOne<T> - kToleranceEpsilon<T>)
             {
                 return Lerp(a, target, t);
             }
 
-            T theta = std::acos(std::clamp(dot, -TOne<T>, TOne<T>));
+            T theta = std::acos(std::clamp(dot, -kOne<T>, kOne<T>));
             T sinT = std::sin(theta);
-            T invSinT = TOne<T> / sinT;
-            T scaleA = std::sin((TOne<T> - t) * theta) * invSinT;
+            T invSinT = kOne<T> / sinT;
+            T scaleA = std::sin((kOne<T> - t) * theta) * invSinT;
             T scaleB = std::sin(t * theta) * invSinT;
             return (scaleA * a) + (scaleB * target);
         }
@@ -328,7 +328,7 @@ namespace Vec23
 
         TQuaternion operator/(T scalar) const
         {
-            return *this * (TOne<T> / scalar);
+            return *this * (kOne<T> / scalar);
         }
 
         TQuaternion operator-() const
@@ -357,7 +357,7 @@ namespace Vec23
 
         TQuaternion& operator/=(T scalar)
         {
-            *this *= TOne<T> / scalar;
+            *this *= kOne<T> / scalar;
             return *this;
         }
 
