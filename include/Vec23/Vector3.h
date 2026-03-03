@@ -29,7 +29,7 @@ namespace Vec23
         void Normalize()
         {
             T lengthSq = LengthSquared();
-            if (lengthSq > kSafetyEpsilon)
+            if (lengthSq > TSafetyEpsilon<T>)
             {
                 T invLength = TOne<T> / std::sqrt(lengthSq);
                 x *= invLength;
@@ -49,7 +49,7 @@ namespace Vec23
             T sinT = std::sin(radians);
 
             TVector3 u = axis;
-            if (std::abs(u.LengthSquared() - TOne<T>) > kSafetyEpsilon)
+            if (std::abs(u.LengthSquared() - TOne<T>) > TSafetyEpsilon<T>)
             {
                 u.Normalize();
             }
@@ -240,9 +240,6 @@ namespace Vec23
         {
             return v * scalar;
         }
-
-    private:
-        static constexpr T kSafetyEpsilon = TSafetyEpsilon<T>;
     };
 
     using Vector3 = TVector3<float>;

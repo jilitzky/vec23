@@ -28,7 +28,7 @@ namespace Vec23
         void Normalize()
         {
             T lengthSq = LengthSquared();
-            if (lengthSq > kSafetyEpsilon)
+            if (lengthSq > TSafetyEpsilon<T>)
             {
                 T invLength = TOne<T> / std::sqrt(lengthSq);
                 x *= invLength;
@@ -220,9 +220,6 @@ namespace Vec23
         {
             return v * scalar;
         }
-
-    private:
-        static constexpr T kSafetyEpsilon = TSafetyEpsilon<T>;
     };
 
     using Vector2 = TVector2<float>;

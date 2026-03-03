@@ -36,12 +36,12 @@ namespace Vec23
             TVector3 u = axis;
             T lengthSq = u.LengthSquared();
 
-            if (lengthSq < kSafetyEpsilon)
+            if (lengthSq < TSafetyEpsilon<T>)
             {
                 return Identity();
             }
 
-            if (std::abs(lengthSq - TOne<T>) > kSafetyEpsilon)
+            if (std::abs(lengthSq - TOne<T>) > TSafetyEpsilon<T>)
             {
                 u.Normalize();
             }
@@ -78,7 +78,7 @@ namespace Vec23
         void Normalize()
         {
             T lengthSq = LengthSquared();
-            if (lengthSq > kSafetyEpsilon)
+            if (lengthSq > TSafetyEpsilon<T>)
             {
                 T invLength = TOne<T> / std::sqrt(lengthSq);
                 w *= invLength;
@@ -102,7 +102,7 @@ namespace Vec23
         void Inverse()
         {
             T lengthSq = LengthSquared();
-            if (lengthSq > kSafetyEpsilon)
+            if (lengthSq > TSafetyEpsilon<T>)
             {
                 T invLengthSq = TOne<T> / lengthSq;
                 w *= invLengthSq;
@@ -210,7 +210,7 @@ namespace Vec23
         {
             T clampedW = std::clamp(w, -TOne<T>, TOne<T>);
             T sinSqT = TOne<T> - (clampedW * clampedW);
-            if (sinSqT < kSafetyEpsilon)
+            if (sinSqT < TSafetyEpsilon<T>)
             {
                 outAxis = { TOne<T>, TZero<T>, TZero<T> };
                 outDegrees = TZero<T>;
@@ -225,13 +225,13 @@ namespace Vec23
             }
         }
 
-        bool IsNearlyEqual(const TQuaternion& other, T epsilon = kSafetyEpsilon) const
+        bool IsNearlyEqual(const TQuaternion& other, T epsilon = TSafetyEpsilon<T>) const
         {
             T lenSqA = LengthSquared();
             T lenSqB = other.LengthSquared();
-            if (lenSqA < kSafetyEpsilon || lenSqB < kSafetyEpsilon)
+            if (lenSqA < TSafetyEpsilon<T> || lenSqB < TSafetyEpsilon<T>)
             {
-                return lenSqA < kSafetyEpsilon && lenSqB < kSafetyEpsilon;
+                return lenSqA < TSafetyEpsilon<T> && lenSqB < TSafetyEpsilon<T>;
             }
 
             T dot = Dot(other);
@@ -365,9 +365,6 @@ namespace Vec23
         {
             return q * scalar;
         }
-
-    private:
-        static constexpr T kSafetyEpsilon = TSafetyEpsilon<T>;
     };
 
     using Quaternion = TQuaternion<float>;
