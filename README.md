@@ -1,6 +1,6 @@
 # Vec23
 
-![Language](https://img.shields.io/badge/language-C%2B%2B17-blue.svg)
+![Language](https://img.shields.io/badge/language-C%2B%2B20-blue.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 
 **A lean library of vectors and quaternions written in modern C++.**
