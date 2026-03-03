@@ -117,7 +117,7 @@ namespace Vec23
         }
 
         // -------------------------
-        // Core Logic
+        // Core
         // -------------------------
 
         bool IsNormalized() const
