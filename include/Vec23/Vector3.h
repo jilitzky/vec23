@@ -163,6 +163,8 @@ namespace Vec23
         // Operators
         // -------------------------
 
+        bool operator==(const TVector3& other) const = default;
+
         TVector3 operator+(const TVector3& other) const
         {
             return { x + other.x, y + other.y, z + other.z };
@@ -221,16 +223,6 @@ namespace Vec23
         {
             *this *= kOne / scalar;
             return *this;
-        }
-
-        bool operator==(const TVector3& other) const
-        {
-            return x == other.x && y == other.y && z == other.z;
-        }
-
-        bool operator!=(const TVector3& other) const
-        {
-            return !(*this == other);
         }
 
         T& operator[](int index)

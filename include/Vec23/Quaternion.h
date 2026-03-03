@@ -295,6 +295,8 @@ namespace Vec23
         // Operators
         // -------------------------
 
+        bool operator==(const TQuaternion& other) const = default;
+
         TQuaternion operator+(const TQuaternion& other) const
         {
             return { w + other.w, x + other.x, y + other.y, z + other.z };
@@ -358,16 +360,6 @@ namespace Vec23
         {
             *this *= kOne / scalar;
             return *this;
-        }
-
-        bool operator==(const TQuaternion& other) const
-        {
-            return w == other.w && x == other.x && y == other.y && z == other.z;
-        }
-
-        bool operator!=(const TQuaternion& other) const
-        {
-            return !(*this == other);
         }
 
         friend TQuaternion operator*(T scalar, const TQuaternion& q)
