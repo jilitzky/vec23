@@ -11,7 +11,7 @@
 - [License](#license)
 
 ## Features
-* **Modern Design:** Written in C++17.
+* **Modern Design:** Written in C++20.
 * **Flexible:** Supports all floating point types.
 * **Header-Only:** Easy to drop into any project.
 
