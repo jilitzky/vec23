@@ -136,7 +136,7 @@ namespace Vec23
 
         static TVector3 Lerp(const TVector3& a, const TVector3& b, T t)
         {
-            return ((kOne - t) * a) + (t * b);
+            return { std::lerp(a.x, b.x, t), std::lerp(a.y, b.y, t), std::lerp(a.z, b.z, t) };
         }
 
         static T Angle(const TVector3& a, const TVector3& b)
