@@ -5,7 +5,7 @@
 #include <cassert>
 #include <cmath>
 #include <concepts>
-#include <sstream>
+#include <format>
 #include <string>
 #include "Constants.h"
 
@@ -112,9 +112,7 @@ namespace Vec23
 
         std::string ToString() const
         {
-            std::stringstream stream;
-            stream << "(" << x << ", " << y << ", " << z << ")";
-            return stream.str();
+            return std::format("({}, {}, {})", x, y, z);
         }
 
         // -------------------------
