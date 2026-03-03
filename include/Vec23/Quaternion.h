@@ -11,23 +11,23 @@
 namespace Vec23
 {
     template<std::floating_point T>
-    struct TQuaternion
+    struct Quaternion
     {
         T w;
         T x;
         T y;
         T z;
 
-        constexpr TQuaternion() : w(kOne<T>), x(kZero<T>), y(kZero<T>), z(kZero<T>) {}
+        constexpr Quaternion() : w(kOne<T>), x(kZero<T>), y(kZero<T>), z(kZero<T>) {}
 
-        constexpr TQuaternion(T w, T x, T y, T z) : w(w), x(x), y(y), z(z) {}
+        constexpr Quaternion(T w, T x, T y, T z) : w(w), x(x), y(y), z(z) {}
 
-        static constexpr TQuaternion Identity()
+        static constexpr Quaternion Identity()
         {
-            return TQuaternion();
+            return Quaternion();
         }
         
-        static TQuaternion FromAxisAngle(const Vector3<T>& axis, T degrees)
+        static Quaternion FromAxisAngle(const Vector3<T>& axis, T degrees)
         {
             T halfRadians = degrees * kHalf<T> * kDegreesToRadians<T>;
             T cosT = std::cos(halfRadians);
@@ -49,7 +49,7 @@ namespace Vec23
             return { cosT, u.x * sinT, u.y * sinT, u.z * sinT };
         }
 
-        static TQuaternion FromEuler(T rollDegrees, T pitchDegrees, T yawDegrees)
+        static Quaternion FromEuler(T rollDegrees, T pitchDegrees, T yawDegrees)
         {
             T halfRollRadians = rollDegrees * kHalf<T> * kDegreesToRadians<T>;
             T cosRoll = std::cos(halfRollRadians);
@@ -63,7 +63,7 @@ namespace Vec23
             T cosYaw = std::cos(halfYawRadians);
             T sinYaw = std::sin(halfYawRadians);
 
-            return TQuaternion(
+            return Quaternion(
                 cosRoll * cosPitch * cosYaw + sinRoll * sinPitch * sinYaw,
                 sinRoll * cosPitch * cosYaw - cosRoll * sinPitch * sinYaw,
                 cosRoll * sinPitch * cosYaw + sinRoll * cosPitch * sinYaw,
@@ -135,28 +135,28 @@ namespace Vec23
             return (w * w) + (x * x) + (y * y) + (z * z);
         }
 
-        T Dot(const TQuaternion& other) const
+        T Dot(const Quaternion& other) const
         {
             return (w * other.w) + (x * other.x) + (y * other.y) + (z * other.z);
         }
 
-        TQuaternion GetNormalized() const
+        Quaternion GetNormalized() const
         {
-            TQuaternion result = *this;
+            Quaternion result = *this;
             result.Normalize();
             return result;
         }
 
-        TQuaternion GetConjugated() const
+        Quaternion GetConjugated() const
         {
-            TQuaternion result = *this;
+            Quaternion result = *this;
             result.Conjugate();
             return result;
         }
 
-        TQuaternion GetInversed() const
+        Quaternion GetInversed() const
         {
-            TQuaternion result = *this;
+            Quaternion result = *this;
             result.Inverse();
             return result;
         }
@@ -225,7 +225,7 @@ namespace Vec23
             }
         }
 
-        bool IsNearlyEqual(const TQuaternion& other, T epsilon = kSafetyEpsilon<T>) const
+        bool IsNearlyEqual(const Quaternion& other, T epsilon = kSafetyEpsilon<T>) const
         {
             T lenSqA = LengthSquared();
             T lenSqB = other.LengthSquared();
@@ -247,14 +247,14 @@ namespace Vec23
         // Utilities
         // -------------------------
 
-        static TQuaternion Lerp(const TQuaternion& a, const TQuaternion& b, T t)
+        static Quaternion Lerp(const Quaternion& a, const Quaternion& b, T t)
         {
             t = std::clamp(t, kZero<T>, kOne<T>);
 
             const T dot = a.Dot(b);
             const T sign = (dot < kZero<T>) ? -kOne<T> : kOne<T>;
 
-            TQuaternion result(
+            Quaternion result(
                 std::lerp(a.w, b.w * sign, t),
                 std::lerp(a.x, b.x * sign, t),
                 std::lerp(a.y, b.y * sign, t),
@@ -265,12 +265,12 @@ namespace Vec23
             return result;
         }
 
-        static TQuaternion Slerp(const TQuaternion& a, const TQuaternion& b, T t)
+        static Quaternion Slerp(const Quaternion& a, const Quaternion& b, T t)
         {
             t = std::clamp(t, kZero<T>, kOne<T>);
 
             T dot = a.Dot(b);
-            TQuaternion target = b;
+            Quaternion target = b;
             if (dot < kZero<T>)
             {
                 dot = -dot;
@@ -294,21 +294,21 @@ namespace Vec23
         // Operators
         // -------------------------
 
-        bool operator==(const TQuaternion& other) const = default;
+        bool operator==(const Quaternion& other) const = default;
 
-        TQuaternion operator+(const TQuaternion& other) const
+        Quaternion operator+(const Quaternion& other) const
         {
             return { w + other.w, x + other.x, y + other.y, z + other.z };
         }
 
-        TQuaternion operator-(const TQuaternion& other) const
+        Quaternion operator-(const Quaternion& other) const
         {
             return { w - other.w, x - other.x, y - other.y, z - other.z };
         }
 
-        TQuaternion operator*(const TQuaternion& other) const
+        Quaternion operator*(const Quaternion& other) const
         {
-            return TQuaternion(
+            return Quaternion(
                 w * other.w - x * other.x - y * other.y - z * other.z,
                 w * other.x + x * other.w + y * other.z - z * other.y,
                 w * other.y - x * other.z + y * other.w + z * other.x,
@@ -316,7 +316,7 @@ namespace Vec23
             );
         }
 
-        TQuaternion operator*(T scalar) const
+        Quaternion operator*(T scalar) const
         {
             return { w * scalar, x * scalar, y * scalar, z * scalar };
         }
@@ -326,19 +326,19 @@ namespace Vec23
             return RotateVector(v);
         }
 
-        TQuaternion operator/(T scalar) const
+        Quaternion operator/(T scalar) const
         {
             return *this * (kOne<T> / scalar);
         }
 
-        TQuaternion operator-() const
+        Quaternion operator-() const
         {
             return { -w, -x, -y, -z };
         }
 
-        TQuaternion& operator*=(const TQuaternion& other)
+        Quaternion& operator*=(const Quaternion& other)
         {
-            TQuaternion temp = *this;
+            Quaternion temp = *this;
             w = temp.w * other.w - temp.x * other.x - temp.y * other.y - temp.z * other.z;
             x = temp.w * other.x + temp.x * other.w + temp.y * other.z - temp.z * other.y;
             y = temp.w * other.y - temp.x * other.z + temp.y * other.w + temp.z * other.x;
@@ -346,7 +346,7 @@ namespace Vec23
             return *this;
         }
 
-        TQuaternion& operator*=(T scalar)
+        Quaternion& operator*=(T scalar)
         {
             w *= scalar;
             x *= scalar;
@@ -355,19 +355,19 @@ namespace Vec23
             return *this;
         }
 
-        TQuaternion& operator/=(T scalar)
+        Quaternion& operator/=(T scalar)
         {
             *this *= kOne<T> / scalar;
             return *this;
         }
 
-        friend TQuaternion operator*(T scalar, const TQuaternion& q)
+        friend Quaternion operator*(T scalar, const Quaternion& q)
         {
             return q * scalar;
         }
     };
 
-    using Quaternion = TQuaternion<float>;
-    using DQuaternion = TQuaternion<double>;
-    using LDQuaternion = TQuaternion<long double>;
+    using FQuaternion = Quaternion<float>;
+    using DQuaternion = Quaternion<double>;
+    using LDQuaternion = Quaternion<long double>;
 }
