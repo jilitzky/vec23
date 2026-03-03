@@ -57,7 +57,7 @@ namespace Vec23
 
         bool IsNormalized() const
         {
-            return std::abs(LengthSquared() - TOne<T>) < kToleranceEpsilon;
+            return std::abs(LengthSquared() - TOne<T>) < TToleranceEpsilon<T>;
         }
 
         TVector2 GetNormalized() const
@@ -94,7 +94,7 @@ namespace Vec23
             return (x * other.y) - (y * other.x);
         }
 
-        bool IsNearlyEqual(const TVector2& other, T epsilon = kToleranceEpsilon) const
+        bool IsNearlyEqual(const TVector2& other, T epsilon = TToleranceEpsilon<T>) const
         {
             return DistanceSquared(*this, other) < (epsilon * epsilon);
         }
@@ -222,7 +222,6 @@ namespace Vec23
         }
 
     private:
-        static constexpr T kToleranceEpsilon = TToleranceEpsilon<T>;
         static constexpr T kSafetyEpsilon = TSafetyEpsilon<T>;
     };
 

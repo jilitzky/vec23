@@ -122,7 +122,7 @@ namespace Vec23
 
         bool IsNormalized() const
         {
-            return std::abs(LengthSquared() - TOne<T>) < kToleranceEpsilon;
+            return std::abs(LengthSquared() - TOne<T>) < TToleranceEpsilon<T>;
         }
 
         T Length() const
@@ -179,13 +179,13 @@ namespace Vec23
             TVector3<T> euler;
 
             T gimbalTest = w * y - x * z;
-            if (gimbalTest > THalf<T> - kToleranceEpsilon)
+            if (gimbalTest > THalf<T> - TToleranceEpsilon<T>)
             {
                 euler.x = TZero<T>;
                 euler.y = TPi<T> * THalf<T>;
                 euler.z = TTwo<T> * std::atan2(z, w);
             }
-            else if (gimbalTest < kToleranceEpsilon - THalf<T>)
+            else if (gimbalTest < TToleranceEpsilon<T> - THalf<T>)
             {
                 euler.x = TZero<T>;
                 euler.y = -TPi<T> * THalf<T>;
@@ -277,7 +277,7 @@ namespace Vec23
                 target = -b;
             }
 
-            if (dot > TOne<T> - kToleranceEpsilon)
+            if (dot > TOne<T> - TToleranceEpsilon<T>)
             {
                 return Lerp(a, target, t);
             }
@@ -367,7 +367,6 @@ namespace Vec23
         }
 
     private:
-        static constexpr T kToleranceEpsilon = TToleranceEpsilon<T>;
         static constexpr T kSafetyEpsilon = TSafetyEpsilon<T>;
     };
 
