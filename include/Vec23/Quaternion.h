@@ -268,8 +268,8 @@ namespace Vec23
         static TQuaternion Slerp(const TQuaternion& a, const TQuaternion& b, T t)
         {
             t = std::clamp(t, kZero, kOne);
-            T dot = a.Dot(b);
 
+            T dot = a.Dot(b);
             TQuaternion target = b;
             if (dot < kZero)
             {
