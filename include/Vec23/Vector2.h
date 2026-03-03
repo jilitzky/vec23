@@ -120,7 +120,7 @@ namespace Vec23
 
         static TVector2 Reflect(const TVector2& v, const TVector2& n)
         {
-            return v - n * (kTwo * v.Dot(n));
+            return v - n * (TTwo<T> * v.Dot(n));
         }
 
         static TVector2 Lerp(const TVector2& a, const TVector2& b, T t)
@@ -222,7 +222,6 @@ namespace Vec23
         }
 
     private:
-        static constexpr T kTwo = TTwo<T>;
         static constexpr T kPi = TPi<T>;
         static constexpr T kDegreesToRadians = TDegreesToRadians<T>;
         static constexpr T kRadiansToDegrees = TRadiansToDegrees<T>;

@@ -163,9 +163,9 @@ namespace Vec23
 
         TVector3<T> RotateVector(const TVector3<T>& v) const
         {
-            T tempX = kTwo * (y * v.z - z * v.y);
-            T tempY = kTwo * (z * v.x - x * v.z);
-            T tempZ = kTwo * (x * v.y - y * v.x);
+            T tempX = TTwo<T> * (y * v.z - z * v.y);
+            T tempY = TTwo<T> * (z * v.x - x * v.z);
+            T tempZ = TTwo<T> * (x * v.y - y * v.x);
 
             return TVector3<T>(
                 v.x + w * tempX + (y * tempZ - z * tempY),
@@ -183,13 +183,13 @@ namespace Vec23
             {
                 euler.x = TZero<T>;
                 euler.y = kPi * THalf<T>;
-                euler.z = kTwo * std::atan2(z, w);
+                euler.z = TTwo<T> * std::atan2(z, w);
             }
             else if (gimbalTest < kToleranceEpsilon - THalf<T>)
             {
                 euler.x = TZero<T>;
                 euler.y = -kPi * THalf<T>;
-                euler.z = kTwo * std::atan2(x, w);
+                euler.z = TTwo<T> * std::atan2(x, w);
             }
             else
             {
@@ -198,9 +198,9 @@ namespace Vec23
                 T ySq = y * y;
                 T zSq = z * z;
 
-                euler.x = std::atan2(kTwo * (w * x + y * z), wSq - xSq - ySq + zSq);
-                euler.y = std::asin(-kTwo * (x * z - w * y));
-                euler.z = std::atan2(kTwo * (x * y + w * z), wSq + xSq - ySq - zSq);
+                euler.x = std::atan2(TTwo<T> * (w * x + y * z), wSq - xSq - ySq + zSq);
+                euler.y = std::asin(-TTwo<T> * (x * z - w * y));
+                euler.z = std::atan2(TTwo<T> * (x * y + w * z), wSq + xSq - ySq - zSq);
             }
 
             return euler * kRadiansToDegrees;
@@ -221,7 +221,7 @@ namespace Vec23
                 outAxis.x = x * invSinT;
                 outAxis.y = y * invSinT;
                 outAxis.z = z * invSinT;
-                outDegrees = std::acos(clampedW) * kTwo * kRadiansToDegrees;
+                outDegrees = std::acos(clampedW) * TTwo<T> * kRadiansToDegrees;
             }
         }
 
@@ -367,7 +367,6 @@ namespace Vec23
         }
 
     private:
-        static constexpr T kTwo = TTwo<T>;
         static constexpr T kPi = TPi<T>;
         static constexpr T kDegreesToRadians = TDegreesToRadians<T>;
         static constexpr T kRadiansToDegrees = TRadiansToDegrees<T>;
