@@ -12,15 +12,15 @@
 namespace Vec23
 {
     template<std::floating_point T>
-    struct TVector3
+    struct Vector3
     {
         T x;
         T y;
         T z;
 
-        constexpr TVector3() : x(kZero<T>), y(kZero<T>), z(kZero<T>) {}
+        constexpr Vector3() : x(kZero<T>), y(kZero<T>), z(kZero<T>) {}
 
-        constexpr TVector3(T x, T y, T z) : x(x), y(y), z(z) {}
+        constexpr Vector3(T x, T y, T z) : x(x), y(y), z(z) {}
 
         // -------------------------
         // Modifiers
@@ -42,19 +42,19 @@ namespace Vec23
             }
         }
 
-        void Rotate(T degrees, const TVector3& axis)
+        void Rotate(T degrees, const Vector3& axis)
         {
             T radians = degrees * kDegreesToRadians<T>;
             T cosT = std::cos(radians);
             T sinT = std::sin(radians);
 
-            TVector3 u = axis;
+            Vector3 u = axis;
             if (std::abs(u.LengthSquared() - kOne<T>) > kSafetyEpsilon<T>)
             {
                 u.Normalize();
             }
 
-            TVector3 v = *this;
+            Vector3 v = *this;
             *this = (v * cosT) + (u.Cross(v) * sinT) + (u * u.Dot(v) * (kOne<T> - cosT));
         }
 
@@ -67,16 +67,16 @@ namespace Vec23
             return std::abs(LengthSquared() - kOne<T>) < kToleranceEpsilon<T>;
         }
 
-        TVector3 GetNormalized() const
+        Vector3 GetNormalized() const
         {
-            TVector3 result = *this;
+            Vector3 result = *this;
             result.Normalize();
             return result;
         }
 
-        TVector3 GetRotated(T degrees, const TVector3& axis) const
+        Vector3 GetRotated(T degrees, const Vector3& axis) const
         {
-            TVector3 result = *this;
+            Vector3 result = *this;
             result.Rotate(degrees, axis);
             return result;
         }
@@ -91,12 +91,12 @@ namespace Vec23
             return (x * x) + (y * y) + (z * z);
         }
 
-        T Dot(const TVector3& other) const
+        T Dot(const Vector3& other) const
         {
             return (x * other.x) + (y * other.y) + (z * other.z);
         }
 
-        TVector3 Cross(const TVector3& other) const
+        Vector3 Cross(const Vector3& other) const
         {
             return
             {
@@ -106,7 +106,7 @@ namespace Vec23
             };
         }
 
-        bool IsNearlyEqual(const TVector3& other, T epsilon = kToleranceEpsilon<T>) const
+        bool IsNearlyEqual(const Vector3& other, T epsilon = kToleranceEpsilon<T>) const
         {
             return DistanceSquared(*this, other) < (epsilon * epsilon);
         }
@@ -120,37 +120,37 @@ namespace Vec23
         // Utilities
         // -------------------------
 
-        static T Distance(const TVector3& a, const TVector3& b)
+        static T Distance(const Vector3& a, const Vector3& b)
         {
             return (b - a).Length();
         }
 
-        static T DistanceSquared(const TVector3& a, const TVector3& b)
+        static T DistanceSquared(const Vector3& a, const Vector3& b)
         {
             return (b - a).LengthSquared();
         }
 
-        static TVector3 Reflect(const TVector3& v, const TVector3& n)
+        static Vector3 Reflect(const Vector3& v, const Vector3& n)
         {
             return v - n * (kTwo<T> * v.Dot(n));
         }
 
-        static TVector3 Lerp(const TVector3& a, const TVector3& b, T t)
+        static Vector3 Lerp(const Vector3& a, const Vector3& b, T t)
         {
             return { std::lerp(a.x, b.x, t), std::lerp(a.y, b.y, t), std::lerp(a.z, b.z, t) };
         }
 
-        static T Angle(const TVector3& a, const TVector3& b)
+        static T Angle(const Vector3& a, const Vector3& b)
         {
             T dot = a.Dot(b);
-            TVector3 cross = a.Cross(b);
+            Vector3 cross = a.Cross(b);
             T radians = std::atan2(cross.Length(), dot);
             return radians * kRadiansToDegrees<T>;
         }
 
-        static T SignedAngle(const TVector3& a, const TVector3& b, const TVector3& axis)
+        static T SignedAngle(const Vector3& a, const Vector3& b, const Vector3& axis)
         {
-            TVector3 cross = a.Cross(b);
+            Vector3 cross = a.Cross(b);
             T dot = a.Dot(b);
             T radians = std::atan2(cross.Length(), dot);
             T degrees = radians * kRadiansToDegrees<T>;
@@ -162,39 +162,39 @@ namespace Vec23
         // Operators
         // -------------------------
 
-        bool operator==(const TVector3& other) const = default;
+        bool operator==(const Vector3& other) const = default;
 
-        TVector3 operator+(const TVector3& other) const
+        Vector3 operator+(const Vector3& other) const
         {
             return { x + other.x, y + other.y, z + other.z };
         }
 
-        TVector3 operator-(const TVector3& other) const
+        Vector3 operator-(const Vector3& other) const
         {
             return { x - other.x, y - other.y, z - other.z };
         }
 
-        TVector3 operator*(const TVector3& other) const
+        Vector3 operator*(const Vector3& other) const
         {
             return { x * other.x, y * other.y, z * other.z };
         }
 
-        TVector3 operator*(T scalar) const
+        Vector3 operator*(T scalar) const
         {
             return { x * scalar, y * scalar, z * scalar };
         }
 
-        TVector3 operator/(T scalar) const
+        Vector3 operator/(T scalar) const
         {
             return *this * (kOne<T> / scalar);
         }
 
-        TVector3 operator-() const
+        Vector3 operator-() const
         {
             return { -x, -y, -z };
         }
 
-        TVector3& operator+=(const TVector3& other)
+        Vector3& operator+=(const Vector3& other)
         {
             x += other.x;
             y += other.y;
@@ -202,7 +202,7 @@ namespace Vec23
             return *this;
         }
 
-        TVector3& operator-=(const TVector3& other)
+        Vector3& operator-=(const Vector3& other)
         {
             x -= other.x;
             y -= other.y;
@@ -210,7 +210,7 @@ namespace Vec23
             return *this;
         }
 
-        TVector3& operator*=(T scalar)
+        Vector3& operator*=(T scalar)
         {
             x *= scalar;
             y *= scalar;
@@ -218,7 +218,7 @@ namespace Vec23
             return *this;
         }
 
-        TVector3& operator/=(T scalar)
+        Vector3& operator/=(T scalar)
         {
             *this *= kOne<T> / scalar;
             return *this;
@@ -236,13 +236,13 @@ namespace Vec23
             return (&x)[index];
         }
 
-        friend TVector3 operator*(T scalar, const TVector3& v)
+        friend Vector3 operator*(T scalar, const Vector3& v)
         {
             return v * scalar;
         }
     };
 
-    using Vector3 = TVector3<float>;
-    using DVector3 = TVector3<double>;
-    using LDVector3 = TVector3<long double>;
+    using FVector3 = Vector3<float>;
+    using DVector3 = Vector3<double>;
+    using LDVector3 = Vector3<long double>;
 }

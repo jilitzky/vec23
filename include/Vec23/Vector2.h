@@ -12,14 +12,14 @@
 namespace Vec23
 {
     template<std::floating_point T>
-    struct TVector2
+    struct Vector2
     {
         T x;
         T y;
 
-        constexpr TVector2() : x(kZero<T>), y(kZero<T>) {}
+        constexpr Vector2() : x(kZero<T>), y(kZero<T>) {}
 
-        constexpr TVector2(T x, T y) : x(x), y(y) {}
+        constexpr Vector2(T x, T y) : x(x), y(y) {}
 
         // -------------------------
         // Modifiers
@@ -60,16 +60,16 @@ namespace Vec23
             return std::abs(LengthSquared() - kOne<T>) < kToleranceEpsilon<T>;
         }
 
-        TVector2 GetNormalized() const
+        Vector2 GetNormalized() const
         {
-            TVector2 result = *this;
+            Vector2 result = *this;
             result.Normalize();
             return result;
         }
 
-        TVector2 GetRotated(T degrees) const
+        Vector2 GetRotated(T degrees) const
         {
-            TVector2 result = *this;
+            Vector2 result = *this;
             result.Rotate(degrees);
             return result;
         }
@@ -84,17 +84,17 @@ namespace Vec23
             return (x * x) + (y * y);
         }
 
-        T Dot(const TVector2& other) const
+        T Dot(const Vector2& other) const
         {
             return (x * other.x) + (y * other.y);
         }
 
-        T Cross(const TVector2& other) const
+        T Cross(const Vector2& other) const
         {
             return (x * other.y) - (y * other.x);
         }
 
-        bool IsNearlyEqual(const TVector2& other, T epsilon = kToleranceEpsilon<T>) const
+        bool IsNearlyEqual(const Vector2& other, T epsilon = kToleranceEpsilon<T>) const
         {
             return DistanceSquared(*this, other) < (epsilon * epsilon);
         }
@@ -108,32 +108,32 @@ namespace Vec23
         // Utilities
         // -------------------------
 
-        static T Distance(const TVector2& a, const TVector2& b)
+        static T Distance(const Vector2& a, const Vector2& b)
         {
             return (b - a).Length();
         }
 
-        static T DistanceSquared(const TVector2& a, const TVector2& b)
+        static T DistanceSquared(const Vector2& a, const Vector2& b)
         {
             return (b - a).LengthSquared();
         }
 
-        static TVector2 Reflect(const TVector2& v, const TVector2& n)
+        static Vector2 Reflect(const Vector2& v, const Vector2& n)
         {
             return v - n * (kTwo<T> * v.Dot(n));
         }
 
-        static TVector2 Lerp(const TVector2& a, const TVector2& b, T t)
+        static Vector2 Lerp(const Vector2& a, const Vector2& b, T t)
         {
             return { std::lerp(a.x, b.x, t), std::lerp(a.y, b.y, t) };
         }
 
-        static T Angle(const TVector2& a, const TVector2& b)
+        static T Angle(const Vector2& a, const Vector2& b)
         {
             return std::abs(SignedAngle(a, b));
         }
 
-        static T SignedAngle(const TVector2& a, const TVector2& b)
+        static T SignedAngle(const Vector2& a, const Vector2& b)
         {
             T dot = a.Dot(b);
             T cross = a.Cross(b);
@@ -145,60 +145,60 @@ namespace Vec23
         // Operators
         // -------------------------
 
-        bool operator==(const TVector2& other) const = default;
+        bool operator==(const Vector2& other) const = default;
 
-        TVector2 operator+(const TVector2& other) const
+        Vector2 operator+(const Vector2& other) const
         {
             return { x + other.x, y + other.y };
         }
 
-        TVector2 operator-(const TVector2& other) const
+        Vector2 operator-(const Vector2& other) const
         {
             return { x - other.x, y - other.y };
         }
 
-        TVector2 operator*(const TVector2& other) const
+        Vector2 operator*(const Vector2& other) const
         {
             return { x * other.x, y * other.y };
         }
 
-        TVector2 operator*(T scalar) const
+        Vector2 operator*(T scalar) const
         {
             return { x * scalar, y * scalar };
         }
 
-        TVector2 operator/(T scalar) const
+        Vector2 operator/(T scalar) const
         {
             return *this * (kOne<T> / scalar);
         }
 
-        TVector2 operator-() const
+        Vector2 operator-() const
         {
             return { -x, -y };
         }
 
-        TVector2& operator+=(const TVector2& other)
+        Vector2& operator+=(const Vector2& other)
         {
             x += other.x;
             y += other.y;
             return *this;
         }
 
-        TVector2& operator-=(const TVector2& other)
+        Vector2& operator-=(const Vector2& other)
         {
             x -= other.x;
             y -= other.y;
             return *this;
         }
 
-        TVector2& operator*=(T scalar)
+        Vector2& operator*=(T scalar)
         {
             x *= scalar;
             y *= scalar;
             return *this;
         }
 
-        TVector2& operator/=(T scalar)
+        Vector2& operator/=(T scalar)
         {
             *this *= kOne<T> / scalar;
             return *this;
@@ -216,13 +216,13 @@ namespace Vec23
             return (&x)[index];
         }
 
-        friend TVector2 operator*(T scalar, const TVector2& v)
+        friend Vector2 operator*(T scalar, const Vector2& v)
         {
             return v * scalar;
         }
     };
 
-    using Vector2 = TVector2<float>;
-    using DVector2 = TVector2<double>;
-    using LDVector2 = TVector2<long double>;
+    using FVector2 = Vector2<float>;
+    using DVector2 = Vector2<double>;
+    using LDVector2 = Vector2<long double>;
 }
