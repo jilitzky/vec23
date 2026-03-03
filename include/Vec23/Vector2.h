@@ -76,7 +76,7 @@ namespace Vec23
 
         T Length() const
         {
-            return std::sqrt(LengthSquared());
+            return std::hypot(x, y);
         }
 
         T LengthSquared() const
@@ -125,7 +125,7 @@ namespace Vec23
 
         static TVector2 Lerp(const TVector2& a, const TVector2& b, T t)
         {
-            return ((kOne - t) * a) + (t * b);
+            return { std::lerp(a.x, b.x, t), std::lerp(a.y, b.y, t) };
         }
 
         static T Angle(const TVector2& a, const TVector2& b)

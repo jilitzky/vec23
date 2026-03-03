@@ -250,15 +250,15 @@ namespace Vec23
         static TQuaternion Lerp(const TQuaternion& a, const TQuaternion& b, T t)
         {
             t = std::clamp(t, kZero, kOne);
-            T dot = a.Dot(b);
-            T scaleA = kOne - t;
-            T scaleB = (dot < kZero) ? -t : t;
+
+            const T dot = a.Dot(b);
+            const T sign = (dot < kZero) ? -kOne : kOne;
 
             TQuaternion result(
-                scaleA * a.w + scaleB * b.w,
-                scaleA * a.x + scaleB * b.x,
-                scaleA * a.y + scaleB * b.y,
-                scaleA * a.z + scaleB * b.z
+                std::lerp(a.w, b.w * sign, t),
+                std::lerp(a.x, b.x * sign, t),
+                std::lerp(a.y, b.y * sign, t),
+                std::lerp(a.z, b.z * sign, t)
             );
 
             result.Normalize();
@@ -268,8 +268,8 @@ namespace Vec23
         static TQuaternion Slerp(const TQuaternion& a, const TQuaternion& b, T t)
         {
             t = std::clamp(t, kZero, kOne);
-            T dot = a.Dot(b);
 
+            T dot = a.Dot(b);
             TQuaternion target = b;
             if (dot < kZero)
             {
