@@ -3,6 +3,7 @@
 #pragma once
 
 #include <algorithm>
+#include <concepts>
 #include "Constants.h"
 #include "Vector3.h"
 

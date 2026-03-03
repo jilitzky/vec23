@@ -2,6 +2,8 @@
 
 #pragma once
 
+#include <concepts>
+
 namespace Vec23
 {
     template<std::floating_point T>
