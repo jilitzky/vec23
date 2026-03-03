@@ -6,8 +6,6 @@
 
 using namespace Vec23;
 
-static constexpr float kToleranceEpsilon = TToleranceEpsilon<float>;
-
 TEST(QuaternionTest, Conjugate)
 {
     Quaternion q(2.0f, -1.0f, 1.0f, 3.0f);
@@ -28,7 +26,7 @@ TEST(QuaternionTest, Dot)
 {
     Quaternion q1(1.0f, 2.0f, 3.0f, 4.0f);
     Quaternion q2(4.0f, 3.0f, 2.0f, 1.0f);
-    EXPECT_NEAR(q1.Dot(q2), 20.f, kToleranceEpsilon);
+    EXPECT_NEAR(q1.Dot(q2), 20.f, kToleranceEpsilon<float>);
 }
 
 TEST(QuaternionTest, EqualsOperator)
@@ -81,8 +79,8 @@ TEST(QuaternionTest, IsNormalized)
 TEST(QuaternionTest, Length)
 {
     Quaternion q(1.0f, 1.0f, 1.0f, 1.0f);
-    EXPECT_NEAR(q.Length(), 2.0f, kToleranceEpsilon);
-    EXPECT_NEAR(q.LengthSquared(), 4.0f, kToleranceEpsilon);
+    EXPECT_NEAR(q.Length(), 2.0f, kToleranceEpsilon<float>);
+    EXPECT_NEAR(q.LengthSquared(), 4.0f, kToleranceEpsilon<float>);
 }
 
 TEST(QuaternionTest, Lerp)
@@ -148,7 +146,7 @@ TEST(QuaternionTest, SlerpConstantVelocity)
     Quaternion q2 = Quaternion::FromAxisAngle({ 1.0f, 0.0f, 0.0f }, 90.0f);
     Quaternion slerp = Quaternion::Slerp(q1, q2, 0.25f);
     Quaternion expected = Quaternion::FromAxisAngle({ 1.0f, 0.0f, 0.0f }, 22.5f);
-    EXPECT_TRUE(slerp.IsNearlyEqual(expected, kToleranceEpsilon));
+    EXPECT_TRUE(slerp.IsNearlyEqual(expected, kToleranceEpsilon<float>));
 }
 
 TEST(QuaternionTest, SlerpPrecisionSmallAngle)
@@ -165,10 +163,10 @@ TEST(QuaternionTest, SlerpShortestPath)
     Quaternion q1(1.0f, 0.0f, 0.0f, 0.0f);
     Quaternion q2(-1.0f, 0.0f, 0.0f, 0.0f);
     Quaternion result = Quaternion::Slerp(q1, q2, 0.5f);
-    EXPECT_NEAR(std::abs(result.w), 1.0f, kToleranceEpsilon);
-    EXPECT_NEAR(result.x, 0.0f, kToleranceEpsilon);
-    EXPECT_NEAR(result.y, 0.0f, kToleranceEpsilon);
-    EXPECT_NEAR(result.z, 0.0f, kToleranceEpsilon);
+    EXPECT_NEAR(std::abs(result.w), 1.0f, kToleranceEpsilon<float>);
+    EXPECT_NEAR(result.x, 0.0f, kToleranceEpsilon<float>);
+    EXPECT_NEAR(result.y, 0.0f, kToleranceEpsilon<float>);
+    EXPECT_NEAR(result.z, 0.0f, kToleranceEpsilon<float>);
 }
 
 TEST(QuaternionTest, ToAxisAngle)
@@ -178,7 +176,7 @@ TEST(QuaternionTest, ToAxisAngle)
     float degrees;
     q.ToAxisAngle(axis, degrees);
     EXPECT_TRUE(axis.IsNearlyEqual({ 0.0f, 1.0f, 0.0f }));
-    EXPECT_NEAR(degrees, 90.0f, kToleranceEpsilon);
+    EXPECT_NEAR(degrees, 90.0f, kToleranceEpsilon<float>);
 }
 
 TEST(QuaternionTest, ToEuler)
@@ -188,16 +186,16 @@ TEST(QuaternionTest, ToEuler)
     float yaw = 45.0f;
     auto q = Quaternion::FromEuler(roll, pitch, yaw);
     auto result = q.ToEuler();
-    EXPECT_NEAR(result.x, roll, kToleranceEpsilon);
-    EXPECT_NEAR(result.y, pitch, kToleranceEpsilon);
-    EXPECT_NEAR(result.z, yaw, kToleranceEpsilon);
+    EXPECT_NEAR(result.x, roll, kToleranceEpsilon<float>);
+    EXPECT_NEAR(result.y, pitch, kToleranceEpsilon<float>);
+    EXPECT_NEAR(result.z, yaw, kToleranceEpsilon<float>);
 }
 
 TEST(QuaternionTest, ToEulerGimbalLock)
 {
     auto q = Quaternion::FromEuler(0.0f, 90.0f, 45.0f);
     auto result = q.ToEuler();
-    EXPECT_NEAR(result.x, 0.0f, kToleranceEpsilon);
-    EXPECT_NEAR(result.y, 90.0f, kToleranceEpsilon);
-    EXPECT_NEAR(result.z, 45.0f, kToleranceEpsilon);
+    EXPECT_NEAR(result.x, 0.0f, kToleranceEpsilon<float>);
+    EXPECT_NEAR(result.y, 90.0f, kToleranceEpsilon<float>);
+    EXPECT_NEAR(result.z, 45.0f, kToleranceEpsilon<float>);
 }

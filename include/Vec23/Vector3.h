@@ -18,7 +18,7 @@ namespace Vec23
         T y;
         T z;
 
-        constexpr TVector3() : x(kZero), y(kZero), z(kZero) {}
+        constexpr TVector3() : x(kZero<T>), y(kZero<T>), z(kZero<T>) {}
 
         constexpr TVector3(T x, T y, T z) : x(x), y(y), z(z) {}
 
@@ -29,33 +29,33 @@ namespace Vec23
         void Normalize()
         {
             T lengthSq = LengthSquared();
-            if (lengthSq > kSafetyEpsilon)
+            if (lengthSq > kSafetyEpsilon<T>)
             {
-                T invLength = kOne / std::sqrt(lengthSq);
+                T invLength = kOne<T> / std::sqrt(lengthSq);
                 x *= invLength;
                 y *= invLength;
                 z *= invLength;
             }
             else
             {
-                x = y = z = kZero;
+                x = y = z = kZero<T>;
             }
         }
 
         void Rotate(T degrees, const TVector3& axis)
         {
-            T radians = degrees * kDegreesToRadians;
+            T radians = degrees * kDegreesToRadians<T>;
             T cosT = std::cos(radians);
             T sinT = std::sin(radians);
 
             TVector3 u = axis;
-            if (std::abs(u.LengthSquared() - kOne) > kSafetyEpsilon)
+            if (std::abs(u.LengthSquared() - kOne<T>) > kSafetyEpsilon<T>)
             {
                 u.Normalize();
             }
 
             TVector3 v = *this;
-            *this = (v * cosT) + (u.Cross(v) * sinT) + (u * u.Dot(v) * (kOne - cosT));
+            *this = (v * cosT) + (u.Cross(v) * sinT) + (u * u.Dot(v) * (kOne<T> - cosT));
         }
 
         // -------------------------
@@ -64,7 +64,7 @@ namespace Vec23
 
         bool IsNormalized() const
         {
-            return std::abs(LengthSquared() - kOne) < kToleranceEpsilon;
+            return std::abs(LengthSquared() - kOne<T>) < kToleranceEpsilon<T>;
         }
 
         TVector3 GetNormalized() const
@@ -106,7 +106,7 @@ namespace Vec23
             };
         }
 
-        bool IsNearlyEqual(const TVector3& other, T epsilon = kToleranceEpsilon) const
+        bool IsNearlyEqual(const TVector3& other, T epsilon = kToleranceEpsilon<T>) const
         {
             return DistanceSquared(*this, other) < (epsilon * epsilon);
         }
@@ -132,7 +132,7 @@ namespace Vec23
 
         static TVector3 Reflect(const TVector3& v, const TVector3& n)
         {
-            return v - n * (kTwo * v.Dot(n));
+            return v - n * (kTwo<T> * v.Dot(n));
         }
 
         static TVector3 Lerp(const TVector3& a, const TVector3& b, T t)
@@ -145,7 +145,7 @@ namespace Vec23
             T dot = a.Dot(b);
             TVector3 cross = a.Cross(b);
             T radians = std::atan2(cross.Length(), dot);
-            return radians * kRadiansToDegrees;
+            return radians * kRadiansToDegrees<T>;
         }
 
         static T SignedAngle(const TVector3& a, const TVector3& b, const TVector3& axis)
@@ -153,9 +153,9 @@ namespace Vec23
             TVector3 cross = a.Cross(b);
             T dot = a.Dot(b);
             T radians = std::atan2(cross.Length(), dot);
-            T degrees = radians * kRadiansToDegrees;
+            T degrees = radians * kRadiansToDegrees<T>;
             T sign = cross.Dot(axis);
-            return (sign < kZero) ? -degrees : degrees;
+            return (sign < kZero<T>) ? -degrees : degrees;
         }
 
         // -------------------------
@@ -186,7 +186,7 @@ namespace Vec23
 
         TVector3 operator/(T scalar) const
         {
-            return *this * (kOne / scalar);
+            return *this * (kOne<T> / scalar);
         }
 
         TVector3 operator-() const
@@ -220,7 +220,7 @@ namespace Vec23
 
         TVector3& operator/=(T scalar)
         {
-            *this *= kOne / scalar;
+            *this *= kOne<T> / scalar;
             return *this;
         }
 
@@ -240,17 +240,6 @@ namespace Vec23
         {
             return v * scalar;
         }
-
-    private:
-        static constexpr T kZero = TZero<T>;
-        static constexpr T kHalf = THalf<T>;
-        static constexpr T kOne = TOne<T>;
-        static constexpr T kTwo = TTwo<T>;
-        static constexpr T kPi = TPi<T>;
-        static constexpr T kDegreesToRadians = TDegreesToRadians<T>;
-        static constexpr T kRadiansToDegrees = TRadiansToDegrees<T>;
-        static constexpr T kToleranceEpsilon = TToleranceEpsilon<T>;
-        static constexpr T kSafetyEpsilon = TSafetyEpsilon<T>;
     };
 
     using Vector3 = TVector3<float>;
