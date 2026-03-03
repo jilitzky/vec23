@@ -17,7 +17,7 @@ namespace Vec23
         T x;
         T y;
 
-        constexpr TVector2() : x(kZero), y(kZero) {}
+        constexpr TVector2() : x(TZero<T>), y(TZero<T>) {}
 
         constexpr TVector2(T x, T y) : x(x), y(y) {}
 
@@ -36,7 +36,7 @@ namespace Vec23
             }
             else
             {
-                x = y = kZero;
+                x = y = TZero<T>;
             }
         }
 
@@ -222,7 +222,6 @@ namespace Vec23
         }
 
     private:
-        static constexpr T kZero = TZero<T>;
         static constexpr T kHalf = THalf<T>;
         static constexpr T kOne = TOne<T>;
         static constexpr T kTwo = TTwo<T>;

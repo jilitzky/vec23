@@ -18,7 +18,7 @@ namespace Vec23
         T y;
         T z;
 
-        constexpr TVector3() : x(kZero), y(kZero), z(kZero) {}
+        constexpr TVector3() : x(TZero<T>), y(TZero<T>), z(TZero<T>) {}
 
         constexpr TVector3(T x, T y, T z) : x(x), y(y), z(z) {}
 
@@ -38,7 +38,7 @@ namespace Vec23
             }
             else
             {
-                x = y = z = kZero;
+                x = y = z = TZero<T>;
             }
         }
 
@@ -155,7 +155,7 @@ namespace Vec23
             T radians = std::atan2(cross.Length(), dot);
             T degrees = radians * kRadiansToDegrees;
             T sign = cross.Dot(axis);
-            return (sign < kZero) ? -degrees : degrees;
+            return (sign < TZero<T>) ? -degrees : degrees;
         }
 
         // -------------------------
@@ -242,7 +242,6 @@ namespace Vec23
         }
 
     private:
-        static constexpr T kZero = TZero<T>;
         static constexpr T kHalf = THalf<T>;
         static constexpr T kOne = TOne<T>;
         static constexpr T kTwo = TTwo<T>;
