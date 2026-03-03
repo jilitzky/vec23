@@ -3,39 +3,41 @@
 #pragma once
 
 #include <concepts>
+#include <limits>
+#include <numbers>
 
 namespace Vec23
 {
     template<std::floating_point T>
-    inline constexpr T TZero = static_cast<T>(0.0L);
+    inline constexpr T TZero = T(0);
 
     template<std::floating_point T>
-    inline constexpr T THalf = static_cast<T>(0.5L);
+    inline constexpr T THalf = T(0.5);
 
     template<std::floating_point T>
-    inline constexpr T TOne = static_cast<T>(1.0L);
+    inline constexpr T TOne = T(1);
 
     template<std::floating_point T>
-    inline constexpr T TTwo = static_cast<T>(2.0L);
+    inline constexpr T TTwo = T(2);
 
     template<std::floating_point T>
-    inline constexpr T TPi = static_cast<T>(3.1415926535897932384626433L);
+    inline constexpr T TPi = std::numbers::pi_v<T>;
     
     template<std::floating_point T>
-    inline constexpr T TDegreesToRadians = TPi<T> / static_cast<T>(180.0L);
+    inline constexpr T TDegreesToRadians = TPi<T> / T(180);
 
     template<std::floating_point T>
-    inline constexpr T TRadiansToDegrees = static_cast<T>(180.0L) / TPi<T>;
+    inline constexpr T TRadiansToDegrees = T(180) / TPi<T>;
 
     template<std::floating_point T>
     inline constexpr T TToleranceEpsilon =
-        (sizeof(T) > 8) ? static_cast<T>(1e-12L) :
-        (sizeof(T) == 8) ? static_cast<T>(1e-9) :
-        static_cast<T>(1e-4f);
+        std::same_as<T, long double> ? 1e-12L :
+        std::same_as<T, double> ? 1e-9 :
+        1e-4f;
 
     template<std::floating_point T>
     inline constexpr T TSafetyEpsilon =
-        (sizeof(T) > 8) ? static_cast<T>(1e-15L) :
-        (sizeof(T) == 8) ? static_cast<T>(1e-12) :
-        static_cast<T>(1e-6f);
+        std::same_as<T, long double> ? 1e-15L :
+        std::same_as<T, double> ? 1e-12 :
+        1e-6f;
 }
