@@ -143,7 +143,7 @@ namespace Vec23
         {
             T dot = a.Dot(b);
             TVector3 cross = a.Cross(b);
-            T radians = std::atan2f(cross.Length(), dot);
+            T radians = std::atan2(cross.Length(), dot);
             return radians * kRadiansToDegrees;
         }
 
@@ -151,7 +151,7 @@ namespace Vec23
         {
             TVector3 cross = a.Cross(b);
             T dot = a.Dot(b);
-            T radians = std::atan2f(cross.Length(), dot);
+            T radians = std::atan2(cross.Length(), dot);
             T degrees = radians * kRadiansToDegrees;
             T sign = cross.Dot(axis);
             return (sign < kZero) ? -degrees : degrees;

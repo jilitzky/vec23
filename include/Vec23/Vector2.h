@@ -137,7 +137,7 @@ namespace Vec23
         {
             T dot = a.Dot(b);
             T cross = a.Cross(b);
-            T radians = std::atan2f(cross, dot);
+            T radians = std::atan2(cross, dot);
             return radians * kRadiansToDegrees;
         }
 
