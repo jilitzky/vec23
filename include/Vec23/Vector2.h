@@ -138,7 +138,7 @@ namespace Vec23
             T dot = a.Dot(b);
             T cross = a.Cross(b);
             T radians = std::atan2(cross, dot);
-            return radians * kRadiansToDegrees;
+            return radians * TRadiansToDegrees<T>;
         }
 
         // -------------------------
@@ -222,7 +222,6 @@ namespace Vec23
         }
 
     private:
-        static constexpr T kRadiansToDegrees = TRadiansToDegrees<T>;
         static constexpr T kToleranceEpsilon = TToleranceEpsilon<T>;
         static constexpr T kSafetyEpsilon = TSafetyEpsilon<T>;
     };

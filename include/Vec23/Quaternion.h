@@ -203,7 +203,7 @@ namespace Vec23
                 euler.z = std::atan2(TTwo<T> * (x * y + w * z), wSq + xSq - ySq - zSq);
             }
 
-            return euler * kRadiansToDegrees;
+            return euler * TRadiansToDegrees<T>;
         }
 
         void ToAxisAngle(TVector3<T>& outAxis, T& outDegrees) const
@@ -221,7 +221,7 @@ namespace Vec23
                 outAxis.x = x * invSinT;
                 outAxis.y = y * invSinT;
                 outAxis.z = z * invSinT;
-                outDegrees = std::acos(clampedW) * TTwo<T> * kRadiansToDegrees;
+                outDegrees = std::acos(clampedW) * TTwo<T> * TRadiansToDegrees<T>;
             }
         }
 
@@ -367,7 +367,6 @@ namespace Vec23
         }
 
     private:
-        static constexpr T kRadiansToDegrees = TRadiansToDegrees<T>;
         static constexpr T kToleranceEpsilon = TToleranceEpsilon<T>;
         static constexpr T kSafetyEpsilon = TSafetyEpsilon<T>;
     };

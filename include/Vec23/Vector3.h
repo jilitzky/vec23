@@ -145,7 +145,7 @@ namespace Vec23
             T dot = a.Dot(b);
             TVector3 cross = a.Cross(b);
             T radians = std::atan2(cross.Length(), dot);
-            return radians * kRadiansToDegrees;
+            return radians * TRadiansToDegrees<T>;
         }
 
         static T SignedAngle(const TVector3& a, const TVector3& b, const TVector3& axis)
@@ -153,7 +153,7 @@ namespace Vec23
             TVector3 cross = a.Cross(b);
             T dot = a.Dot(b);
             T radians = std::atan2(cross.Length(), dot);
-            T degrees = radians * kRadiansToDegrees;
+            T degrees = radians * TRadiansToDegrees<T>;
             T sign = cross.Dot(axis);
             return (sign < TZero<T>) ? -degrees : degrees;
         }
@@ -242,7 +242,6 @@ namespace Vec23
         }
 
     private:
-        static constexpr T kRadiansToDegrees = TRadiansToDegrees<T>;
         static constexpr T kToleranceEpsilon = TToleranceEpsilon<T>;
         static constexpr T kSafetyEpsilon = TSafetyEpsilon<T>;
     };
