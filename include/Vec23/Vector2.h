@@ -5,7 +5,7 @@
 #include <cassert>
 #include <cmath>
 #include <concepts>
-#include <sstream>
+#include <format>
 #include <string>
 #include "Constants.h"
 
@@ -52,7 +52,7 @@ namespace Vec23
         }
 
         // -------------------------
-        // Core Logic
+        // Core
         // -------------------------
 
         bool IsNormalized() const
@@ -101,9 +101,7 @@ namespace Vec23
 
         std::string ToString() const
         {
-            std::stringstream stream;
-            stream << "(" << x << ", " << y << ")";
-            return stream.str();
+            return std::format("({}, {})", x, y);
         }
 
         // -------------------------
@@ -139,13 +137,15 @@ namespace Vec23
         {
             T dot = a.Dot(b);
             T cross = a.Cross(b);
-            T radians = std::atan2f(cross, dot);
+            T radians = std::atan2(cross, dot);
             return radians * kRadiansToDegrees;
         }
 
         // -------------------------
         // Operators
         // -------------------------
+
+        bool operator==(const TVector2& other) const = default;
 
         TVector2 operator+(const TVector2& other) const
         {
@@ -202,16 +202,6 @@ namespace Vec23
         {
             *this *= kOne / scalar;
             return *this;
-        }
-
-        bool operator==(const TVector2& other) const
-        {
-            return x == other.x && y == other.y;
-        }
-
-        bool operator!=(const TVector2& other) const
-        {
-            return !(*this == other);
         }
 
         T& operator[](int index)

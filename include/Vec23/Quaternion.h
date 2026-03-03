@@ -4,6 +4,7 @@
 
 #include <algorithm>
 #include <concepts>
+#include <format>
 #include "Constants.h"
 #include "Vector3.h"
 
@@ -116,7 +117,7 @@ namespace Vec23
         }
 
         // -------------------------
-        // Core Logic
+        // Core
         // -------------------------
 
         bool IsNormalized() const
@@ -239,9 +240,7 @@ namespace Vec23
 
         std::string ToString() const
         {
-            std::stringstream stream;
-            stream << "(" << w << ", " << x << ", " << y << ", " << z << ")";
-            return stream.str();
+            return std::format("({}, {}, {}, {})", w, x, y, z);
         }
 
         // -------------------------
@@ -294,6 +293,8 @@ namespace Vec23
         // -------------------------
         // Operators
         // -------------------------
+
+        bool operator==(const TQuaternion& other) const = default;
 
         TQuaternion operator+(const TQuaternion& other) const
         {
@@ -358,16 +359,6 @@ namespace Vec23
         {
             *this *= kOne / scalar;
             return *this;
-        }
-
-        bool operator==(const TQuaternion& other) const
-        {
-            return w == other.w && x == other.x && y == other.y && z == other.z;
-        }
-
-        bool operator!=(const TQuaternion& other) const
-        {
-            return !(*this == other);
         }
 
         friend TQuaternion operator*(T scalar, const TQuaternion& q)

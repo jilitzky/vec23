@@ -5,7 +5,7 @@
 #include <cassert>
 #include <cmath>
 #include <concepts>
-#include <sstream>
+#include <format>
 #include <string>
 #include "Constants.h"
 
@@ -59,7 +59,7 @@ namespace Vec23
         }
 
         // -------------------------
-        // Core Logic
+        // Core
         // -------------------------
 
         bool IsNormalized() const
@@ -112,9 +112,7 @@ namespace Vec23
 
         std::string ToString() const
         {
-            std::stringstream stream;
-            stream << "(" << x << ", " << y << ", " << z << ")";
-            return stream.str();
+            return std::format("({}, {}, {})", x, y, z);
         }
 
         // -------------------------
@@ -145,7 +143,7 @@ namespace Vec23
         {
             T dot = a.Dot(b);
             TVector3 cross = a.Cross(b);
-            T radians = std::atan2f(cross.Length(), dot);
+            T radians = std::atan2(cross.Length(), dot);
             return radians * kRadiansToDegrees;
         }
 
@@ -153,7 +151,7 @@ namespace Vec23
         {
             TVector3 cross = a.Cross(b);
             T dot = a.Dot(b);
-            T radians = std::atan2f(cross.Length(), dot);
+            T radians = std::atan2(cross.Length(), dot);
             T degrees = radians * kRadiansToDegrees;
             T sign = cross.Dot(axis);
             return (sign < kZero) ? -degrees : degrees;
@@ -162,6 +160,8 @@ namespace Vec23
         // -------------------------
         // Operators
         // -------------------------
+
+        bool operator==(const TVector3& other) const = default;
 
         TVector3 operator+(const TVector3& other) const
         {
@@ -221,16 +221,6 @@ namespace Vec23
         {
             *this *= kOne / scalar;
             return *this;
-        }
-
-        bool operator==(const TVector3& other) const
-        {
-            return x == other.x && y == other.y && z == other.z;
-        }
-
-        bool operator!=(const TVector3& other) const
-        {
-            return !(*this == other);
         }
 
         T& operator[](int index)
