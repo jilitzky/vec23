@@ -31,7 +31,7 @@ namespace Vec23
             T lengthSq = LengthSquared();
             if (lengthSq > kSafetyEpsilon)
             {
-                T invLength = kOne / std::sqrt(lengthSq);
+                T invLength = TOne<T> / std::sqrt(lengthSq);
                 x *= invLength;
                 y *= invLength;
                 z *= invLength;
@@ -49,13 +49,13 @@ namespace Vec23
             T sinT = std::sin(radians);
 
             TVector3 u = axis;
-            if (std::abs(u.LengthSquared() - kOne) > kSafetyEpsilon)
+            if (std::abs(u.LengthSquared() - TOne<T>) > kSafetyEpsilon)
             {
                 u.Normalize();
             }
 
             TVector3 v = *this;
-            *this = (v * cosT) + (u.Cross(v) * sinT) + (u * u.Dot(v) * (kOne - cosT));
+            *this = (v * cosT) + (u.Cross(v) * sinT) + (u * u.Dot(v) * (TOne<T> - cosT));
         }
 
         // -------------------------
@@ -64,7 +64,7 @@ namespace Vec23
 
         bool IsNormalized() const
         {
-            return std::abs(LengthSquared() - kOne) < kToleranceEpsilon;
+            return std::abs(LengthSquared() - TOne<T>) < kToleranceEpsilon;
         }
 
         TVector3 GetNormalized() const
@@ -186,7 +186,7 @@ namespace Vec23
 
         TVector3 operator/(T scalar) const
         {
-            return *this * (kOne / scalar);
+            return *this * (TOne<T> / scalar);
         }
 
         TVector3 operator-() const
@@ -220,7 +220,7 @@ namespace Vec23
 
         TVector3& operator/=(T scalar)
         {
-            *this *= kOne / scalar;
+            *this *= TOne<T> / scalar;
             return *this;
         }
 
@@ -242,7 +242,6 @@ namespace Vec23
         }
 
     private:
-        static constexpr T kOne = TOne<T>;
         static constexpr T kTwo = TTwo<T>;
         static constexpr T kPi = TPi<T>;
         static constexpr T kDegreesToRadians = TDegreesToRadians<T>;

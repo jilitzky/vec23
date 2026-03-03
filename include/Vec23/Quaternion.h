@@ -18,7 +18,7 @@ namespace Vec23
         T y;
         T z;
 
-        constexpr TQuaternion() : w(kOne), x(TZero<T>), y(TZero<T>), z(TZero<T>) {}
+        constexpr TQuaternion() : w(TOne<T>), x(TZero<T>), y(TZero<T>), z(TZero<T>) {}
 
         constexpr TQuaternion(T w, T x, T y, T z) : w(w), x(x), y(y), z(z) {}
 
@@ -41,7 +41,7 @@ namespace Vec23
                 return Identity();
             }
 
-            if (std::abs(lengthSq - kOne) > kSafetyEpsilon)
+            if (std::abs(lengthSq - TOne<T>) > kSafetyEpsilon)
             {
                 u.Normalize();
             }
@@ -80,7 +80,7 @@ namespace Vec23
             T lengthSq = LengthSquared();
             if (lengthSq > kSafetyEpsilon)
             {
-                T invLength = kOne / std::sqrt(lengthSq);
+                T invLength = TOne<T> / std::sqrt(lengthSq);
                 w *= invLength;
                 x *= invLength;
                 y *= invLength;
@@ -104,7 +104,7 @@ namespace Vec23
             T lengthSq = LengthSquared();
             if (lengthSq > kSafetyEpsilon)
             {
-                T invLengthSq = kOne / lengthSq;
+                T invLengthSq = TOne<T> / lengthSq;
                 w *= invLengthSq;
                 x *= -invLengthSq;
                 y *= -invLengthSq;
@@ -122,7 +122,7 @@ namespace Vec23
 
         bool IsNormalized() const
         {
-            return std::abs(LengthSquared() - kOne) < kToleranceEpsilon;
+            return std::abs(LengthSquared() - TOne<T>) < kToleranceEpsilon;
         }
 
         T Length() const
@@ -208,16 +208,16 @@ namespace Vec23
 
         void ToAxisAngle(TVector3<T>& outAxis, T& outDegrees) const
         {
-            T clampedW = std::clamp(w, -kOne, kOne);
-            T sinSqT = kOne - (clampedW * clampedW);
+            T clampedW = std::clamp(w, -TOne<T>, TOne<T>);
+            T sinSqT = TOne<T> - (clampedW * clampedW);
             if (sinSqT < kSafetyEpsilon)
             {
-                outAxis = { kOne, TZero<T>, TZero<T> };
+                outAxis = { TOne<T>, TZero<T>, TZero<T> };
                 outDegrees = TZero<T>;
             }
             else
             {
-                T invSinT = kOne / std::sqrt(sinSqT);
+                T invSinT = TOne<T> / std::sqrt(sinSqT);
                 outAxis.x = x * invSinT;
                 outAxis.y = y * invSinT;
                 outAxis.z = z * invSinT;
@@ -249,10 +249,10 @@ namespace Vec23
 
         static TQuaternion Lerp(const TQuaternion& a, const TQuaternion& b, T t)
         {
-            t = std::clamp(t, TZero<T>, kOne);
+            t = std::clamp(t, TZero<T>, TOne<T>);
 
             const T dot = a.Dot(b);
-            const T sign = (dot < TZero<T>) ? -kOne : kOne;
+            const T sign = (dot < TZero<T>) ? -TOne<T> : TOne<T>;
 
             TQuaternion result(
                 std::lerp(a.w, b.w * sign, t),
@@ -267,7 +267,7 @@ namespace Vec23
 
         static TQuaternion Slerp(const TQuaternion& a, const TQuaternion& b, T t)
         {
-            t = std::clamp(t, TZero<T>, kOne);
+            t = std::clamp(t, TZero<T>, TOne<T>);
 
             T dot = a.Dot(b);
             TQuaternion target = b;
@@ -277,15 +277,15 @@ namespace Vec23
                 target = -b;
             }
 
-            if (dot > kOne - kToleranceEpsilon)
+            if (dot > TOne<T> - kToleranceEpsilon)
             {
                 return Lerp(a, target, t);
             }
 
-            T theta = std::acos(std::clamp(dot, -kOne, kOne));
+            T theta = std::acos(std::clamp(dot, -TOne<T>, TOne<T>));
             T sinT = std::sin(theta);
-            T invSinT = kOne / sinT;
-            T scaleA = std::sin((kOne - t) * theta) * invSinT;
+            T invSinT = TOne<T> / sinT;
+            T scaleA = std::sin((TOne<T> - t) * theta) * invSinT;
             T scaleB = std::sin(t * theta) * invSinT;
             return (scaleA * a) + (scaleB * target);
         }
@@ -328,7 +328,7 @@ namespace Vec23
 
         TQuaternion operator/(T scalar) const
         {
-            return *this * (kOne / scalar);
+            return *this * (TOne<T> / scalar);
         }
 
         TQuaternion operator-() const
@@ -357,7 +357,7 @@ namespace Vec23
 
         TQuaternion& operator/=(T scalar)
         {
-            *this *= kOne / scalar;
+            *this *= TOne<T> / scalar;
             return *this;
         }
 
@@ -367,7 +367,6 @@ namespace Vec23
         }
 
     private:
-        static constexpr T kOne = TOne<T>;
         static constexpr T kTwo = TTwo<T>;
         static constexpr T kPi = TPi<T>;
         static constexpr T kDegreesToRadians = TDegreesToRadians<T>;
