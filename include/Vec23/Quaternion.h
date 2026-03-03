@@ -27,13 +27,13 @@ namespace Vec23
             return TQuaternion();
         }
         
-        static TQuaternion FromAxisAngle(const TVector3<T>& axis, T degrees)
+        static TQuaternion FromAxisAngle(const Vector3<T>& axis, T degrees)
         {
             T halfRadians = degrees * kHalf<T> * kDegreesToRadians<T>;
             T cosT = std::cos(halfRadians);
             T sinT = std::sin(halfRadians);
 
-            TVector3 u = axis;
+            Vector3 u = axis;
             T lengthSq = u.LengthSquared();
 
             if (lengthSq < kSafetyEpsilon<T>)
@@ -161,22 +161,22 @@ namespace Vec23
             return result;
         }
 
-        TVector3<T> RotateVector(const TVector3<T>& v) const
+        Vector3<T> RotateVector(const Vector3<T>& v) const
         {
             T tempX = kTwo<T> * (y * v.z - z * v.y);
             T tempY = kTwo<T> * (z * v.x - x * v.z);
             T tempZ = kTwo<T> * (x * v.y - y * v.x);
 
-            return TVector3<T>(
+            return Vector3<T>(
                 v.x + w * tempX + (y * tempZ - z * tempY),
                 v.y + w * tempY + (z * tempX - x * tempZ),
                 v.z + w * tempZ + (x * tempY - y * tempX)
             );
         }
 
-        TVector3<T> ToEuler() const
+        Vector3<T> ToEuler() const
         {
-            TVector3<T> euler;
+            Vector3<T> euler;
 
             T gimbalTest = w * y - x * z;
             if (gimbalTest > kHalf<T> - kToleranceEpsilon<T>)
@@ -206,7 +206,7 @@ namespace Vec23
             return euler * kRadiansToDegrees<T>;
         }
 
-        void ToAxisAngle(TVector3<T>& outAxis, T& outDegrees) const
+        void ToAxisAngle(Vector3<T>& outAxis, T& outDegrees) const
         {
             T clampedW = std::clamp(w, -kOne<T>, kOne<T>);
             T sinSqT = kOne<T> - (clampedW * clampedW);
@@ -321,7 +321,7 @@ namespace Vec23
             return { w * scalar, x * scalar, y * scalar, z * scalar };
         }
 
-        TVector3<T> operator*(const TVector3<T>& v) const
+        Vector3<T> operator*(const Vector3<T>& v) const
         {
             return RotateVector(v);
         }

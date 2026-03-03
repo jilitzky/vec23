@@ -37,7 +37,7 @@ TEST(QuaternionTest, EqualsOperator)
 
 TEST(QuaternionTest, FromAxisAngle)
 {
-    Vector3 axis(0.0f, 1.0f, 0.0f);
+    FVector3 axis(0.0f, 1.0f, 0.0f);
     auto q = Quaternion::FromAxisAngle(axis, 90.0f);
     EXPECT_TRUE(q.IsNearlyEqual({ 0.707106781f, 0.0f, 0.707106781f, 0.0f }));
 }
@@ -134,9 +134,9 @@ TEST(QuaternionTest, ParameterConstructor)
 
 TEST(QuaternionTest, RotateVector)
 {
-    Vector3 v(1.0f, 0.0f, 0.0f);
+    FVector3 v(1.0f, 0.0f, 0.0f);
     auto q = Quaternion::FromAxisAngle({ 0.0f, 1.0f, 0.0f }, 90.0f);
-    Vector3 result = q.RotateVector(v);
+    FVector3 result = q.RotateVector(v);
     EXPECT_TRUE(result.IsNearlyEqual({ 0.0f, 0.0f, -1.0f }));
 }
 
@@ -172,7 +172,7 @@ TEST(QuaternionTest, SlerpShortestPath)
 TEST(QuaternionTest, ToAxisAngle)
 {
     Quaternion q(0.707106781f, 0.0f, 0.707106781f, 0.0f);
-    Vector3 axis;
+    FVector3 axis;
     float degrees;
     q.ToAxisAngle(axis, degrees);
     EXPECT_TRUE(axis.IsNearlyEqual({ 0.0f, 1.0f, 0.0f }));
