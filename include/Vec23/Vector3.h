@@ -83,7 +83,7 @@ namespace Vec23
 
         T Length() const
         {
-            return std::sqrt(LengthSquared());
+            return std::hypot(x, y, z);
         }
 
         T LengthSquared() const
@@ -98,11 +98,12 @@ namespace Vec23
 
         TVector3 Cross(const TVector3& other) const
         {
-            TVector3 cross;
-            cross.x = (y * other.z) - (z * other.y);
-            cross.y = (z * other.x) - (x * other.z);
-            cross.z = (x * other.y) - (y * other.x);
-            return cross;
+            return
+            {
+                (y * other.z) - (z * other.y),
+                (z * other.x) - (x * other.z),
+                (x * other.y) - (y * other.x)
+            };
         }
 
         bool IsNearlyEqual(const TVector3& other, T epsilon = kToleranceEpsilon) const

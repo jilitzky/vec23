@@ -76,7 +76,7 @@ namespace Vec23
 
         T Length() const
         {
-            return std::sqrt(LengthSquared());
+            return std::hypot(x, y);
         }
 
         T LengthSquared() const
