@@ -225,8 +225,15 @@ namespace Vec23
 
         bool IsNearlyEqual(const TQuaternion& other, T epsilon = kSafetyEpsilon) const
         {
-            T dot = this->Dot(other);
-            return (kOne - std::abs(dot)) <= epsilon;
+            T lenSqA = LengthSquared();
+            T lenSqB = other.LengthSquared();
+            if (lenSqA < kSafetyEpsilon || lenSqB < kSafetyEpsilon)
+            {
+                return lenSqA < kSafetyEpsilon && lenSqB < kSafetyEpsilon;
+            }
+
+            T dot = Dot(other);
+            return std::abs(dot * dot - lenSqA * lenSqB) <= epsilon;
         }
 
         std::string ToString() const
