@@ -42,7 +42,7 @@ namespace Vec23
 
         void Rotate(T degrees)
         {
-            T radians = degrees * kDegreesToRadians;
+            T radians = degrees * TDegreesToRadians<T>;
             T cosT = std::cos(radians);
             T sinT = std::sin(radians);
             T oldX = x;
@@ -222,7 +222,6 @@ namespace Vec23
         }
 
     private:
-        static constexpr T kDegreesToRadians = TDegreesToRadians<T>;
         static constexpr T kRadiansToDegrees = TRadiansToDegrees<T>;
         static constexpr T kToleranceEpsilon = TToleranceEpsilon<T>;
         static constexpr T kSafetyEpsilon = TSafetyEpsilon<T>;

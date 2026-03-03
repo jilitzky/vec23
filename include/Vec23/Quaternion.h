@@ -29,7 +29,7 @@ namespace Vec23
         
         static TQuaternion FromAxisAngle(const TVector3<T>& axis, T degrees)
         {
-            T halfRadians = degrees * THalf<T> * kDegreesToRadians;
+            T halfRadians = degrees * THalf<T> * TDegreesToRadians<T>;
             T cosT = std::cos(halfRadians);
             T sinT = std::sin(halfRadians);
 
@@ -51,15 +51,15 @@ namespace Vec23
 
         static TQuaternion FromEuler(T rollDegrees, T pitchDegrees, T yawDegrees)
         {
-            T halfRollRadians = rollDegrees * THalf<T> * kDegreesToRadians;
+            T halfRollRadians = rollDegrees * THalf<T> * TDegreesToRadians<T>;
             T cosRoll = std::cos(halfRollRadians);
             T sinRoll = std::sin(halfRollRadians);
 
-            T halfPitchRadians = pitchDegrees * THalf<T> * kDegreesToRadians;
+            T halfPitchRadians = pitchDegrees * THalf<T> * TDegreesToRadians<T>;
             T cosPitch = std::cos(halfPitchRadians);
             T sinPitch = std::sin(halfPitchRadians);
 
-            T halfYawRadians = yawDegrees * THalf<T> * kDegreesToRadians;
+            T halfYawRadians = yawDegrees * THalf<T> * TDegreesToRadians<T>;
             T cosYaw = std::cos(halfYawRadians);
             T sinYaw = std::sin(halfYawRadians);
 
@@ -367,7 +367,6 @@ namespace Vec23
         }
 
     private:
-        static constexpr T kDegreesToRadians = TDegreesToRadians<T>;
         static constexpr T kRadiansToDegrees = TRadiansToDegrees<T>;
         static constexpr T kToleranceEpsilon = TToleranceEpsilon<T>;
         static constexpr T kSafetyEpsilon = TSafetyEpsilon<T>;
