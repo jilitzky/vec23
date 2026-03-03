@@ -182,13 +182,13 @@ namespace Vec23
             if (gimbalTest > THalf<T> - kToleranceEpsilon)
             {
                 euler.x = TZero<T>;
-                euler.y = kPi * THalf<T>;
+                euler.y = TPi<T> * THalf<T>;
                 euler.z = TTwo<T> * std::atan2(z, w);
             }
             else if (gimbalTest < kToleranceEpsilon - THalf<T>)
             {
                 euler.x = TZero<T>;
-                euler.y = -kPi * THalf<T>;
+                euler.y = -TPi<T> * THalf<T>;
                 euler.z = TTwo<T> * std::atan2(x, w);
             }
             else
@@ -367,7 +367,6 @@ namespace Vec23
         }
 
     private:
-        static constexpr T kPi = TPi<T>;
         static constexpr T kDegreesToRadians = TDegreesToRadians<T>;
         static constexpr T kRadiansToDegrees = TRadiansToDegrees<T>;
         static constexpr T kToleranceEpsilon = TToleranceEpsilon<T>;
