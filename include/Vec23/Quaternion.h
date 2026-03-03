@@ -8,11 +8,9 @@
 
 namespace Vec23
 {
-    template<typename T>
+    template<std::floating_point T>
     struct TQuaternion
     {
-        static_assert(std::is_floating_point_v<T>, "TQuaternion template parameter must be a floating point type");
-
         T w;
         T x;
         T y;

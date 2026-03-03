@@ -4,17 +4,16 @@
 
 #include <cassert>
 #include <cmath>
+#include <concepts>
 #include <sstream>
 #include <string>
 #include "Constants.h"
 
 namespace Vec23
 {
-    template<typename T>
+    template<std::floating_point T>
     struct TVector2
     {
-        static_assert(std::is_floating_point_v<T>, "TVector2 template parameter must be a floating point type");
-
         T x;
         T y;
 

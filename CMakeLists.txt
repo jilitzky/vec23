@@ -27,7 +27,7 @@ add_executable(Vector23Test
     test/QuaternionTest.cpp
 )
 
-target_compile_features(Vector23Test PRIVATE cxx_std_17)
+target_compile_features(Vector23Test PRIVATE cxx_std_20)
 
 target_include_directories(Vector23Test PRIVATE
     include
