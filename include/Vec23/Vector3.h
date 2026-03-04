@@ -26,7 +26,7 @@ namespace Vec23
         // Modifiers
         // -------------------------
 
-        void Normalize()
+        constexpr void Normalize()
         {
             T lengthSq = LengthSquared();
             if (lengthSq > kSafetyEpsilon<T>)
@@ -42,7 +42,7 @@ namespace Vec23
             }
         }
 
-        void Rotate(T degrees, const Vector3& axis)
+        constexpr void Rotate(T degrees, const Vector3& axis)
         {
             T radians = degrees * kDegreesToRadians<T>;
             T cosT = std::cos(radians);
@@ -62,41 +62,41 @@ namespace Vec23
         // Core
         // -------------------------
 
-        bool IsNormalized() const
+        constexpr bool IsNormalized() const
         {
             return std::abs(LengthSquared() - kOne<T>) < kToleranceEpsilon<T>;
         }
 
-        Vector3 GetNormalized() const
+        constexpr Vector3 GetNormalized() const
         {
             Vector3 result = *this;
             result.Normalize();
             return result;
         }
 
-        Vector3 GetRotated(T degrees, const Vector3& axis) const
+        constexpr Vector3 GetRotated(T degrees, const Vector3& axis) const
         {
             Vector3 result = *this;
             result.Rotate(degrees, axis);
             return result;
         }
 
-        T Length() const
+        constexpr T Length() const
         {
             return std::hypot(x, y, z);
         }
 
-        T LengthSquared() const
+        constexpr T LengthSquared() const
         {
             return (x * x) + (y * y) + (z * z);
         }
 
-        T Dot(const Vector3& other) const
+        constexpr T Dot(const Vector3& other) const
         {
             return (x * other.x) + (y * other.y) + (z * other.z);
         }
 
-        Vector3 Cross(const Vector3& other) const
+        constexpr Vector3 Cross(const Vector3& other) const
         {
             return
             {
@@ -106,7 +106,7 @@ namespace Vec23
             };
         }
 
-        bool IsNearlyEqual(const Vector3& other, T epsilon = kToleranceEpsilon<T>) const
+        constexpr bool IsNearlyEqual(const Vector3& other, T epsilon = kToleranceEpsilon<T>) const
         {
             return DistanceSquared(*this, other) < (epsilon * epsilon);
         }
@@ -120,27 +120,27 @@ namespace Vec23
         // Utilities
         // -------------------------
 
-        static T Distance(const Vector3& a, const Vector3& b)
+        constexpr static T Distance(const Vector3& a, const Vector3& b)
         {
             return (b - a).Length();
         }
 
-        static T DistanceSquared(const Vector3& a, const Vector3& b)
+        constexpr static T DistanceSquared(const Vector3& a, const Vector3& b)
         {
             return (b - a).LengthSquared();
         }
 
-        static Vector3 Reflect(const Vector3& v, const Vector3& n)
+        constexpr static Vector3 Reflect(const Vector3& v, const Vector3& n)
         {
             return v - n * (kTwo<T> * v.Dot(n));
         }
 
-        static Vector3 Lerp(const Vector3& a, const Vector3& b, T t)
+        constexpr static Vector3 Lerp(const Vector3& a, const Vector3& b, T t)
         {
             return { std::lerp(a.x, b.x, t), std::lerp(a.y, b.y, t), std::lerp(a.z, b.z, t) };
         }
 
-        static T Angle(const Vector3& a, const Vector3& b)
+        constexpr static T Angle(const Vector3& a, const Vector3& b)
         {
             T dot = a.Dot(b);
             Vector3 cross = a.Cross(b);
@@ -148,7 +148,7 @@ namespace Vec23
             return radians * kRadiansToDegrees<T>;
         }
 
-        static T SignedAngle(const Vector3& a, const Vector3& b, const Vector3& axis)
+        constexpr static T SignedAngle(const Vector3& a, const Vector3& b, const Vector3& axis)
         {
             Vector3 cross = a.Cross(b);
             T dot = a.Dot(b);
@@ -162,39 +162,39 @@ namespace Vec23
         // Operators
         // -------------------------
 
-        bool operator==(const Vector3& other) const = default;
+        constexpr bool operator==(const Vector3& other) const = default;
 
-        Vector3 operator+(const Vector3& other) const
+        constexpr Vector3 operator+(const Vector3& other) const
         {
             return { x + other.x, y + other.y, z + other.z };
         }
 
-        Vector3 operator-(const Vector3& other) const
+        constexpr Vector3 operator-(const Vector3& other) const
         {
             return { x - other.x, y - other.y, z - other.z };
         }
 
-        Vector3 operator*(const Vector3& other) const
+        constexpr Vector3 operator*(const Vector3& other) const
         {
             return { x * other.x, y * other.y, z * other.z };
         }
 
-        Vector3 operator*(T scalar) const
+        constexpr Vector3 operator*(T scalar) const
         {
             return { x * scalar, y * scalar, z * scalar };
         }
 
-        Vector3 operator/(T scalar) const
+        constexpr Vector3 operator/(T scalar) const
         {
             return *this * (kOne<T> / scalar);
         }
 
-        Vector3 operator-() const
+        constexpr Vector3 operator-() const
         {
             return { -x, -y, -z };
         }
 
-        Vector3& operator+=(const Vector3& other)
+        constexpr Vector3& operator+=(const Vector3& other)
         {
             x += other.x;
             y += other.y;
@@ -202,7 +202,7 @@ namespace Vec23
             return *this;
         }
 
-        Vector3& operator-=(const Vector3& other)
+        constexpr Vector3& operator-=(const Vector3& other)
         {
             x -= other.x;
             y -= other.y;
@@ -210,7 +210,7 @@ namespace Vec23
             return *this;
         }
 
-        Vector3& operator*=(T scalar)
+        constexpr Vector3& operator*=(T scalar)
         {
             x *= scalar;
             y *= scalar;
@@ -218,25 +218,25 @@ namespace Vec23
             return *this;
         }
 
-        Vector3& operator/=(T scalar)
+        constexpr Vector3& operator/=(T scalar)
         {
             *this *= kOne<T> / scalar;
             return *this;
         }
 
-        T& operator[](int index)
+        constexpr T& operator[](int index)
         {
             assert(index >= 0 && index < 3);
             return (&x)[index];
         }
 
-        const T& operator[](int index) const
+        constexpr const T& operator[](int index) const
         {
             assert(index >= 0 && index < 3);
             return (&x)[index];
         }
 
-        friend Vector3 operator*(T scalar, const Vector3& v)
+        constexpr friend Vector3 operator*(T scalar, const Vector3& v)
         {
             return v * scalar;
         }
