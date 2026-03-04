@@ -108,32 +108,32 @@ namespace Vec23
         // Utilities
         // -------------------------
 
-        constexpr static T Distance(const Vector2& a, const Vector2& b)
+        static constexpr T Distance(const Vector2& a, const Vector2& b)
         {
             return (b - a).Length();
         }
 
-        constexpr static T DistanceSquared(const Vector2& a, const Vector2& b)
+        static constexpr T DistanceSquared(const Vector2& a, const Vector2& b)
         {
             return (b - a).LengthSquared();
         }
 
-        constexpr static Vector2 Reflect(const Vector2& v, const Vector2& n)
+        static constexpr Vector2 Reflect(const Vector2& v, const Vector2& n)
         {
             return v - n * (kTwo<T> * v.Dot(n));
         }
 
-        constexpr static Vector2 Lerp(const Vector2& a, const Vector2& b, T t)
+        static constexpr Vector2 Lerp(const Vector2& a, const Vector2& b, T t)
         {
             return { std::lerp(a.x, b.x, t), std::lerp(a.y, b.y, t) };
         }
 
-        constexpr static T Angle(const Vector2& a, const Vector2& b)
+        static constexpr T Angle(const Vector2& a, const Vector2& b)
         {
             return std::abs(SignedAngle(a, b));
         }
 
-        constexpr static T SignedAngle(const Vector2& a, const Vector2& b)
+        static constexpr T SignedAngle(const Vector2& a, const Vector2& b)
         {
             T dot = a.Dot(b);
             T cross = a.Cross(b);

@@ -120,27 +120,27 @@ namespace Vec23
         // Utilities
         // -------------------------
 
-        constexpr static T Distance(const Vector3& a, const Vector3& b)
+        static constexpr T Distance(const Vector3& a, const Vector3& b)
         {
             return (b - a).Length();
         }
 
-        constexpr static T DistanceSquared(const Vector3& a, const Vector3& b)
+        static constexpr T DistanceSquared(const Vector3& a, const Vector3& b)
         {
             return (b - a).LengthSquared();
         }
 
-        constexpr static Vector3 Reflect(const Vector3& v, const Vector3& n)
+        static constexpr Vector3 Reflect(const Vector3& v, const Vector3& n)
         {
             return v - n * (kTwo<T> * v.Dot(n));
         }
 
-        constexpr static Vector3 Lerp(const Vector3& a, const Vector3& b, T t)
+        static constexpr Vector3 Lerp(const Vector3& a, const Vector3& b, T t)
         {
             return { std::lerp(a.x, b.x, t), std::lerp(a.y, b.y, t), std::lerp(a.z, b.z, t) };
         }
 
-        constexpr static T Angle(const Vector3& a, const Vector3& b)
+        static constexpr T Angle(const Vector3& a, const Vector3& b)
         {
             T dot = a.Dot(b);
             Vector3 cross = a.Cross(b);
@@ -148,7 +148,7 @@ namespace Vec23
             return radians * kRadiansToDegrees<T>;
         }
 
-        constexpr static T SignedAngle(const Vector3& a, const Vector3& b, const Vector3& axis)
+        static constexpr T SignedAngle(const Vector3& a, const Vector3& b, const Vector3& axis)
         {
             Vector3 cross = a.Cross(b);
             T dot = a.Dot(b);
