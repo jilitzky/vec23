@@ -25,7 +25,7 @@ namespace Vec23
         // Modifiers
         // -------------------------
 
-        void Normalize()
+        constexpr void Normalize()
         {
             T lengthSq = LengthSquared();
             if (lengthSq > kSafetyEpsilon<T>)
@@ -40,7 +40,7 @@ namespace Vec23
             }
         }
 
-        void Rotate(T degrees)
+        constexpr void Rotate(T degrees)
         {
             T radians = degrees * kDegreesToRadians<T>;
             T cosT = std::cos(radians);
@@ -55,46 +55,46 @@ namespace Vec23
         // Core
         // -------------------------
 
-        bool IsNormalized() const
+        constexpr bool IsNormalized() const
         {
             return std::abs(LengthSquared() - kOne<T>) < kToleranceEpsilon<T>;
         }
 
-        Vector2 GetNormalized() const
+        constexpr Vector2 GetNormalized() const
         {
             Vector2 result = *this;
             result.Normalize();
             return result;
         }
 
-        Vector2 GetRotated(T degrees) const
+        constexpr Vector2 GetRotated(T degrees) const
         {
             Vector2 result = *this;
             result.Rotate(degrees);
             return result;
         }
 
-        T Length() const
+        constexpr T Length() const
         {
             return std::hypot(x, y);
         }
 
-        T LengthSquared() const
+        constexpr T LengthSquared() const
         {
             return (x * x) + (y * y);
         }
 
-        T Dot(const Vector2& other) const
+        constexpr T Dot(const Vector2& other) const
         {
             return (x * other.x) + (y * other.y);
         }
 
-        T Cross(const Vector2& other) const
+        constexpr T Cross(const Vector2& other) const
         {
             return (x * other.y) - (y * other.x);
         }
 
-        bool IsNearlyEqual(const Vector2& other, T epsilon = kToleranceEpsilon<T>) const
+        constexpr bool IsNearlyEqual(const Vector2& other, T epsilon = kToleranceEpsilon<T>) const
         {
             return DistanceSquared(*this, other) < (epsilon * epsilon);
         }
@@ -108,32 +108,32 @@ namespace Vec23
         // Utilities
         // -------------------------
 
-        static T Distance(const Vector2& a, const Vector2& b)
+        constexpr static T Distance(const Vector2& a, const Vector2& b)
         {
             return (b - a).Length();
         }
 
-        static T DistanceSquared(const Vector2& a, const Vector2& b)
+        constexpr static T DistanceSquared(const Vector2& a, const Vector2& b)
         {
             return (b - a).LengthSquared();
         }
 
-        static Vector2 Reflect(const Vector2& v, const Vector2& n)
+        constexpr static Vector2 Reflect(const Vector2& v, const Vector2& n)
         {
             return v - n * (kTwo<T> * v.Dot(n));
         }
 
-        static Vector2 Lerp(const Vector2& a, const Vector2& b, T t)
+        constexpr static Vector2 Lerp(const Vector2& a, const Vector2& b, T t)
         {
             return { std::lerp(a.x, b.x, t), std::lerp(a.y, b.y, t) };
         }
 
-        static T Angle(const Vector2& a, const Vector2& b)
+        constexpr static T Angle(const Vector2& a, const Vector2& b)
         {
             return std::abs(SignedAngle(a, b));
         }
 
-        static T SignedAngle(const Vector2& a, const Vector2& b)
+        constexpr static T SignedAngle(const Vector2& a, const Vector2& b)
         {
             T dot = a.Dot(b);
             T cross = a.Cross(b);
@@ -145,78 +145,78 @@ namespace Vec23
         // Operators
         // -------------------------
 
-        bool operator==(const Vector2& other) const = default;
+        constexpr bool operator==(const Vector2& other) const = default;
 
-        Vector2 operator+(const Vector2& other) const
+        constexpr Vector2 operator+(const Vector2& other) const
         {
             return { x + other.x, y + other.y };
         }
 
-        Vector2 operator-(const Vector2& other) const
+        constexpr Vector2 operator-(const Vector2& other) const
         {
             return { x - other.x, y - other.y };
         }
 
-        Vector2 operator*(const Vector2& other) const
+        constexpr Vector2 operator*(const Vector2& other) const
         {
             return { x * other.x, y * other.y };
         }
 
-        Vector2 operator*(T scalar) const
+        constexpr Vector2 operator*(T scalar) const
         {
             return { x * scalar, y * scalar };
         }
 
-        Vector2 operator/(T scalar) const
+        constexpr Vector2 operator/(T scalar) const
         {
             return *this * (kOne<T> / scalar);
         }
 
-        Vector2 operator-() const
+        constexpr Vector2 operator-() const
         {
             return { -x, -y };
         }
 
-        Vector2& operator+=(const Vector2& other)
+        constexpr Vector2& operator+=(const Vector2& other)
         {
             x += other.x;
             y += other.y;
             return *this;
         }
 
-        Vector2& operator-=(const Vector2& other)
+        constexpr Vector2& operator-=(const Vector2& other)
         {
             x -= other.x;
             y -= other.y;
             return *this;
         }
 
-        Vector2& operator*=(T scalar)
+        constexpr Vector2& operator*=(T scalar)
         {
             x *= scalar;
             y *= scalar;
             return *this;
         }
 
-        Vector2& operator/=(T scalar)
+        constexpr Vector2& operator/=(T scalar)
         {
             *this *= kOne<T> / scalar;
             return *this;
         }
 
-        T& operator[](int index)
+        constexpr T& operator[](int index)
         {
             assert(index >= 0 && index < 2);
             return (&x)[index];
         }
 
-        const T& operator[](int index) const
+        constexpr const T& operator[](int index) const
         {
             assert(index >= 0 && index < 2);
             return (&x)[index];
         }
 
-        friend Vector2 operator*(T scalar, const Vector2& v)
+        constexpr friend Vector2 operator*(T scalar, const Vector2& v)
         {
             return v * scalar;
         }
