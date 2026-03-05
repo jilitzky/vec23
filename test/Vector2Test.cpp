@@ -6,10 +6,6 @@
 
 namespace Vec23::Test
 {
-    // -------------------------
-    // Unit Tests
-    // -------------------------
-
     TEST(Vector2Test, Addition)
     {
         FVector2 v1(1.0f, 2.0f);
@@ -269,7 +265,7 @@ namespace Vec23::Test
     // Static Tests
     // -------------------------
 
-    static constexpr FVector2 kZero = {};
+    static constexpr FVector2 kZero = { 0.0f, 0.0f };
     static_assert(kZero.GetNormalized() == kZero);
     static_assert(kZero.LengthSquared() == 0.0f);
     static_assert(kZero.Dot(kZero) == 0.0f);

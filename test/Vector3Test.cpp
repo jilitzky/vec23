@@ -6,8 +6,6 @@
 
 namespace Vec23::Test
 {
-    //static_assert(FVector3{1.0f, 2.0f, 3.0f}.x == 1.0f);
-
     TEST(Vector3Test, Addition)
     {
         FVector3 v1(1.0f, 2.0f, 3.0f);
@@ -295,4 +293,26 @@ namespace Vec23::Test
         FVector3 result = v1 - v2;
         EXPECT_TRUE(result.IsNearlyEqual({ 3.0f, 3.0f, 3.0f }));
     }
+
+    // -------------------------
+    // Static Tests
+    // -------------------------
+
+    static constexpr FVector3 kZero = { 0.0f, 0.0f, 0.0f };
+    static_assert(kZero.GetNormalized() == kZero);
+    static_assert(kZero.LengthSquared() == 0.0f);
+    static_assert(kZero.Dot(kZero) == 0.0f);
+    static_assert(kZero.Cross(kZero) == kZero);
+    static_assert(kZero.IsNearlyEqual(kZero));
+    static_assert(FVector3::Reflect(kZero, kZero) == kZero);
+    static_assert(FVector3::Lerp(kZero, kZero, 0.0f) == kZero);
+    static_assert(kZero == kZero);
+    static_assert(kZero + kZero == kZero);
+    static_assert(kZero - kZero == kZero);
+    static_assert(kZero* kZero == kZero);
+    static_assert(kZero * 0.0f == kZero);
+    static_assert(kZero / 1.0f == kZero);
+    static_assert(-kZero == kZero);
+    static_assert(kZero[0] == 0.0f);
+    static_assert(0.0f * kZero == kZero);
 }

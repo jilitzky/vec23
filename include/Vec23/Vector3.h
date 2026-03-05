@@ -42,7 +42,7 @@ namespace Vec23
             }
         }
 
-        constexpr void Rotate(T degrees, const Vector3& axis)
+        void Rotate(T degrees, const Vector3& axis)
         {
             T radians = degrees * kDegreesToRadians<T>;
             T cosT = std::cos(radians);
@@ -62,7 +62,7 @@ namespace Vec23
         // Core
         // -------------------------
 
-        constexpr bool IsNormalized() const
+        bool IsNormalized() const
         {
             return std::abs(LengthSquared() - kOne<T>) < kToleranceEpsilon<T>;
         }
@@ -74,14 +74,14 @@ namespace Vec23
             return result;
         }
 
-        constexpr Vector3 GetRotated(T degrees, const Vector3& axis) const
+        Vector3 GetRotated(T degrees, const Vector3& axis) const
         {
             Vector3 result = *this;
             result.Rotate(degrees, axis);
             return result;
         }
 
-        constexpr T Length() const
+        T Length() const
         {
             return std::hypot(x, y, z);
         }
@@ -120,7 +120,7 @@ namespace Vec23
         // Utilities
         // -------------------------
 
-        static constexpr T Distance(const Vector3& a, const Vector3& b)
+        static T Distance(const Vector3& a, const Vector3& b)
         {
             return (b - a).Length();
         }
@@ -140,7 +140,7 @@ namespace Vec23
             return { std::lerp(a.x, b.x, t), std::lerp(a.y, b.y, t), std::lerp(a.z, b.z, t) };
         }
 
-        static constexpr T Angle(const Vector3& a, const Vector3& b)
+        static T Angle(const Vector3& a, const Vector3& b)
         {
             T dot = a.Dot(b);
             Vector3 cross = a.Cross(b);
@@ -148,7 +148,7 @@ namespace Vec23
             return radians * kRadiansToDegrees<T>;
         }
 
-        static constexpr T SignedAngle(const Vector3& a, const Vector3& b, const Vector3& axis)
+        static T SignedAngle(const Vector3& a, const Vector3& b, const Vector3& axis)
         {
             Vector3 cross = a.Cross(b);
             T dot = a.Dot(b);
