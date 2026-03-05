@@ -27,7 +27,7 @@ namespace Vec23
             return Quaternion();
         }
         
-        static constexpr Quaternion FromAxisAngle(const Vector3<T>& axis, T degrees)
+        static Quaternion FromAxisAngle(const Vector3<T>& axis, T degrees)
         {
             T halfRadians = degrees * kHalf<T> * kDegreesToRadians<T>;
             T cosT = std::cos(halfRadians);
@@ -49,7 +49,7 @@ namespace Vec23
             return { cosT, u.x * sinT, u.y * sinT, u.z * sinT };
         }
 
-        static constexpr Quaternion FromEuler(T rollDegrees, T pitchDegrees, T yawDegrees)
+        static Quaternion FromEuler(T rollDegrees, T pitchDegrees, T yawDegrees)
         {
             T halfRollRadians = rollDegrees * kHalf<T> * kDegreesToRadians<T>;
             T cosRoll = std::cos(halfRollRadians);
@@ -75,7 +75,7 @@ namespace Vec23
         // Modifiers
         // -------------------------
 
-        constexpr void Normalize()
+        void Normalize()
         {
             T lengthSq = LengthSquared();
             if (lengthSq > kSafetyEpsilon<T>)
@@ -120,12 +120,12 @@ namespace Vec23
         // Core
         // -------------------------
 
-        constexpr bool IsNormalized() const
+        bool IsNormalized() const
         {
             return std::abs(LengthSquared() - kOne<T>) < kToleranceEpsilon<T>;
         }
 
-        constexpr T Length() const
+        T Length() const
         {
             return std::sqrt(LengthSquared());
         }
@@ -140,7 +140,7 @@ namespace Vec23
             return (w * other.w) + (x * other.x) + (y * other.y) + (z * other.z);
         }
 
-        constexpr Quaternion GetNormalized() const
+        Quaternion GetNormalized() const
         {
             Quaternion result = *this;
             result.Normalize();
@@ -174,7 +174,7 @@ namespace Vec23
             );
         }
 
-        constexpr Vector3<T> ToEuler() const
+        Vector3<T> ToEuler() const
         {
             Vector3<T> euler;
 
@@ -206,7 +206,7 @@ namespace Vec23
             return euler * kRadiansToDegrees<T>;
         }
 
-        constexpr void ToAxisAngle(Vector3<T>& outAxis, T& outDegrees) const
+        void ToAxisAngle(Vector3<T>& outAxis, T& outDegrees) const
         {
             T clampedW = std::clamp(w, -kOne<T>, kOne<T>);
             T sinSqT = kOne<T> - (clampedW * clampedW);
@@ -225,7 +225,7 @@ namespace Vec23
             }
         }
 
-        constexpr bool IsNearlyEqual(const Quaternion& other, T epsilon = kSafetyEpsilon<T>) const
+        bool IsNearlyEqual(const Quaternion& other, T epsilon = kSafetyEpsilon<T>) const
         {
             T lenSqA = LengthSquared();
             T lenSqB = other.LengthSquared();
@@ -247,7 +247,7 @@ namespace Vec23
         // Utilities
         // -------------------------
 
-        static constexpr Quaternion Lerp(const Quaternion& a, const Quaternion& b, T t)
+        static Quaternion Lerp(const Quaternion& a, const Quaternion& b, T t)
         {
             t = std::clamp(t, kZero<T>, kOne<T>);
 
@@ -265,7 +265,7 @@ namespace Vec23
             return result;
         }
 
-        static constexpr Quaternion Slerp(const Quaternion& a, const Quaternion& b, T t)
+        static Quaternion Slerp(const Quaternion& a, const Quaternion& b, T t)
         {
             t = std::clamp(t, kZero<T>, kOne<T>);
 

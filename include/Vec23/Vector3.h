@@ -26,7 +26,7 @@ namespace Vec23
         // Modifiers
         // -------------------------
 
-        constexpr void Normalize()
+        void Normalize()
         {
             T lengthSq = LengthSquared();
             if (lengthSq > kSafetyEpsilon<T>)
@@ -67,7 +67,7 @@ namespace Vec23
             return std::abs(LengthSquared() - kOne<T>) < kToleranceEpsilon<T>;
         }
 
-        constexpr Vector3 GetNormalized() const
+        Vector3 GetNormalized() const
         {
             Vector3 result = *this;
             result.Normalize();
@@ -106,7 +106,7 @@ namespace Vec23
             };
         }
 
-        constexpr bool IsNearlyEqual(const Vector3& other, T epsilon = kToleranceEpsilon<T>) const
+        bool IsNearlyEqual(const Vector3& other, T epsilon = kToleranceEpsilon<T>) const
         {
             return DistanceSquared(*this, other) < (epsilon * epsilon);
         }

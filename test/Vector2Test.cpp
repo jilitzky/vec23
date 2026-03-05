@@ -267,11 +267,9 @@ namespace Vec23::Test
 
     static constexpr FVector2 kZero = { 0.0f, 0.0f };
     static_assert(std::is_nothrow_move_constructible_v<FVector2>);
-    static_assert(kZero.GetNormalized() == kZero);
     static_assert(kZero.LengthSquared() == 0.0f);
     static_assert(kZero.Dot(kZero) == 0.0f);
     static_assert(kZero.Cross(kZero) == 0.0f);
-    static_assert(kZero.IsNearlyEqual(kZero));
     static_assert(FVector2::Reflect(kZero, kZero) == kZero);
     static_assert(FVector2::Lerp(kZero, kZero, 0.0f) == kZero);
     static_assert(kZero == kZero);

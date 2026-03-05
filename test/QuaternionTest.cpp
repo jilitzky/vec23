@@ -205,5 +205,20 @@ namespace Vec23::Test
     // -------------------------
 
     static constexpr FQuaternion kIdentity = FQuaternion::Identity();
+    static constexpr FVector3 kUp = { 0.0f, 1.0f, 0.0f };
     static_assert(std::is_nothrow_move_constructible_v<FQuaternion>);
+    static_assert(kIdentity.LengthSquared() == 1.0f);
+    static_assert(kIdentity.Dot(kIdentity) == 1.0f);
+    static_assert(kIdentity.GetConjugated() == kIdentity);
+    static_assert(kIdentity.GetInversed() == kIdentity);
+    static_assert(kIdentity.RotateVector(kUp) == kUp);
+    static_assert(kIdentity == kIdentity);
+    static_assert(kIdentity + kIdentity == FQuaternion(2.0f, 0.0f, 0.0f, 0.0f));
+    static_assert(kIdentity - kIdentity == FQuaternion(0.0f, 0.0f, 0.0f, 0.0f));
+    static_assert(kIdentity * kIdentity == kIdentity);
+    static_assert(kIdentity * 1.0f == kIdentity);
+    static_assert(kIdentity * kUp == kUp);
+    static_assert(kIdentity / 1.0f == kIdentity);
+    static_assert(-kIdentity == -kIdentity);
+    static_assert(1.0f * kIdentity == kIdentity);
 }
