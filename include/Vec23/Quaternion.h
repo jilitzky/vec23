@@ -92,14 +92,14 @@ namespace Vec23
             }
         }
 
-        void Conjugate()
+        constexpr void Conjugate()
         {
             x = -x;
             y = -y;
             z = -z;
         }
 
-        void Inverse()
+        constexpr void Inverse()
         {
             T lengthSq = LengthSquared();
             if (lengthSq > kSafetyEpsilon<T>)
@@ -130,12 +130,12 @@ namespace Vec23
             return std::sqrt(LengthSquared());
         }
 
-        T LengthSquared() const
+        constexpr T LengthSquared() const
         {
             return (w * w) + (x * x) + (y * y) + (z * z);
         }
 
-        T Dot(const Quaternion& other) const
+        constexpr T Dot(const Quaternion& other) const
         {
             return (w * other.w) + (x * other.x) + (y * other.y) + (z * other.z);
         }
@@ -147,21 +147,21 @@ namespace Vec23
             return result;
         }
 
-        Quaternion GetConjugated() const
+        constexpr Quaternion GetConjugated() const
         {
             Quaternion result = *this;
             result.Conjugate();
             return result;
         }
 
-        Quaternion GetInversed() const
+        constexpr Quaternion GetInversed() const
         {
             Quaternion result = *this;
             result.Inverse();
             return result;
         }
 
-        Vector3<T> RotateVector(const Vector3<T>& v) const
+        constexpr Vector3<T> RotateVector(const Vector3<T>& v) const
         {
             T tempX = kTwo<T> * (y * v.z - z * v.y);
             T tempY = kTwo<T> * (z * v.x - x * v.z);
@@ -294,19 +294,19 @@ namespace Vec23
         // Operators
         // -------------------------
 
-        bool operator==(const Quaternion& other) const = default;
+        constexpr bool operator==(const Quaternion& other) const = default;
 
-        Quaternion operator+(const Quaternion& other) const
+        constexpr Quaternion operator+(const Quaternion& other) const
         {
             return { w + other.w, x + other.x, y + other.y, z + other.z };
         }
 
-        Quaternion operator-(const Quaternion& other) const
+        constexpr Quaternion operator-(const Quaternion& other) const
         {
             return { w - other.w, x - other.x, y - other.y, z - other.z };
         }
 
-        Quaternion operator*(const Quaternion& other) const
+        constexpr Quaternion operator*(const Quaternion& other) const
         {
             return Quaternion(
                 w * other.w - x * other.x - y * other.y - z * other.z,
@@ -316,27 +316,27 @@ namespace Vec23
             );
         }
 
-        Quaternion operator*(T scalar) const
+        constexpr Quaternion operator*(T scalar) const
         {
             return { w * scalar, x * scalar, y * scalar, z * scalar };
         }
 
-        Vector3<T> operator*(const Vector3<T>& v) const
+        constexpr Vector3<T> operator*(const Vector3<T>& v) const
         {
             return RotateVector(v);
         }
 
-        Quaternion operator/(T scalar) const
+        constexpr Quaternion operator/(T scalar) const
         {
             return *this * (kOne<T> / scalar);
         }
 
-        Quaternion operator-() const
+        constexpr Quaternion operator-() const
         {
             return { -w, -x, -y, -z };
         }
 
-        Quaternion& operator*=(const Quaternion& other)
+        constexpr Quaternion& operator*=(const Quaternion& other)
         {
             Quaternion temp = *this;
             w = temp.w * other.w - temp.x * other.x - temp.y * other.y - temp.z * other.z;
@@ -346,7 +346,7 @@ namespace Vec23
             return *this;
         }
 
-        Quaternion& operator*=(T scalar)
+        constexpr Quaternion& operator*=(T scalar)
         {
             w *= scalar;
             x *= scalar;
@@ -355,13 +355,13 @@ namespace Vec23
             return *this;
         }
 
-        Quaternion& operator/=(T scalar)
+        constexpr Quaternion& operator/=(T scalar)
         {
             *this *= kOne<T> / scalar;
             return *this;
         }
 
-        friend Quaternion operator*(T scalar, const Quaternion& q)
+        constexpr friend Quaternion operator*(T scalar, const Quaternion& q)
         {
             return q * scalar;
         }

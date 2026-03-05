@@ -79,17 +79,17 @@ namespace Vec23
             return std::hypot(x, y);
         }
 
-        T LengthSquared() const
+        constexpr T LengthSquared() const
         {
             return (x * x) + (y * y);
         }
 
-        T Dot(const Vector2& other) const
+        constexpr T Dot(const Vector2& other) const
         {
             return (x * other.x) + (y * other.y);
         }
 
-        T Cross(const Vector2& other) const
+        constexpr T Cross(const Vector2& other) const
         {
             return (x * other.y) - (y * other.x);
         }
@@ -113,17 +113,17 @@ namespace Vec23
             return (b - a).Length();
         }
 
-        static T DistanceSquared(const Vector2& a, const Vector2& b)
+        static constexpr T DistanceSquared(const Vector2& a, const Vector2& b)
         {
             return (b - a).LengthSquared();
         }
 
-        static Vector2 Reflect(const Vector2& v, const Vector2& n)
+        static constexpr Vector2 Reflect(const Vector2& v, const Vector2& n)
         {
             return v - n * (kTwo<T> * v.Dot(n));
         }
 
-        static Vector2 Lerp(const Vector2& a, const Vector2& b, T t)
+        static constexpr Vector2 Lerp(const Vector2& a, const Vector2& b, T t)
         {
             return { std::lerp(a.x, b.x, t), std::lerp(a.y, b.y, t) };
         }
@@ -145,78 +145,78 @@ namespace Vec23
         // Operators
         // -------------------------
 
-        bool operator==(const Vector2& other) const = default;
+        constexpr bool operator==(const Vector2& other) const = default;
 
-        Vector2 operator+(const Vector2& other) const
+        constexpr Vector2 operator+(const Vector2& other) const
         {
             return { x + other.x, y + other.y };
         }
 
-        Vector2 operator-(const Vector2& other) const
+        constexpr Vector2 operator-(const Vector2& other) const
         {
             return { x - other.x, y - other.y };
         }
 
-        Vector2 operator*(const Vector2& other) const
+        constexpr Vector2 operator*(const Vector2& other) const
         {
             return { x * other.x, y * other.y };
         }
 
-        Vector2 operator*(T scalar) const
+        constexpr Vector2 operator*(T scalar) const
         {
             return { x * scalar, y * scalar };
         }
 
-        Vector2 operator/(T scalar) const
+        constexpr Vector2 operator/(T scalar) const
         {
             return *this * (kOne<T> / scalar);
         }
 
-        Vector2 operator-() const
+        constexpr Vector2 operator-() const
         {
             return { -x, -y };
         }
 
-        Vector2& operator+=(const Vector2& other)
+        constexpr Vector2& operator+=(const Vector2& other)
         {
             x += other.x;
             y += other.y;
             return *this;
         }
 
-        Vector2& operator-=(const Vector2& other)
+        constexpr Vector2& operator-=(const Vector2& other)
         {
             x -= other.x;
             y -= other.y;
             return *this;
         }
 
-        Vector2& operator*=(T scalar)
+        constexpr Vector2& operator*=(T scalar)
         {
             x *= scalar;
             y *= scalar;
             return *this;
         }
 
-        Vector2& operator/=(T scalar)
+        constexpr Vector2& operator/=(T scalar)
         {
             *this *= kOne<T> / scalar;
             return *this;
         }
 
-        T& operator[](int index)
+        constexpr T& operator[](int index)
         {
             assert(index >= 0 && index < 2);
             return (&x)[index];
         }
 
-        const T& operator[](int index) const
+        constexpr const T& operator[](int index) const
         {
             assert(index >= 0 && index < 2);
             return (&x)[index];
         }
 
-        friend Vector2 operator*(T scalar, const Vector2& v)
+        constexpr friend Vector2 operator*(T scalar, const Vector2& v)
         {
             return v * scalar;
         }
