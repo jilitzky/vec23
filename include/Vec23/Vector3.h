@@ -18,15 +18,15 @@ namespace Vec23
         T y;
         T z;
 
-        constexpr Vector3() : x(kZero<T>), y(kZero<T>), z(kZero<T>) {}
+        constexpr Vector3() noexcept : x(kZero<T>), y(kZero<T>), z(kZero<T>) {}
 
-        constexpr Vector3(T x, T y, T z) : x(x), y(y), z(z) {}
+        constexpr Vector3(T x, T y, T z) noexcept : x(x), y(y), z(z) {}
 
         // -------------------------
         // Modifiers
         // -------------------------
 
-        void Normalize()
+        void Normalize() noexcept
         {
             T lengthSq = LengthSquared();
             if (lengthSq > kSafetyEpsilon<T>)
@@ -42,7 +42,7 @@ namespace Vec23
             }
         }
 
-        void Rotate(T degrees, const Vector3& axis)
+        void Rotate(T degrees, const Vector3& axis) noexcept
         {
             T radians = degrees * kDegreesToRadians<T>;
             T cosT = std::cos(radians);
@@ -62,41 +62,41 @@ namespace Vec23
         // Core
         // -------------------------
 
-        bool IsNormalized() const
+        bool IsNormalized() const noexcept
         {
             return std::abs(LengthSquared() - kOne<T>) < kToleranceEpsilon<T>;
         }
 
-        Vector3 GetNormalized() const
+        Vector3 GetNormalized() const noexcept
         {
             Vector3 result = *this;
             result.Normalize();
             return result;
         }
 
-        Vector3 GetRotated(T degrees, const Vector3& axis) const
+        Vector3 GetRotated(T degrees, const Vector3& axis) const noexcept
         {
             Vector3 result = *this;
             result.Rotate(degrees, axis);
             return result;
         }
 
-        T Length() const
+        T Length() const noexcept
         {
             return std::hypot(x, y, z);
         }
 
-        constexpr T LengthSquared() const
+        constexpr T LengthSquared() const noexcept
         {
             return (x * x) + (y * y) + (z * z);
         }
 
-        constexpr T Dot(const Vector3& other) const
+        constexpr T Dot(const Vector3& other) const noexcept
         {
             return (x * other.x) + (y * other.y) + (z * other.z);
         }
 
-        constexpr Vector3 Cross(const Vector3& other) const
+        constexpr Vector3 Cross(const Vector3& other) const noexcept
         {
             return
             {
@@ -106,7 +106,7 @@ namespace Vec23
             };
         }
 
-        bool IsNearlyEqual(const Vector3& other, T epsilon = kToleranceEpsilon<T>) const
+        bool IsNearlyEqual(const Vector3& other, T epsilon = kToleranceEpsilon<T>) const noexcept
         {
             return DistanceSquared(*this, other) < (epsilon * epsilon);
         }
@@ -120,27 +120,27 @@ namespace Vec23
         // Utilities
         // -------------------------
 
-        static T Distance(const Vector3& a, const Vector3& b)
+        static T Distance(const Vector3& a, const Vector3& b) noexcept
         {
             return (b - a).Length();
         }
 
-        static constexpr T DistanceSquared(const Vector3& a, const Vector3& b)
+        static constexpr T DistanceSquared(const Vector3& a, const Vector3& b) noexcept
         {
             return (b - a).LengthSquared();
         }
 
-        static constexpr Vector3 Reflect(const Vector3& v, const Vector3& n)
+        static constexpr Vector3 Reflect(const Vector3& v, const Vector3& n) noexcept
         {
             return v - n * (kTwo<T> * v.Dot(n));
         }
 
-        static constexpr Vector3 Lerp(const Vector3& a, const Vector3& b, T t)
+        static constexpr Vector3 Lerp(const Vector3& a, const Vector3& b, T t) noexcept
         {
             return { std::lerp(a.x, b.x, t), std::lerp(a.y, b.y, t), std::lerp(a.z, b.z, t) };
         }
 
-        static T Angle(const Vector3& a, const Vector3& b)
+        static T Angle(const Vector3& a, const Vector3& b) noexcept
         {
             T dot = a.Dot(b);
             Vector3 cross = a.Cross(b);
@@ -148,7 +148,7 @@ namespace Vec23
             return radians * kRadiansToDegrees<T>;
         }
 
-        static T SignedAngle(const Vector3& a, const Vector3& b, const Vector3& axis)
+        static T SignedAngle(const Vector3& a, const Vector3& b, const Vector3& axis) noexcept
         {
             Vector3 cross = a.Cross(b);
             T dot = a.Dot(b);
@@ -162,39 +162,39 @@ namespace Vec23
         // Operators
         // -------------------------
 
-        constexpr bool operator==(const Vector3& other) const = default;
+        constexpr bool operator==(const Vector3& other) const noexcept = default;
 
-        constexpr Vector3 operator+(const Vector3& other) const
+        constexpr Vector3 operator+(const Vector3& other) const noexcept
         {
             return { x + other.x, y + other.y, z + other.z };
         }
 
-        constexpr Vector3 operator-(const Vector3& other) const
+        constexpr Vector3 operator-(const Vector3& other) const noexcept
         {
             return { x - other.x, y - other.y, z - other.z };
         }
 
-        constexpr Vector3 operator*(const Vector3& other) const
+        constexpr Vector3 operator*(const Vector3& other) const noexcept
         {
             return { x * other.x, y * other.y, z * other.z };
         }
 
-        constexpr Vector3 operator*(T scalar) const
+        constexpr Vector3 operator*(T scalar) const noexcept
         {
             return { x * scalar, y * scalar, z * scalar };
         }
 
-        constexpr Vector3 operator/(T scalar) const
+        constexpr Vector3 operator/(T scalar) const noexcept
         {
             return *this * (kOne<T> / scalar);
         }
 
-        constexpr Vector3 operator-() const
+        constexpr Vector3 operator-() const noexcept
         {
             return { -x, -y, -z };
         }
 
-        constexpr Vector3& operator+=(const Vector3& other)
+        constexpr Vector3& operator+=(const Vector3& other) noexcept
         {
             x += other.x;
             y += other.y;
@@ -202,7 +202,7 @@ namespace Vec23
             return *this;
         }
 
-        constexpr Vector3& operator-=(const Vector3& other)
+        constexpr Vector3& operator-=(const Vector3& other) noexcept
         {
             x -= other.x;
             y -= other.y;
@@ -210,7 +210,7 @@ namespace Vec23
             return *this;
         }
 
-        constexpr Vector3& operator*=(T scalar)
+        constexpr Vector3& operator*=(T scalar) noexcept
         {
             x *= scalar;
             y *= scalar;
@@ -218,25 +218,25 @@ namespace Vec23
             return *this;
         }
 
-        constexpr Vector3& operator/=(T scalar)
+        constexpr Vector3& operator/=(T scalar) noexcept
         {
             *this *= kOne<T> / scalar;
             return *this;
         }
 
-        constexpr T& operator[](int index)
+        constexpr T& operator[](int index) noexcept
         {
             assert(index >= 0 && index < 3);
             return (&x)[index];
         }
 
-        constexpr const T& operator[](int index) const
+        constexpr const T& operator[](int index) const noexcept
         {
             assert(index >= 0 && index < 3);
             return (&x)[index];
         }
 
-        constexpr friend Vector3 operator*(T scalar, const Vector3& v)
+        constexpr friend Vector3 operator*(T scalar, const Vector3& v) noexcept
         {
             return v * scalar;
         }

@@ -18,16 +18,16 @@ namespace Vec23
         T y;
         T z;
 
-        constexpr Quaternion() : w(kOne<T>), x(kZero<T>), y(kZero<T>), z(kZero<T>) {}
+        constexpr Quaternion() noexcept : w(kOne<T>), x(kZero<T>), y(kZero<T>), z(kZero<T>) {}
 
-        constexpr Quaternion(T w, T x, T y, T z) : w(w), x(x), y(y), z(z) {}
+        constexpr Quaternion(T w, T x, T y, T z) noexcept : w(w), x(x), y(y), z(z) {}
 
-        static constexpr Quaternion Identity()
+        static constexpr Quaternion Identity() noexcept
         {
             return Quaternion();
         }
         
-        static Quaternion FromAxisAngle(const Vector3<T>& axis, T degrees)
+        static Quaternion FromAxisAngle(const Vector3<T>& axis, T degrees) noexcept
         {
             T halfRadians = degrees * kHalf<T> * kDegreesToRadians<T>;
             T cosT = std::cos(halfRadians);
@@ -49,7 +49,7 @@ namespace Vec23
             return { cosT, u.x * sinT, u.y * sinT, u.z * sinT };
         }
 
-        static Quaternion FromEuler(T rollDegrees, T pitchDegrees, T yawDegrees)
+        static Quaternion FromEuler(T rollDegrees, T pitchDegrees, T yawDegrees) noexcept
         {
             T halfRollRadians = rollDegrees * kHalf<T> * kDegreesToRadians<T>;
             T cosRoll = std::cos(halfRollRadians);
@@ -75,7 +75,7 @@ namespace Vec23
         // Modifiers
         // -------------------------
 
-        void Normalize()
+        void Normalize() noexcept
         {
             T lengthSq = LengthSquared();
             if (lengthSq > kSafetyEpsilon<T>)
@@ -92,14 +92,14 @@ namespace Vec23
             }
         }
 
-        constexpr void Conjugate()
+        constexpr void Conjugate() noexcept
         {
             x = -x;
             y = -y;
             z = -z;
         }
 
-        constexpr void Inverse()
+        constexpr void Inverse() noexcept
         {
             T lengthSq = LengthSquared();
             if (lengthSq > kSafetyEpsilon<T>)
@@ -120,48 +120,48 @@ namespace Vec23
         // Core
         // -------------------------
 
-        bool IsNormalized() const
+        bool IsNormalized() const noexcept
         {
             return std::abs(LengthSquared() - kOne<T>) < kToleranceEpsilon<T>;
         }
 
-        T Length() const
+        T Length() const noexcept
         {
             return std::sqrt(LengthSquared());
         }
 
-        constexpr T LengthSquared() const
+        constexpr T LengthSquared() const noexcept
         {
             return (w * w) + (x * x) + (y * y) + (z * z);
         }
 
-        constexpr T Dot(const Quaternion& other) const
+        constexpr T Dot(const Quaternion& other) const noexcept
         {
             return (w * other.w) + (x * other.x) + (y * other.y) + (z * other.z);
         }
 
-        Quaternion GetNormalized() const
+        Quaternion GetNormalized() const noexcept
         {
             Quaternion result = *this;
             result.Normalize();
             return result;
         }
 
-        constexpr Quaternion GetConjugated() const
+        constexpr Quaternion GetConjugated() const noexcept
         {
             Quaternion result = *this;
             result.Conjugate();
             return result;
         }
 
-        constexpr Quaternion GetInversed() const
+        constexpr Quaternion GetInversed() const noexcept
         {
             Quaternion result = *this;
             result.Inverse();
             return result;
         }
 
-        constexpr Vector3<T> RotateVector(const Vector3<T>& v) const
+        constexpr Vector3<T> RotateVector(const Vector3<T>& v) const noexcept
         {
             T tempX = kTwo<T> * (y * v.z - z * v.y);
             T tempY = kTwo<T> * (z * v.x - x * v.z);
@@ -174,7 +174,7 @@ namespace Vec23
             );
         }
 
-        Vector3<T> ToEuler() const
+        Vector3<T> ToEuler() const noexcept
         {
             Vector3<T> euler;
 
@@ -206,7 +206,7 @@ namespace Vec23
             return euler * kRadiansToDegrees<T>;
         }
 
-        void ToAxisAngle(Vector3<T>& outAxis, T& outDegrees) const
+        void ToAxisAngle(Vector3<T>& outAxis, T& outDegrees) const noexcept
         {
             T clampedW = std::clamp(w, -kOne<T>, kOne<T>);
             T sinSqT = kOne<T> - (clampedW * clampedW);
@@ -225,7 +225,7 @@ namespace Vec23
             }
         }
 
-        bool IsNearlyEqual(const Quaternion& other, T epsilon = kSafetyEpsilon<T>) const
+        bool IsNearlyEqual(const Quaternion& other, T epsilon = kSafetyEpsilon<T>) const noexcept
         {
             T lenSqA = LengthSquared();
             T lenSqB = other.LengthSquared();
@@ -247,7 +247,7 @@ namespace Vec23
         // Utilities
         // -------------------------
 
-        static Quaternion Lerp(const Quaternion& a, const Quaternion& b, T t)
+        static Quaternion Lerp(const Quaternion& a, const Quaternion& b, T t) noexcept
         {
             t = std::clamp(t, kZero<T>, kOne<T>);
 
@@ -265,7 +265,7 @@ namespace Vec23
             return result;
         }
 
-        static Quaternion Slerp(const Quaternion& a, const Quaternion& b, T t)
+        static Quaternion Slerp(const Quaternion& a, const Quaternion& b, T t) noexcept
         {
             t = std::clamp(t, kZero<T>, kOne<T>);
 
@@ -294,19 +294,19 @@ namespace Vec23
         // Operators
         // -------------------------
 
-        constexpr bool operator==(const Quaternion& other) const = default;
+        constexpr bool operator==(const Quaternion& other) const noexcept = default;
 
-        constexpr Quaternion operator+(const Quaternion& other) const
+        constexpr Quaternion operator+(const Quaternion& other) const noexcept
         {
             return { w + other.w, x + other.x, y + other.y, z + other.z };
         }
 
-        constexpr Quaternion operator-(const Quaternion& other) const
+        constexpr Quaternion operator-(const Quaternion& other) const noexcept
         {
             return { w - other.w, x - other.x, y - other.y, z - other.z };
         }
 
-        constexpr Quaternion operator*(const Quaternion& other) const
+        constexpr Quaternion operator*(const Quaternion& other) const noexcept
         {
             return Quaternion(
                 w * other.w - x * other.x - y * other.y - z * other.z,
@@ -316,27 +316,27 @@ namespace Vec23
             );
         }
 
-        constexpr Quaternion operator*(T scalar) const
+        constexpr Quaternion operator*(T scalar) const noexcept
         {
             return { w * scalar, x * scalar, y * scalar, z * scalar };
         }
 
-        constexpr Vector3<T> operator*(const Vector3<T>& v) const
+        constexpr Vector3<T> operator*(const Vector3<T>& v) const noexcept
         {
             return RotateVector(v);
         }
 
-        constexpr Quaternion operator/(T scalar) const
+        constexpr Quaternion operator/(T scalar) const noexcept
         {
             return *this * (kOne<T> / scalar);
         }
 
-        constexpr Quaternion operator-() const
+        constexpr Quaternion operator-() const noexcept
         {
             return { -w, -x, -y, -z };
         }
 
-        constexpr Quaternion& operator*=(const Quaternion& other)
+        constexpr Quaternion& operator*=(const Quaternion& other) noexcept
         {
             Quaternion temp = *this;
             w = temp.w * other.w - temp.x * other.x - temp.y * other.y - temp.z * other.z;
@@ -346,7 +346,7 @@ namespace Vec23
             return *this;
         }
 
-        constexpr Quaternion& operator*=(T scalar)
+        constexpr Quaternion& operator*=(T scalar) noexcept
         {
             w *= scalar;
             x *= scalar;
@@ -355,13 +355,13 @@ namespace Vec23
             return *this;
         }
 
-        constexpr Quaternion& operator/=(T scalar)
+        constexpr Quaternion& operator/=(T scalar) noexcept
         {
             *this *= kOne<T> / scalar;
             return *this;
         }
 
-        constexpr friend Quaternion operator*(T scalar, const Quaternion& q)
+        constexpr friend Quaternion operator*(T scalar, const Quaternion& q) noexcept
         {
             return q * scalar;
         }
