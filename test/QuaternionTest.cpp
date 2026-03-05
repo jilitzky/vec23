@@ -6,8 +6,6 @@
 
 namespace Vec23::Test
 {
-    //static_assert(FQuaternion::Identity().w == 1.0f);
-
     TEST(QuaternionTest, Conjugate)
     {
         FQuaternion q(2.0f, -1.0f, 1.0f, 3.0f);
@@ -201,4 +199,11 @@ namespace Vec23::Test
         EXPECT_NEAR(result.y, 90.0f, kToleranceEpsilon<float>);
         EXPECT_NEAR(result.z, 45.0f, kToleranceEpsilon<float>);
     }
+
+    // -------------------------
+    // Static Tests
+    // -------------------------
+
+    static constexpr FQuaternion kIdentity = FQuaternion::Identity();
+    static_assert(std::is_nothrow_move_constructible_v<FQuaternion>);
 }
