@@ -40,7 +40,7 @@ namespace Vec23
             }
         }
 
-        constexpr void Rotate(T degrees)
+        void Rotate(T degrees)
         {
             T radians = degrees * kDegreesToRadians<T>;
             T cosT = std::cos(radians);
@@ -55,7 +55,7 @@ namespace Vec23
         // Core
         // -------------------------
 
-        constexpr bool IsNormalized() const
+        bool IsNormalized() const
         {
             return std::abs(LengthSquared() - kOne<T>) < kToleranceEpsilon<T>;
         }
@@ -67,14 +67,14 @@ namespace Vec23
             return result;
         }
 
-        constexpr Vector2 GetRotated(T degrees) const
+        Vector2 GetRotated(T degrees) const
         {
             Vector2 result = *this;
             result.Rotate(degrees);
             return result;
         }
 
-        constexpr T Length() const
+        T Length() const
         {
             return std::hypot(x, y);
         }
@@ -108,7 +108,7 @@ namespace Vec23
         // Utilities
         // -------------------------
 
-        static constexpr T Distance(const Vector2& a, const Vector2& b)
+        static T Distance(const Vector2& a, const Vector2& b)
         {
             return (b - a).Length();
         }
@@ -128,12 +128,12 @@ namespace Vec23
             return { std::lerp(a.x, b.x, t), std::lerp(a.y, b.y, t) };
         }
 
-        static constexpr T Angle(const Vector2& a, const Vector2& b)
+        static T Angle(const Vector2& a, const Vector2& b)
         {
             return std::abs(SignedAngle(a, b));
         }
 
-        static constexpr T SignedAngle(const Vector2& a, const Vector2& b)
+        static T SignedAngle(const Vector2& a, const Vector2& b)
         {
             T dot = a.Dot(b);
             T cross = a.Cross(b);
