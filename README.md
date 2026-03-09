@@ -23,17 +23,17 @@ Copy the `include/Vec23` folder into your project's include path.
 ```cpp
 import Vec23;
 
-// Vector2
+// Compute the dot product of two 2D vectors.
 Vector2<float> a(1.0f, 0.0f);
 Vector2<float> b(2.0f, 0.0f);
 float dot = a.Dot(b);
 
-// Vector3
+// Calculate the angle between two 3D vectors.
 Vector3<float> a(1.0f, 0.0f, 0.0f);
 Vector3<float> b(0.0f, -1.0f, 0.0f);
 float angle = Vector3<float>::Angle(a, b);
 
-// Quaternion
+// Create a quaternion from an axis and angle to rotate a 3D vector.
 auto q = Quaternion<float>::FromAxisAngle({ 0.0f, 1.0f, 0.0f }, 90.0f);
 Vector3<float> v(1.0f, 0.0f, 0.0f);
 Vector3<float r = q.RotateVector(v);
