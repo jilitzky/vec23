@@ -1,8 +1,8 @@
 /// Copyright (c) 2026 Jose Ilitzky
 
-#include <cmath>
 #include <gtest/gtest.h>
-#include <Vec23/Quaternion.h>
+
+import Vec23;
 
 namespace Vec23::Test
 {

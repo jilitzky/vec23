@@ -6,6 +6,7 @@ module;
 #include <concepts>
 #include <format>
 #include <string>
+
 #include "Constants.h"
 #include "Vector2.h"
 #include "Vector3.h"
@@ -15,6 +16,16 @@ export module Vec23;
 
 export namespace Vec23
 {
+    using Vec23::kZero;
+    using Vec23::kHalf;
+    using Vec23::kOne;
+    using Vec23::kTwo;
+    using Vec23::kPi;
+    using Vec23::kDegreesToRadians;
+    using Vec23::kRadiansToDegrees;
+    using Vec23::kToleranceEpsilon;
+    using Vec23::kSafetyEpsilon;
+
     using Vec23::Vector2;
     using Vec23::Vector3;
     using Vec23::Quaternion;
