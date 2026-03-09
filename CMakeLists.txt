@@ -1,7 +1,8 @@
-cmake_minimum_required(VERSION 3.24)
-
+cmake_minimum_required(VERSION 3.28)
 project(Vec23 VERSION 1.0)
 
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_OSX_DEPLOYMENT_TARGET "15.0")
 
 include(FetchContent)
@@ -12,27 +13,38 @@ FetchContent_Declare(
     googletest
     URL https://github.com/google/googletest/archive/refs/tags/v1.17.0.zip
     DOWNLOAD_EXTRACT_TIMESTAMP TRUE
-    CMAKE_ARGS -DBUILD_SHARED_LIBS=OFF
 )
 FetchContent_MakeAvailable(googletest)
 
-file(GLOB ALL_HEADERS "include/Vec23/*.h")
+# --- Vec23 ---
 
-# --- Vector23Test ---
+add_library(Vec23)
 
-add_executable(Vector23Test
-    ${ALL_HEADERS}
+target_sources(Vec23
+    PUBLIC
+        FILE_SET CXX_MODULES 
+        BASE_DIRS include/Vec23
+        FILES include/Vec23/Vec23.ixx
+    PRIVATE
+        include/Vec23/Constants.h
+        include/Vec23/Vector2.h
+        include/Vec23/Vector3.h
+        include/Vec23/Quaternion.h
+)
+
+target_include_directories(Vec23 PUBLIC include)
+
+target_compile_features(Vec23 PUBLIC cxx_std_20)
+
+# --- Vec23Test ---
+
+add_executable(Vec23Test
     test/Vector2Test.cpp
     test/Vector3Test.cpp
     test/QuaternionTest.cpp
 )
 
-target_compile_features(Vector23Test PRIVATE cxx_std_20)
-
-target_include_directories(Vector23Test PRIVATE
-    include
-)
-
-target_link_libraries(Vector23Test PRIVATE 
+target_link_libraries(Vec23Test PRIVATE 
     GTest::gtest_main
+    Vec23
 )
