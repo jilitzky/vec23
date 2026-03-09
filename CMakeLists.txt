@@ -24,7 +24,7 @@ target_sources(Vec23
     PUBLIC
         FILE_SET CXX_MODULES 
         BASE_DIRS include/Vec23
-        FILES include/Vec23/Vec23.cppm
+        FILES include/Vec23/Vec23.ixx
     PRIVATE
         include/Vec23/Constants.h
         include/Vec23/Vector2.h
