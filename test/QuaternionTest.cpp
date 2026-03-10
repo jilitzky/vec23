@@ -200,6 +200,24 @@ namespace Vec23::Test
         EXPECT_NEAR(result.z, 45.0f, kToleranceEpsilon<float>);
     }
 
+    TEST(QuaternionTest, Usage)
+    {
+        // Compute the dot product of two 2D vectors.
+        Vector2<float> a(1.0f, 0.0f);
+        Vector2<float> b(2.0f, 0.0f);
+        float dot = a.Dot(b);
+
+        // Calculate the angle between two 3D vectors.
+        Vector3<float> p1(1.0f, 0.0f, 0.0f);
+        Vector3<float> p2(0.0f, -1.0f, 0.0f);
+        float angle = FVector3::Angle(p1, p2);
+
+        // Rotate a 3D vector using a quaternion.
+        auto q = FQuaternion::FromAxisAngle({ 0.0f, 1.0f, 0.0f }, 90.0f);
+        Vector3<float> v(1.0f, 0.0f, 0.0f);
+        Vector3<float> r = q.RotateVector(v);
+    }
+
     // -------------------------
     // Static Tests
     // -------------------------
