@@ -300,6 +300,15 @@ namespace Vec23::Test
         EXPECT_NEAR(mid.Length(), 15.0f, kToleranceEpsilon<float>);
     }
 
+    TEST(Vector3Test, SlerpOpposites)
+    {
+        FVector3 start(10.0f, 0.0f, 0.0f);
+        FVector3 end(-10.0f, 0.0f, 0.0f);
+        FVector3 mid = FVector3::Slerp(start, end, 0.5f);
+        EXPECT_NEAR(FVector3::Angle(start, mid), 90.0f, kToleranceEpsilon<float>);
+        EXPECT_NEAR(mid.Length(), 10.0f, kToleranceEpsilon<float>);
+    }
+
     TEST(Vector3Test, SubscriptOperator)
     {
         FVector3 v(5.0f, 10.0f, 15.0f);

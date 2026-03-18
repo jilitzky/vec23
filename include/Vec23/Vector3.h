@@ -161,25 +161,22 @@ namespace Vec23
                 return Lerp(a, b, t);
             }
 
-            // TODO: Why can't I use a quaternion here?
-            //if (dot < -kOne<T> + kToleranceEpsilon<T>)
-            //{
-            //    constexpr Vector3 right = Vector3(kOne<T>, kZero<T>, kZero<T>);
-            //    constexpr Vector3 up = Vector3(kZero<T>, kOne<T>, kZero<T>);
+            if (dot < -kOne<T> + kToleranceEpsilon<T>)
+            {
+                static constexpr Vector3 xAxis = { kOne<T>, kZero<T>, kZero<T> };
+                static constexpr Vector3 yAxis = { kZero<T>, kOne<T>, kZero<T> };
+                
+                Vector3 axis = xAxis.Cross(unitA);
+                if (axis.LengthSquared() < kSafetyEpsilon<T>)
+                {
+                    axis = yAxis.Cross(unitA);
+                }
+                axis.Normalize();
 
-            //    Vector3 axis = right.Cross(unitA);
-            //    if (axis.LengthSquared() < kSafetyEpsilon<T>)
-            //    {
-            //        axis = up.Cross(unitA);
-            //    }
-            //    axis.Normalize();
-
-            //    T angle = t * (kPi<T> * kRadiansToDegrees<T>);
-
-            //    auto q = Quaternion<T>::FromAxisAngle(axis, angle);
-            //    T length = std::lerp(lenA, lenB, t);
-            //    return q.RotateVector(unitA) * length;
-            //}
+                T degrees = t * (kPi<T> * kRadiansToDegrees<T>);
+                T length = std::lerp(lenA, lenB, t);
+                return unitA.GetRotated(degrees, axis) * length;
+            }
 
             T theta = std::acos(dot);
             T sinT = std::sin(theta);
