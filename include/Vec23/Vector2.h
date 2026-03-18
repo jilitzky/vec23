@@ -128,6 +128,36 @@ namespace Vec23
             return { std::lerp(a.x, b.x, t), std::lerp(a.y, b.y, t) };
         }
 
+        static Vector2 Slerp(const Vector2& a, const Vector2& b, T t) noexcept
+        {
+            t = std::clamp(t, kZero<T>, kOne<T>);
+
+            T lenA = a.Length();
+            T lenB = b.Length();
+
+            if (lenA < kSafetyEpsilon<T> || lenB < kSafetyEpsilon<T>)
+            {
+                return Lerp(a, b, t);
+            }
+
+            Vector2 unitA = a / lenA;
+            Vector2 unitB = b / lenB;
+
+            T dot = std::clamp(unitA.Dot(unitB), -kOne<T>, kOne<T>);
+            if (dot > kOne<T> - kToleranceEpsilon<T>)
+            {
+                return Lerp(a, b, t);
+            }
+
+            T theta = std::acos(dot);
+            T sinT = std::sin(theta);
+            T invSinT = kOne<T> / sinT;
+            T scaleA = std::sin((kOne<T> - t) * theta) * invSinT;
+            T scaleB = std::sin(t * theta) * invSinT;
+            T length = std::lerp(lenA, lenB, t);
+            return ((unitA * scaleA) + (unitB * scaleB)) * length;
+        }
+
         static T Angle(const Vector2& a, const Vector2& b) noexcept
         {
             return std::abs(SignedAngle(a, b));

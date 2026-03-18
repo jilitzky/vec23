@@ -273,6 +273,42 @@ namespace Vec23::Test
         EXPECT_NEAR(FVector3::SignedAngle(b, a, up), 90.0f, kToleranceEpsilon<float>);
     }
 
+    TEST(Vector3Test, SlerpBasic)
+    {
+        FVector3 start(1.0f, 0.0f, 0.0f);
+        FVector3 end(0.0f, 0.0f, 1.0f);
+        FVector3 mid = FVector3::Slerp(start, end, 0.5f);
+        EXPECT_TRUE(mid.IsNearlyEqual({ 0.70710f, 0.0f, 0.70710f }));
+        EXPECT_TRUE(mid.IsNormalized());
+    }
+
+    TEST(Vector3Test, SlerpCollinear)
+    {
+        FVector3 start(1.0f, 0.0f, 0.0f);
+        FVector3 end(2.0f, 0.0f, 0.0f);
+        FVector3 mid = FVector3::Slerp(start, end, 0.5f);
+        EXPECT_FALSE(std::isnan(mid.x));
+        EXPECT_TRUE(mid.IsNearlyEqual({ 1.5f, 0.0f, 0.0f }));
+    }
+
+    TEST(Vector3Test, SlerpDifferentMagnitudes)
+    {
+        FVector3 start(10.0f, 0.0f, 0.0f);
+        FVector3 end(0.0f, 0.0f, 20.0f);
+        FVector3 mid = FVector3::Slerp(start, end, 0.5f);
+        EXPECT_TRUE(mid.GetNormalized().IsNearlyEqual({ 0.70710f, 0.0f, 0.70710f }));
+        EXPECT_NEAR(mid.Length(), 15.0f, kToleranceEpsilon<float>);
+    }
+
+    TEST(Vector3Test, SlerpOpposites)
+    {
+        FVector3 start(10.0f, 0.0f, 0.0f);
+        FVector3 end(-10.0f, 0.0f, 0.0f);
+        FVector3 mid = FVector3::Slerp(start, end, 0.5f);
+        EXPECT_NEAR(FVector3::Angle(start, mid), 90.0f, kToleranceEpsilon<float>);
+        EXPECT_NEAR(mid.Length(), 10.0f, kToleranceEpsilon<float>);
+    }
+
     TEST(Vector3Test, SubscriptOperator)
     {
         FVector3 v(5.0f, 10.0f, 15.0f);

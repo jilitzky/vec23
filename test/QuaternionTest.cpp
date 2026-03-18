@@ -217,7 +217,7 @@ namespace Vec23::Test
         // Rotate a 3D vector using a quaternion.
         auto q = FQuaternion::FromAxisAngle({ 0.0f, 1.0f, 0.0f }, 90.0f);
         Vector3<float> v(1.0f, 0.0f, 0.0f);
-        Vector3<float> r = q.RotateVector(v); // r is (0.0f, 0.0f, -1.0f)
+        Vector3<float> r = q * v; // r is (0.0f, 0.0f, -1.0f)
         EXPECT_TRUE(r.IsNearlyEqual({ 0.0f, 0.0f, -1.0f }));
     }
 

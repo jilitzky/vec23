@@ -140,6 +140,53 @@ namespace Vec23
             return { std::lerp(a.x, b.x, t), std::lerp(a.y, b.y, t), std::lerp(a.z, b.z, t) };
         }
 
+        static Vector3 Slerp(const Vector3& a, const Vector3& b, T t) noexcept
+        {
+            t = std::clamp(t, kZero<T>, kOne<T>);
+
+            T lenA = a.Length();
+            T lenB = b.Length();
+
+            if (lenA < kSafetyEpsilon<T> || lenB < kSafetyEpsilon<T>)
+            {
+                return Lerp(a, b, t);
+            }
+
+            Vector3 unitA = a / lenA;
+            Vector3 unitB = b / lenB;
+
+            T dot = std::clamp(unitA.Dot(unitB), -kOne<T>, kOne<T>);
+            if (dot > kOne<T> - kToleranceEpsilon<T>)
+            {
+                return Lerp(a, b, t);
+            }
+
+            if (dot < -kOne<T> + kToleranceEpsilon<T>)
+            {
+                static constexpr Vector3 xAxis = { kOne<T>, kZero<T>, kZero<T> };
+                static constexpr Vector3 yAxis = { kZero<T>, kOne<T>, kZero<T> };
+                
+                Vector3 axis = xAxis.Cross(unitA);
+                if (axis.LengthSquared() < kSafetyEpsilon<T>)
+                {
+                    axis = yAxis.Cross(unitA);
+                }
+                axis.Normalize();
+
+                T degrees = t * (kPi<T> * kRadiansToDegrees<T>);
+                T length = std::lerp(lenA, lenB, t);
+                return unitA.GetRotated(degrees, axis) * length;
+            }
+
+            T theta = std::acos(dot);
+            T sinT = std::sin(theta);
+            T invSinT = kOne<T> / sinT;
+            T scaleA = std::sin((kOne<T> -t) * theta) * invSinT;
+            T scaleB = std::sin(t * theta) * invSinT;
+            T length = std::lerp(lenA, lenB, t);
+            return ((unitA * scaleA) + (unitB * scaleB)) * length;
+        }
+
         static T Angle(const Vector3& a, const Vector3& b) noexcept
         {
             T dot = a.Dot(b);
